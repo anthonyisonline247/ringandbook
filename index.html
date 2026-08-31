@@ -4,6 +4,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Ring & Book — AI Receptionist That Actually Books</title>
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script>emailjs.init('8Me5zJ1pZR4aqhRVa');</script>
   <meta name="description" content="Ring & Book is an AI phone receptionist that answers every call, speaks your customers' language, and books appointments directly into your calendar. No missed calls. No missed bookings.">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -690,27 +692,32 @@
       <div class="contact-form">
         <h3 style="font-size:1.4rem;font-weight:800;margin-bottom:8px">Book a free demo</h3>
         <p style="color:var(--muted);font-size:0.9rem;margin-bottom:24px">We'll set up a 20-minute call to show you how it works with your actual business.</p>
+        <form id="demo-form">
         <div class="form-row">
           <div class="form-group">
             <label>First Name</label>
-            <input type="text" placeholder="Tyler">
+            <input type="text" id="first_name" placeholder="Tyler" required>
           </div>
           <div class="form-group">
             <label>Last Name</label>
-            <input type="text" placeholder="Zhang">
+            <input type="text" id="last_name" placeholder="Zhang" required>
           </div>
         </div>
         <div class="form-group">
+          <label>Business Email</label>
+          <input type="email" id="from_email" placeholder="tyler@pacificplumbing.com" required>
+        </div>
+        <div class="form-group">
           <label>Business Name</label>
-          <input type="text" placeholder="Pacific Plumbing & Heating">
+          <input type="text" id="business" placeholder="Pacific Plumbing & Heating" required>
         </div>
         <div class="form-group">
           <label>Business Phone</label>
-          <input type="tel" placeholder="206-555-0100">
+          <input type="tel" id="phone" placeholder="206-555-0100">
         </div>
         <div class="form-group">
           <label>Industry</label>
-          <select>
+          <select id="industry">
             <option value="">Select your industry</option>
             <option>Plumbing</option>
             <option>HVAC / Heating</option>
@@ -723,9 +730,11 @@
         </div>
         <div class="form-group">
           <label>What's your biggest challenge with calls?</label>
-          <textarea rows="3" placeholder="e.g. Missed calls after hours, Chinese-speaking customers, staff too busy to answer..."></textarea>
+          <textarea id="message" rows="3" placeholder="e.g. Missed calls after hours, Chinese-speaking customers, staff too busy to answer..."></textarea>
         </div>
-        <button class="form-submit">Request Demo →</button>
+        <button type="submit" class="form-submit" id="submit-btn">Request Demo →</button>
+        <div id="form-status" style="margin-top:12px;font-size:0.9rem;display:none;"></div>
+        </form>
       </div>
       <div class="contact-info">
         <div class="section-label">Get in touch</div>
@@ -757,6 +766,39 @@ function toggleFaq(btn) {
   document.querySelectorAll('.faq-q.open').forEach(b => b.classList.remove('open'));
   if (!isOpen) { answer.classList.add('open'); btn.classList.add('open'); }
 }
+
+document.getElementById('demo-form').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const btn = document.getElementById('submit-btn');
+  const status = document.getElementById('form-status');
+  btn.textContent = 'Sending...';
+  btn.disabled = true;
+
+  const params = {
+    from_name: document.getElementById('first_name').value + ' ' + document.getElementById('last_name').value,
+    from_email: document.getElementById('from_email').value,
+    business: document.getElementById('business').value,
+    phone: document.getElementById('phone').value,
+    industry: document.getElementById('industry').value,
+    message: document.getElementById('message').value,
+  };
+
+  emailjs.send('service_fq5u7h2', 'template_1kcax3r', params)
+    .then(() => {
+      status.style.display = 'block';
+      status.style.color = '#10b981';
+      status.textContent = '✓ Request sent! We\'ll reach out within 1 business day.';
+      btn.textContent = 'Request Sent ✓';
+    })
+    .catch((err) => {
+      status.style.display = 'block';
+      status.style.color = '#f87171';
+      status.textContent = 'Something went wrong. Please email us directly.';
+      btn.textContent = 'Request Demo →';
+      btn.disabled = false;
+      console.error(err);
+    });
+});
 </script>
 </body>
 </html>
