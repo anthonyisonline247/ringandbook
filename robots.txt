@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://anthonyisonline247.github.io/ringandbook/sitemap.xml
