@@ -72,14 +72,14 @@
       {
         "@type": "Offer",
         "name": "Starter",
-        "price": "99",
+        "price": "89",
         "priceCurrency": "USD",
         "url": "https://ringandbooked.com/#pricing"
       },
       {
         "@type": "Offer",
         "name": "Growth",
-        "price": "199",
+        "price": "189",
         "priceCurrency": "USD",
         "url": "https://ringandbooked.com/#pricing"
       }
@@ -114,7 +114,7 @@
         "name": "What languages does Ring & Book support?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Ring & Book supports 10+ languages including English, Spanish, Mandarin Chinese, Korean, Vietnamese, Japanese, French, Portuguese, Tagalog, and Hindi. The AI detects the caller's language automatically and switches mid-call — no separate number or setup needed. You choose which languages to enable for your business."
+          "text": "Ring & Book supports 10+ languages including English, Spanish, Mandarin Chinese, Korean, Vietnamese, Japanese, French, Portuguese, Tagalog, and Hindi. Tell us which languages your customers speak, and our team configures and tests your AI in those languages before you go live — including automatic detection and mid-call switching for the ones you enable."
         }
       },
       {
@@ -138,7 +138,23 @@
         "name": "Can I listen to call recordings?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Yes. Every call is logged with a transcript and recording (where legally permitted). You can review any call from your dashboard. Bookings also appear in your calendar with a summary of the call."
+          "text": "Yes. Every call is recorded and fully transcribed, and you get an AI-written summary with the caller's name, phone, address, and service request. You can review any call from your dashboard. Bookings also appear in your calendar with a summary of the call."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What happens if I go over my included minutes?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Extra usage is billed at a flat $0.35 per minute — the same published rate for every plan, with no hidden tiers. It shows up clearly on your invoice, so there's never a surprise bill."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How does the 7-day free trial work?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "New accounts get a 7-day free trial to put Ring & Book on real calls before committing to a paid plan. We still do the full setup and testing for you first — the trial starts once your AI receptionist is live on your line."
         }
       }
     ]
@@ -263,6 +279,14 @@
     .check-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
     .check-list li { display: flex; align-items: flex-start; gap: 10px; color: var(--text); font-size: 0.95rem; }
     .check-list li::before { content: '✓'; color: var(--green); font-weight: 700; flex-shrink: 0; }
+    .demo-video-block { margin-top: 64px; text-align: center; }
+    .demo-video-caption { color: var(--muted); font-size: 0.95rem; margin-bottom: 20px; }
+    .demo-video {
+      position: relative; width: 100%; max-width: 380px; margin: 0 auto;
+      aspect-ratio: 9 / 16; border-radius: 20px; overflow: hidden;
+      border: 1px solid var(--border); background: var(--bg3);
+    }
+    .demo-video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 
     /* HOW IT WORKS */
     .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin-top: 60px; }
@@ -299,6 +323,22 @@
     }
     .feature-tag.green { background: rgba(16,185,129,0.1); border-color: rgba(16,185,129,0.2); color: #6ee7b7; }
 
+    /* ROADMAP */
+    .roadmap-block { margin-top: 56px; padding-top: 48px; border-top: 1px dashed var(--border); }
+    .roadmap-label { font-size: 0.8rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 20px; }
+    .roadmap-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .roadmap-card {
+      background: transparent; border: 1px dashed var(--border); border-radius: 14px; padding: 24px;
+      position: relative; opacity: 0.85;
+    }
+    .roadmap-badge {
+      display: inline-block; background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.3);
+      color: #f59e0b; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;
+      padding: 3px 10px; border-radius: 100px; margin-bottom: 12px;
+    }
+    .roadmap-card h4 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; color: var(--muted); }
+    .roadmap-card p { color: var(--muted); font-size: 0.85rem; line-height: 1.6; }
+
     /* VS TABLE */
     .vs-section { background: var(--bg); }
     .vs-table { width: 100%; border-collapse: collapse; border-radius: 16px; overflow: hidden; }
@@ -314,6 +354,20 @@
     .partial { color: #f59e0b; }
 
     /* PRICING */
+    .pricing-toggle { display: flex; align-items: center; justify-content: center; gap: 14px; margin-top: 36px; }
+    .toggle-label { font-size: 0.9rem; color: var(--muted); font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: color .2s; }
+    .toggle-label.active { color: var(--text); }
+    .toggle-save { background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.25); color: #6ee7b7; font-size: 0.72rem; font-weight: 700; padding: 2px 9px; border-radius: 100px; white-space: nowrap; }
+    .toggle-switch { position: relative; width: 44px; height: 24px; border-radius: 100px; background: var(--border); border: none; cursor: pointer; flex-shrink: 0; padding: 0; transition: background .2s; }
+    .toggle-switch[aria-checked="true"] { background: var(--accent); }
+    .toggle-knob { position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 50%; background: #fff; transition: transform .2s; }
+    .toggle-switch[aria-checked="true"] .toggle-knob { transform: translateX(20px); }
+    .price-annually { display: none; }
+    .pricing-grid.annually .price-monthly { display: none; }
+    .pricing-grid.annually .price-annually { display: inline; }
+    .plan-price-note.price-annually { display: none; font-size: 0.8rem; color: var(--muted); margin-bottom: 4px; }
+    .pricing-grid.annually .plan-price-note.price-annually { display: block; }
+    .plan-overage { font-size: 0.82rem; color: var(--accent2); font-weight: 600; margin-bottom: 16px; }
     .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 60px; }
     .pricing-card {
       background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 32px;
@@ -440,8 +494,8 @@
   <h1>Every Call Answered.<br><em>Every Appointment Booked.</em></h1>
   <p class="hero-sub">Ring & Book is the AI phone receptionist that knows your business inside out — and books real appointments into your calendar, 24/7.</p>
   <div class="hero-btns">
-    <a href="#contact" class="btn-primary">Book a Free Demo</a>
-    <a href="#how-it-works" class="btn-secondary">See How It Works →</a>
+    <a href="#contact" class="btn-primary">Start 7-Day Free Trial</a>
+    <a href="#contact" class="btn-secondary">Book a Demo</a>
   </div>
 </section>
 
@@ -480,7 +534,7 @@
           <li>AI collects info, finds available slots, and books directly into your calendar</li>
           <li>Urgent calls escalated immediately with caller details ready</li>
           <li>Multilingual AI — handles English, Spanish, Chinese, Korean, Vietnamese, and more</li>
-          <li>Flat monthly fee — no per-call charges, no surprises</li>
+          <li>Published per-minute overage rate — you always know what extra usage costs</li>
         </ul>
       </div>
     </div>
@@ -527,6 +581,19 @@
         </ul>
       </div>
     </div>
+    <div class="demo-video-block">
+      <p class="demo-video-caption">Prefer to watch? Here's Ring &amp; Book handling a real call.</p>
+      <div class="demo-video">
+        <iframe
+          src="https://www.youtube-nocookie.com/embed/jsuP0ZRLW9c"
+          title="Ring & Book AI receptionist — real call demo"
+          loading="lazy"
+          allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen>
+        </iframe>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -564,7 +631,7 @@
   <div class="container">
     <div class="section-label">Features</div>
     <h2>Built for service businesses</h2>
-    <p class="section-sub">Not a generic bot. A receptionist that knows your trade.</p>
+    <p class="section-sub">Not a generic bot. A receptionist that knows your trade — configured, trained, and tested by our team before it ever takes a call.</p>
     <div class="features-grid">
       <div class="feature-card">
         <div class="feature-icon">🧠</div>
@@ -580,14 +647,14 @@
       </div>
       <div class="feature-card">
         <div class="feature-icon">🌐</div>
-        <h3>10+ Languages Supported</h3>
-        <p>Speaks your customers' language — English, Spanish, Chinese, Korean, Vietnamese, Japanese, French, and more. Detects the caller's language automatically and switches mid-call with zero friction.</p>
+        <h3>10+ Languages, Configured For You</h3>
+        <p>Tell us which languages your customers speak, and our team configures and tests your AI in each one before launch — including automatic detection and mid-call switching for whichever ones you enable.</p>
         <span class="feature-tag green">Multilingual</span>
       </div>
       <div class="feature-card">
         <div class="feature-icon">🚨</div>
         <h3>Smart Escalation</h3>
-        <p>Detects urgent situations — leaks, gas smells, flooding — and immediately transfers to a real dispatcher with the caller's info ready.</p>
+        <p>Detects urgent situations — leaks, gas smells, flooding — and connects the caller to a real person right away, either transferring the call straight through or briefing your team with the caller's details first.</p>
         <span class="feature-tag">Always-on</span>
       </div>
       <div class="feature-card">
@@ -601,6 +668,45 @@
         <h3>Natural Conversation</h3>
         <p>Doesn't sound like a menu tree. Talks like a real receptionist — concise, warm, handles interruptions, follows up with the right question.</p>
         <span class="feature-tag">Human-like</span>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎙️</div>
+        <h3>Recordings, Transcripts &amp; Summaries</h3>
+        <p>Every call is recorded and transcribed in full, then boiled down to an AI summary with the caller's name, phone, address, and service request — ready in your daily digest without replaying the audio.</p>
+        <span class="feature-tag green">Full call log</span>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📼</div>
+        <h3>Voicemail Detection</h3>
+        <p>When an urgent call gets transferred to your team, Ring & Book can tell a live person from an answering machine and adjusts what it does next — no message left into dead air.</p>
+        <span class="feature-tag">Always-on</span>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎚️</div>
+        <h3>100+ Premium AI Voices</h3>
+        <p>Choose from a library of 100+ natural-sounding voices. We help you pick the one that fits your brand and confirm it sounds right before your line ever goes live.</p>
+        <span class="feature-tag">Custom-trained</span>
+      </div>
+    </div>
+
+    <div class="roadmap-block">
+      <div class="roadmap-label">On the roadmap</div>
+      <div class="roadmap-grid">
+        <div class="roadmap-card">
+          <span class="roadmap-badge">Coming Soon</span>
+          <h4>Analytics Dashboard</h4>
+          <p>A dashboard for call volume, booking rate, and trends over time — currently in development.</p>
+        </div>
+        <div class="roadmap-card">
+          <span class="roadmap-badge">Coming Soon</span>
+          <h4>CRM Integrations</h4>
+          <p>Direct sync so bookings and caller details flow straight into your CRM — currently in development.</p>
+        </div>
+        <div class="roadmap-card">
+          <span class="roadmap-badge">Coming Soon</span>
+          <h4>Outbound Calling</h4>
+          <p>AI-driven outbound calls for reminders and follow-ups — currently in development.</p>
+        </div>
       </div>
     </div>
   </div>
@@ -653,10 +759,10 @@
           <td><span class="partial">~ Extra cost for after-hours</span></td>
         </tr>
         <tr>
-          <td>Flat monthly pricing</td>
-          <td><span class="check">✓ Predictable cost</span></td>
-          <td><span class="partial">~ Often per-minute billing</span></td>
-          <td><span class="cross">✗ Per-minute or per-call</span></td>
+          <td>Overage pricing</td>
+          <td><span class="check">✓ $0.35/min, published upfront</span></td>
+          <td><span class="partial">~ Often hidden or tiered</span></td>
+          <td><span class="cross">✗ Rate unclear until you're billed</span></td>
         </tr>
         <tr>
           <td>Setup time</td>
@@ -673,38 +779,59 @@
 <section id="pricing" style="background:var(--bg2)">
   <div class="container" style="text-align:center">
     <div class="section-label">Pricing</div>
-    <h2>Simple, flat pricing</h2>
-    <p class="section-sub" style="margin:0 auto">No per-minute fees. No hidden charges. Cancel anytime.</p>
+    <h2>Pricing that scales with your call volume</h2>
+    <p class="section-sub" style="margin:0 auto">Every plan is set up and tested for you, and starts with a 7-day free trial. Clear included minutes, transparent overage pricing, cancel anytime.</p>
+
+    <div class="pricing-toggle">
+      <span class="toggle-label active" data-period="monthly">Monthly</span>
+      <button class="toggle-switch" id="billing-toggle" role="switch" aria-checked="false" onclick="toggleBilling()" aria-label="Toggle annual billing">
+        <span class="toggle-knob"></span>
+      </button>
+      <span class="toggle-label" data-period="annually">Annually <span class="toggle-save">Get 1 month free</span></span>
+    </div>
+
     <div class="pricing-grid">
       <div class="pricing-card">
         <div class="plan-name">Starter</div>
-        <div class="plan-price">$99<span>/mo</span></div>
+        <div class="plan-price">
+          <span class="price-monthly">$89<span>/mo</span></span>
+          <span class="price-annually">$82<span>/mo</span></span>
+        </div>
+        <div class="plan-price-note price-annually">Billed $979/year</div>
         <div class="plan-desc">For solo operators and small shops just getting started.</div>
         <ul class="plan-features">
-          <li>Up to 150 calls/month</li>
+          <li>250 minutes included/month</li>
           <li>1 phone number forwarded</li>
           <li>English language</li>
           <li>Cal.com appointment booking</li>
-          <li>Email summary daily</li>
+          <li>AI-written daily call summary</li>
+          <li>Call recording &amp; transcript</li>
           <li class="dim">1 language only</li>
           <li class="dim">No urgent escalation</li>
         </ul>
+        <div class="plan-overage">$0.35/min after included minutes</div>
         <a href="#contact" class="plan-btn outline">Get Started</a>
       </div>
       <div class="pricing-card featured">
         <div class="featured-badge">Most Popular</div>
         <div class="plan-name">Growth</div>
-        <div class="plan-price">$199<span>/mo</span></div>
+        <div class="plan-price">
+          <span class="price-monthly">$189<span>/mo</span></span>
+          <span class="price-annually">$173<span>/mo</span></span>
+        </div>
+        <div class="plan-price-note price-annually">Billed $2,079/year</div>
         <div class="plan-desc">For established businesses that can't afford to miss a call.</div>
         <ul class="plan-features">
-          <li>Up to 500 calls/month</li>
+          <li>700 minutes included/month</li>
           <li>1 phone number forwarded</li>
           <li>3 languages (English + 2 of your choice)</li>
           <li>Cal.com appointment booking</li>
           <li>Urgent escalation transfer</li>
           <li>Read-back confirmation</li>
+          <li>Call recording, transcript &amp; AI summary</li>
           <li>Slack / SMS notification per booking</li>
         </ul>
+        <div class="plan-overage">$0.35/min after included minutes</div>
         <a href="#contact" class="plan-btn fill">Book a Demo</a>
       </div>
       <div class="pricing-card">
@@ -712,14 +839,14 @@
         <div class="plan-price">Custom</div>
         <div class="plan-desc">For multi-location businesses or franchise groups.</div>
         <ul class="plan-features">
-          <li>Unlimited calls</li>
+          <li>Custom minute allotment, scaled to your call volume</li>
           <li>Multiple numbers / locations</li>
-          <li>10+ languages, full multilingual support</li>
-          <li>CRM integration</li>
+          <li>Full multilingual support, configured and tested for your markets</li>
           <li>Dedicated account manager</li>
           <li>SLA &amp; uptime guarantee</li>
           <li>White-label available</li>
         </ul>
+        <div class="plan-overage">Custom overage rate in your contract</div>
         <a href="#contact" class="plan-btn outline">Contact Sales</a>
       </div>
     </div>
@@ -796,7 +923,7 @@
           What languages does Ring & Book support?
           <span class="arrow">▼</span>
         </button>
-        <div class="faq-a">Ring & Book supports 10+ languages including English, Spanish, Mandarin Chinese, Korean, Vietnamese, Japanese, French, Portuguese, Tagalog, and Hindi. The AI detects the caller's language automatically and switches mid-call — no separate number or setup needed. You choose which languages to enable for your business.</div>
+        <div class="faq-a">Ring & Book supports 10+ languages including English, Spanish, Mandarin Chinese, Korean, Vietnamese, Japanese, French, Portuguese, Tagalog, and Hindi. Tell us which languages your customers speak, and our team configures and tests your AI in those languages before you go live — including automatic detection and mid-call switching for the ones you enable.</div>
       </div>
       <div class="faq-item">
         <button class="faq-q" onclick="toggleFaq(this)">
@@ -817,7 +944,21 @@
           Can I listen to call recordings?
           <span class="arrow">▼</span>
         </button>
-        <div class="faq-a">Yes. Every call is logged with a transcript and recording (where legally permitted). You can review any call from your dashboard. Bookings also appear in your calendar with a summary of the call.</div>
+        <div class="faq-a">Yes. Every call is recorded and fully transcribed, and you get an AI-written summary with the caller's name, phone, address, and service request. You can review any call from your dashboard. Bookings also appear in your calendar with a summary of the call.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          What happens if I go over my included minutes?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-a">Extra usage is billed at a flat $0.35 per minute — the same published rate for every plan, with no hidden tiers. It shows up clearly on your invoice, so there's never a surprise bill.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          How does the 7-day free trial work?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-a">New accounts get a 7-day free trial to put Ring & Book on real calls before committing to a paid plan. We still do the full setup and testing for you first — the trial starts once your AI receptionist is live on your line.</div>
       </div>
     </div>
   </div>
@@ -897,6 +1038,15 @@
 </footer>
 
 <script>
+function toggleBilling() {
+  const grid = document.querySelector('.pricing-grid');
+  const toggle = document.getElementById('billing-toggle');
+  const isAnnual = grid.classList.toggle('annually');
+  toggle.setAttribute('aria-checked', String(isAnnual));
+  document.querySelector('.toggle-label[data-period="monthly"]').classList.toggle('active', !isAnnual);
+  document.querySelector('.toggle-label[data-period="annually"]').classList.toggle('active', isAnnual);
+}
+
 function toggleFaq(btn) {
   const answer = btn.nextElementSibling;
   const isOpen = answer.classList.contains('open');
