@@ -3,20 +3,148 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ring & Book — AI Receptionist That Actually Books</title>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%230a0e1a'/%3E%3Cstop offset='100%25' stop-color='%230f1528'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='8' fill='url(%23bg)'/%3E%3Crect width='32' height='32' rx='8' fill='%233b82f6' opacity='0.15'/%3E%3Cpath d='M21.8 19.4c-.3-.8-1.2-1.2-2-.8l-1.6.8c-.5.3-1.1.1-1.4-.4l-2.5-4.1c-.3-.5-.1-1.2.4-1.5l1.4-.9c.7-.4.9-1.3.5-2l-1.3-2c-.4-.7-1.3-.9-2-.4l-1.4.8c-.9.6-1.3 1.7-1 2.8.7 3 3.4 7.5 7 9.7 1.1.7 2.4.8 3.5.3l1.5-.8c.7-.4 1-1.3.6-2l-.7.5z' fill='%233b82f6'/%3E%3Ccircle cx='23.5' cy='10.5' r='4.5' fill='%2310b981'/%3E%3Cpath d='M21.8 10.5l1 1 2.2-2.2' stroke='white' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E" />
-  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-  <script>emailjs.init('8Me5zJ1pZR4aqhRVa');</script>
+  <title>AI Answering Service &amp; Receptionist | Ring &amp; Book</title>
+  <meta name="description" content="24/7 AI phone receptionist for plumbers, HVAC, electricians &amp; auto shops. Answers every call, books appointments into your calendar. Serving Seattle &amp; WA.">
+  <link rel="canonical" href="https://ringandbooked.com/">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://ringandbooked.com/">
+  <meta property="og:site_name" content="Ring &amp; Book">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:title" content="AI Answering Service &amp; Receptionist | Ring &amp; Book">
+  <meta property="og:description" content="24/7 AI phone receptionist for plumbers, HVAC, electricians &amp; auto shops. Answers every call, books appointments into your calendar. Serving Seattle &amp; WA.">
+  <meta property="og:image" content="https://ringandbooked.com/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Ring &amp; Book — Every Call Answered. Every Appointment Booked.">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="AI Answering Service &amp; Receptionist | Ring &amp; Book">
+  <meta name="twitter:description" content="24/7 AI phone receptionist for plumbers, HVAC, electricians &amp; auto shops. Answers every call, books appointments into your calendar. Serving Seattle &amp; WA.">
+  <meta name="twitter:image" content="https://ringandbooked.com/og-image.png">
+
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" defer></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      emailjs.init('8Me5zJ1pZR4aqhRVa');
+    });
+  </script>
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-N3M64HSJKR"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-  
+
     gtag('config', 'G-N3M64HSJKR');
   </script>
-  <meta name="description" content="Ring & Book is an AI phone receptionist that answers every call, speaks your customers' language, and books appointments directly into your calendar. No missed calls. No missed bookings.">
+
+  <!-- Structured data: Organization -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Ring & Book",
+    "url": "https://ringandbooked.com/",
+    "logo": "https://ringandbooked.com/favicon.svg",
+    "description": "Ring & Book is an AI phone receptionist for service businesses that answers every call 24/7 and books appointments directly into the customer's calendar.",
+    "areaServed": {
+      "@type": "State",
+      "name": "Washington"
+    }
+  }
+  </script>
+
+  <!-- Structured data: SoftwareApplication + Offers -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Ring & Book",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web",
+    "description": "AI phone receptionist that answers calls 24/7, speaks 10+ languages, and books appointments directly into your Cal.com calendar.",
+    "url": "https://ringandbooked.com/",
+    "offers": [
+      {
+        "@type": "Offer",
+        "name": "Starter",
+        "price": "99",
+        "priceCurrency": "USD",
+        "url": "https://ringandbooked.com/#pricing"
+      },
+      {
+        "@type": "Offer",
+        "name": "Growth",
+        "price": "199",
+        "priceCurrency": "USD",
+        "url": "https://ringandbooked.com/#pricing"
+      }
+    ]
+  }
+  </script>
+
+  <!-- Structured data: FAQPage -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Does the AI actually book into my calendar, or just take messages?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "It books for real. Ring & Book integrates with Cal.com to write confirmed appointments directly into your calendar. You'll see the customer's name, phone, address, and service type — no callback required."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What if a customer asks something the AI doesn't know?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "We train the AI on your business. If a question falls outside what we've configured, the AI says \"Let me have a colleague call you back to confirm\" and records the question — it never makes up an answer or quotes a price it doesn't know."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What languages does Ring & Book support?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Ring & Book supports 10+ languages including English, Spanish, Mandarin Chinese, Korean, Vietnamese, Japanese, French, Portuguese, Tagalog, and Hindi. The AI detects the caller's language automatically and switches mid-call — no separate number or setup needed. You choose which languages to enable for your business."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What happens with emergency calls — leaks, gas smells, floods?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Ring & Book detects emergency keywords and immediately tells the caller \"I'm connecting you with our dispatcher now\" — then transfers the call with the caller's info already collected. No 20-question interview before help arrives."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How long does setup take?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "You fill out an onboarding form (about 20 minutes), we build and test your AI, and you're live within 1 business day. Setup is fully done-for-you — you just forward your existing phone number to us."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I listen to call recordings?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Every call is logged with a transcript and recording (where legally permitted). You can review any call from your dashboard. Bookings also appear in your calendar with a summary of the call."
+        }
+      }
+    ]
+  }
+  </script>
+
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     :root {
