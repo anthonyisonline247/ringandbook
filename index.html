@@ -1055,6 +1055,17 @@ function toggleFaq(btn) {
   if (!isOpen) { answer.classList.add('open'); btn.classList.add('open'); }
 }
 
+function formatSubmissionTime() {
+  const now = new Date();
+  const pad = n => String(n).padStart(2, '0');
+  const datePart = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+  const timePart = `${pad(now.getHours())}:${pad(now.getMinutes())}`;
+  const tzPart = new Intl.DateTimeFormat('en-US', { timeZoneName: 'short' })
+    .formatToParts(now)
+    .find(p => p.type === 'timeZoneName').value;
+  return `${datePart} ${timePart} ${tzPart}`;
+}
+
 document.getElementById('demo-form').addEventListener('submit', function(e) {
   e.preventDefault();
   const btn = document.getElementById('submit-btn');
@@ -1062,13 +1073,26 @@ document.getElementById('demo-form').addEventListener('submit', function(e) {
   btn.textContent = 'Sending...';
   btn.disabled = true;
 
+  const fullName = document.getElementById('first_name').value + ' ' + document.getElementById('last_name').value;
+  const email = document.getElementById('from_email').value;
+  const business = document.getElementById('business').value;
+  const phone = document.getElementById('phone').value;
+  const industry = document.getElementById('industry').value;
+  const rawMessage = document.getElementById('message').value;
+
   const params = {
-    from_name: document.getElementById('first_name').value + ' ' + document.getElementById('last_name').value,
-    from_email: document.getElementById('from_email').value,
-    business: document.getElementById('business').value,
-    phone: document.getElementById('phone').value,
-    industry: document.getElementById('industry').value,
-    message: document.getElementById('message').value,
+    // Fields matching the EmailJS template's current variables ({{name}}, {{time}}, {{message}})
+    name: fullName,
+    email: email,
+    title: business,
+    time: formatSubmissionTime(),
+    message: `Name: ${fullName}\nEmail: ${email}\nPhone: ${phone}\nBusiness: ${business}\nIndustry: ${industry}\n\n${rawMessage}`,
+    // Original fields, kept for the Subject/From Name/Reply To settings configured in EmailJS
+    from_name: fullName,
+    from_email: email,
+    business: business,
+    phone: phone,
+    industry: industry,
   };
 
   emailjs.send('service_fq5u7h2', 'template_1kcax3r', params)
@@ -1088,5 +1112,19 @@ document.getElementById('demo-form').addEventListener('submit', function(e) {
     });
 });
 </script>
+
+<!--Start of Tawk.to Script-->
+<script type="text/javascript">
+var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
+(function () {
+  var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
+  s1.async = true;
+  s1.src = 'https://embed.tawk.to/6aa0b37e4bac343441941e81/default';
+  s1.charset = 'UTF-8';
+  s1.setAttribute('crossorigin', '*');
+  s0.parentNode.insertBefore(s1, s0);
+})();
+</script>
+<!--End of Tawk.to Script-->
 </body>
 </html>
