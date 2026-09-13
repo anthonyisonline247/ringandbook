@@ -1055,6 +1055,16 @@ function toggleFaq(btn) {
   if (!isOpen) { answer.classList.add('open'); btn.classList.add('open'); }
 }
 
+// Analytics events contain no form values or other personally identifiable information.
+document.querySelectorAll('a[href="#contact"]').forEach(link => {
+  link.addEventListener('click', () => {
+    gtag('event', 'cta_click', {
+      cta_text: link.textContent.trim(),
+      cta_location: link.closest('section')?.id || 'navigation'
+    });
+  });
+});
+
 function formatSubmissionTime() {
   const now = new Date();
   const pad = n => String(n).padStart(2, '0');
@@ -1097,6 +1107,9 @@ document.getElementById('demo-form').addEventListener('submit', function(e) {
 
   emailjs.send('service_fq5u7h2', 'template_1kcax3r', params)
     .then(() => {
+      gtag('event', 'generate_lead', {
+        lead_source: 'website_demo_form'
+      });
       status.style.display = 'block';
       status.style.color = '#10b981';
       status.textContent = '✓ Request sent! We\'ll reach out within 1 business day.';
