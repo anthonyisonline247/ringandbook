@@ -3,21 +3,165 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ring & Book — AI Receptionist That Actually Books</title>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%230a0e1a'/%3E%3Cstop offset='100%25' stop-color='%230f1528'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='8' fill='url(%23bg)'/%3E%3Crect width='32' height='32' rx='8' fill='%233b82f6' opacity='0.15'/%3E%3Cpath d='M21.8 19.4c-.3-.8-1.2-1.2-2-.8l-1.6.8c-.5.3-1.1.1-1.4-.4l-2.5-4.1c-.3-.5-.1-1.2.4-1.5l1.4-.9c.7-.4.9-1.3.5-2l-1.3-2c-.4-.7-1.3-.9-2-.4l-1.4.8c-.9.6-1.3 1.7-1 2.8.7 3 3.4 7.5 7 9.7 1.1.7 2.4.8 3.5.3l1.5-.8c.7-.4 1-1.3.6-2l-.7.5z' fill='%233b82f6'/%3E%3Ccircle cx='23.5' cy='10.5' r='4.5' fill='%2310b981'/%3E%3Cpath d='M21.8 10.5l1 1 2.2-2.2' stroke='white' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E" />
-  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <title>AI Answering Service &amp; Receptionist | Ring &amp; Booked</title>
+  <meta name="description" content="24/7 AI phone receptionist for plumbers, HVAC, electricians &amp; auto shops. Answers every call, books appointments into your calendar. Serving Seattle &amp; WA.">
+  <link rel="canonical" href="https://ringandbooked.com/">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://ringandbooked.com/">
+  <meta property="og:site_name" content="Ring &amp; Booked">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:title" content="AI Answering Service &amp; Receptionist | Ring &amp; Booked">
+  <meta property="og:description" content="24/7 AI phone receptionist for plumbers, HVAC, electricians &amp; auto shops. Answers every call, books appointments into your calendar. Serving Seattle &amp; WA.">
+  <meta property="og:image" content="https://ringandbooked.com/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Ring &amp; Booked — Every Call Answered. Every Appointment Booked.">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="AI Answering Service &amp; Receptionist | Ring &amp; Booked">
+  <meta name="twitter:description" content="24/7 AI phone receptionist for plumbers, HVAC, electricians &amp; auto shops. Answers every call, books appointments into your calendar. Serving Seattle &amp; WA.">
+  <meta name="twitter:image" content="https://ringandbooked.com/og-image.png">
+
+  <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-  <script>emailjs.init('8Me5zJ1pZR4aqhRVa');</script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      emailjs.init('8Me5zJ1pZR4aqhRVa');
+    });
+  </script>
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-N3M64HSJKR"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
-  
+
     gtag('config', 'G-N3M64HSJKR');
   </script>
-  <meta name="description" content="Ring & Book is an AI phone receptionist that answers every call, speaks your customers' language, and books appointments directly into your calendar. No missed calls. No missed bookings.">
+
+  <!-- Structured data: Organization -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Ring & Booked",
+    "url": "https://ringandbooked.com/",
+    "logo": "https://ringandbooked.com/favicon.svg",
+    "description": "Ring & Booked is an AI phone receptionist for service businesses that answers every call 24/7 and books appointments directly into the customer's calendar.",
+    "areaServed": {
+      "@type": "State",
+      "name": "Washington"
+    }
+  }
+  </script>
+
+  <!-- Structured data: SoftwareApplication + Offers -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Ring & Booked",
+    "applicationCategory": "BusinessApplication",
+    "operatingSystem": "Web",
+    "description": "AI phone receptionist that answers calls 24/7, speaks 10+ languages, and books appointments directly into your Cal.com calendar.",
+    "url": "https://ringandbooked.com/",
+    "offers": [
+      {
+        "@type": "Offer",
+        "name": "Starter",
+        "price": "89",
+        "priceCurrency": "USD",
+        "url": "https://ringandbooked.com/#pricing"
+      },
+      {
+        "@type": "Offer",
+        "name": "Growth",
+        "price": "189",
+        "priceCurrency": "USD",
+        "url": "https://ringandbooked.com/#pricing"
+      }
+    ]
+  }
+  </script>
+
+  <!-- Structured data: FAQPage -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Does the AI actually book into my calendar, or just take messages?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "It books for real. Ring & Booked integrates with Cal.com to write confirmed appointments directly into your calendar. You'll see the customer's name, phone, address, and service type — no callback required."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What if a customer asks something the AI doesn't know?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "We train the AI on your business. If a question falls outside what we've configured, the AI says \"Let me have a colleague call you back to confirm\" and records the question — it never makes up an answer or quotes a price it doesn't know."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What languages does Ring & Booked support?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Ring & Booked supports 10+ languages including English, Spanish, Mandarin Chinese, Korean, Vietnamese, Japanese, French, Portuguese, Tagalog, and Hindi. Tell us which languages your customers speak, and our team configures and tests your AI in those languages before you go live — including automatic detection and mid-call switching for the ones you enable."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What happens with emergency calls — leaks, gas smells, floods?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Ring & Booked detects emergency keywords and immediately tells the caller \"I'm connecting you with our dispatcher now\" — then transfers the call with the caller's info already collected. No 20-question interview before help arrives."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How long does setup take?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "You fill out an onboarding form (about 20 minutes), we build and test your AI, and you're live within 1 business day. Setup is fully done-for-you — you just forward your existing phone number to us."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Can I listen to call recordings?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Every call is recorded and fully transcribed, and you get an AI-written summary with the caller's name, phone, address, and service request. You can review any call from your dashboard. Bookings also appear in your calendar with a summary of the call."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What happens if I go over my included minutes?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Extra usage is billed at a flat $0.35 per minute — the same published rate for every plan, with no hidden tiers. It shows up clearly on your invoice, so there's never a surprise bill."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How does the 7-day free trial work?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "New accounts get a 7-day free trial to put Ring & Booked on real calls before committing to a paid plan. We still do the full setup and testing for you first — the trial starts once your AI receptionist is live on your line."
+        }
+      }
+    ]
+  }
+  </script>
+
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     :root {
@@ -139,6 +283,14 @@
     .check-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
     .check-list li { display: flex; align-items: flex-start; gap: 10px; color: var(--text); font-size: 0.95rem; }
     .check-list li::before { content: '✓'; color: var(--green); font-weight: 700; flex-shrink: 0; }
+    .demo-video-block { margin-top: 64px; text-align: center; }
+    .demo-video-caption { color: var(--muted); font-size: 0.95rem; margin-bottom: 20px; }
+    .demo-video {
+      position: relative; width: 100%; max-width: 380px; margin: 0 auto;
+      aspect-ratio: 9 / 16; border-radius: 20px; overflow: hidden;
+      border: 1px solid var(--border); background: var(--bg3);
+    }
+    .demo-video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
 
     /* HOW IT WORKS */
     .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin-top: 60px; }
@@ -175,6 +327,22 @@
     }
     .feature-tag.green { background: rgba(16,185,129,0.1); border-color: rgba(16,185,129,0.2); color: #6ee7b7; }
 
+    /* ROADMAP */
+    .roadmap-block { margin-top: 56px; padding-top: 48px; border-top: 1px dashed var(--border); }
+    .roadmap-label { font-size: 0.8rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 20px; }
+    .roadmap-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .roadmap-card {
+      background: transparent; border: 1px dashed var(--border); border-radius: 14px; padding: 24px;
+      position: relative; opacity: 0.85;
+    }
+    .roadmap-badge {
+      display: inline-block; background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.3);
+      color: #f59e0b; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;
+      padding: 3px 10px; border-radius: 100px; margin-bottom: 12px;
+    }
+    .roadmap-card h4 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; color: var(--muted); }
+    .roadmap-card p { color: var(--muted); font-size: 0.85rem; line-height: 1.6; }
+
     /* VS TABLE */
     .vs-section { background: var(--bg); }
     .vs-table { width: 100%; border-collapse: collapse; border-radius: 16px; overflow: hidden; }
@@ -190,6 +358,20 @@
     .partial { color: #f59e0b; }
 
     /* PRICING */
+    .pricing-toggle { display: flex; align-items: center; justify-content: center; gap: 14px; margin-top: 36px; }
+    .toggle-label { font-size: 0.9rem; color: var(--muted); font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: color .2s; }
+    .toggle-label.active { color: var(--text); }
+    .toggle-save { background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.25); color: #6ee7b7; font-size: 0.72rem; font-weight: 700; padding: 2px 9px; border-radius: 100px; white-space: nowrap; }
+    .toggle-switch { position: relative; width: 44px; height: 24px; border-radius: 100px; background: var(--border); border: none; cursor: pointer; flex-shrink: 0; padding: 0; transition: background .2s; }
+    .toggle-switch[aria-checked="true"] { background: var(--accent); }
+    .toggle-knob { position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; border-radius: 50%; background: #fff; transition: transform .2s; }
+    .toggle-switch[aria-checked="true"] .toggle-knob { transform: translateX(20px); }
+    .price-annually { display: none; }
+    .pricing-grid.annually .price-monthly { display: none; }
+    .pricing-grid.annually .price-annually { display: inline; }
+    .plan-price-note.price-annually { display: none; font-size: 0.8rem; color: var(--muted); margin-bottom: 4px; }
+    .pricing-grid.annually .plan-price-note.price-annually { display: block; }
+    .plan-overage { font-size: 0.82rem; color: var(--accent2); font-weight: 600; margin-bottom: 16px; }
     .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; margin-top: 60px; }
     .pricing-card {
       background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 32px;
@@ -318,7 +500,7 @@
 
 <!-- NAV -->
 <nav>
-  <div class="logo">Ring &amp; <span>Book</span></div>
+  <div class="logo">Ring &amp; <span>Booked</span></div>
   <ul class="nav-links">
     <li><a href="#how-it-works">How It Works</a></li>
     <li><a href="#features">Features</a></li>
@@ -335,10 +517,10 @@
 <section class="hero">
   <div class="badge"><span class="dot"></span> Now live — accepting new merchants</div>
   <h1>Every Call Answered.<br><em>Every Appointment Booked.</em></h1>
-  <p class="hero-sub">Ring & Book is the AI phone receptionist that knows your business inside out — and books real appointments into your calendar, 24/7.</p>
+  <p class="hero-sub">Ring & Booked is the AI phone receptionist that knows your business inside out — and books real appointments into your calendar, 24/7.</p>
   <div class="hero-btns">
-    <a href="#contact" class="btn-primary">Book a Free Demo</a>
-    <a href="#how-it-works" class="btn-secondary">See How It Works →</a>
+    <a href="#contact" class="btn-primary">Start 7-Day Free Trial</a>
+    <a href="#contact" class="btn-secondary">Book a Demo</a>
   </div>
 </section>
 
@@ -360,7 +542,7 @@
     <div class="problem-solution">
       <div class="problem-box">
         <div class="box-icon">📵</div>
-        <div class="box-title">Without Ring & Book</div>
+        <div class="box-title">Without Ring & Booked</div>
         <ul class="box-list">
           <li>Phone rings while you're on a job — caller hangs up and calls your competitor</li>
           <li>Voicemail piles up; callbacks happen too late, customer already booked elsewhere</li>
@@ -371,13 +553,13 @@
       </div>
       <div class="solution-box">
         <div class="box-icon">✅</div>
-        <div class="box-title">With Ring & Book</div>
+        <div class="box-title">With Ring & Booked</div>
         <ul class="box-list">
           <li>Every call answered in under 2 seconds, any time of day</li>
           <li>AI collects info, finds available slots, and books directly into your calendar</li>
           <li>Urgent calls escalated immediately with caller details ready</li>
           <li>Multilingual AI — handles English, Spanish, Chinese, Korean, Vietnamese, and more</li>
-          <li>Flat monthly fee — no per-call charges, no surprises</li>
+          <li>Published per-minute overage rate — you always know what extra usage costs</li>
         </ul>
       </div>
     </div>
@@ -392,7 +574,7 @@
         <div class="demo-phone-header">
           <div class="demo-phone-avatar">A</div>
           <div class="demo-phone-info">
-            <div class="demo-phone-name">Amy · Ring & Book AI</div>
+            <div class="demo-phone-name">Amy · Ring & Booked AI</div>
             <div class="demo-phone-status">● Live call in progress</div>
           </div>
           <div class="demo-recording">● REC</div>
@@ -414,7 +596,7 @@
       <div class="demo-text">
         <div class="section-label">Live Demo</div>
         <h3>Watch it handle a real call end-to-end</h3>
-        <p>Ring & Book doesn't just take messages — it completes the booking. The appointment lands directly in your Cal.com calendar, with the customer's name, phone, address, and service type.</p>
+        <p>Ring & Booked doesn't just take messages — it completes the booking. The appointment lands directly in your Cal.com calendar, with the customer's name, phone, address, and service type.</p>
         <ul class="check-list">
           <li>Knows your exact services, prices, and scheduling rules</li>
           <li>Confirms phone number and address by reading them back</li>
@@ -422,6 +604,19 @@
           <li>Flags urgent issues (leaks, gas smell) and escalates immediately</li>
           <li>Declines to give estimates it's not authorized to give — no liability</li>
         </ul>
+      </div>
+    </div>
+    <div class="demo-video-block">
+      <p class="demo-video-caption">Prefer to watch? Here's Ring &amp; Booked handling a real call.</p>
+      <div class="demo-video">
+        <iframe
+          src="https://www.youtube-nocookie.com/embed/jsuP0ZRLW9c"
+          title="Ring & Booked AI receptionist — real call demo"
+          loading="lazy"
+          allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen>
+        </iframe>
       </div>
     </div>
   </div>
@@ -450,7 +645,7 @@
         <div class="step-num">3</div>
         <div class="step-icon">📅</div>
         <h3>Forward your calls — you're live</h3>
-        <p>Forward your business number to Ring & Book. Calls are answered, appointments booked into your calendar. Go live in 1 business day.</p>
+        <p>Forward your business number to Ring & Booked. Calls are answered, appointments booked into your calendar. Go live in 1 business day.</p>
       </div>
     </div>
   </div>
@@ -461,7 +656,7 @@
   <div class="container">
     <div class="section-label">Features</div>
     <h2>Built for service businesses</h2>
-    <p class="section-sub">Not a generic bot. A receptionist that knows your trade.</p>
+    <p class="section-sub">Not a generic bot. A receptionist that knows your trade — configured, trained, and tested by our team before it ever takes a call.</p>
     <div class="features-grid">
       <div class="feature-card">
         <div class="feature-icon">🧠</div>
@@ -477,14 +672,14 @@
       </div>
       <div class="feature-card">
         <div class="feature-icon">🌐</div>
-        <h3>10+ Languages Supported</h3>
-        <p>Speaks your customers' language — English, Spanish, Chinese, Korean, Vietnamese, Japanese, French, and more. Detects the caller's language automatically and switches mid-call with zero friction.</p>
+        <h3>10+ Languages, Configured For You</h3>
+        <p>Tell us which languages your customers speak, and our team configures and tests your AI in each one before launch — including automatic detection and mid-call switching for whichever ones you enable.</p>
         <span class="feature-tag green">Multilingual</span>
       </div>
       <div class="feature-card">
         <div class="feature-icon">🚨</div>
         <h3>Smart Escalation</h3>
-        <p>Detects urgent situations — leaks, gas smells, flooding — and immediately transfers to a real dispatcher with the caller's info ready.</p>
+        <p>Detects urgent situations — leaks, gas smells, flooding — and connects the caller to a real person right away, either transferring the call straight through or briefing your team with the caller's details first.</p>
         <span class="feature-tag">Always-on</span>
       </div>
       <div class="feature-card">
@@ -499,6 +694,45 @@
         <p>Doesn't sound like a menu tree. Talks like a real receptionist — concise, warm, handles interruptions, follows up with the right question.</p>
         <span class="feature-tag">Human-like</span>
       </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎙️</div>
+        <h3>Recordings, Transcripts &amp; Summaries</h3>
+        <p>Every call is recorded and transcribed in full, then boiled down to an AI summary with the caller's name, phone, address, and service request — ready in your daily digest without replaying the audio.</p>
+        <span class="feature-tag green">Full call log</span>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">📼</div>
+        <h3>Voicemail Detection</h3>
+        <p>When an urgent call gets transferred to your team, Ring & Booked can tell a live person from an answering machine and adjusts what it does next — no message left into dead air.</p>
+        <span class="feature-tag">Always-on</span>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon">🎚️</div>
+        <h3>100+ Premium AI Voices</h3>
+        <p>Choose from a library of 100+ natural-sounding voices. We help you pick the one that fits your brand and confirm it sounds right before your line ever goes live.</p>
+        <span class="feature-tag">Custom-trained</span>
+      </div>
+    </div>
+
+    <div class="roadmap-block">
+      <div class="roadmap-label">On the roadmap</div>
+      <div class="roadmap-grid">
+        <div class="roadmap-card">
+          <span class="roadmap-badge">Coming Soon</span>
+          <h4>Analytics Dashboard</h4>
+          <p>A dashboard for call volume, booking rate, and trends over time — currently in development.</p>
+        </div>
+        <div class="roadmap-card">
+          <span class="roadmap-badge">Coming Soon</span>
+          <h4>CRM Integrations</h4>
+          <p>Direct sync so bookings and caller details flow straight into your CRM — currently in development.</p>
+        </div>
+        <div class="roadmap-card">
+          <span class="roadmap-badge">Coming Soon</span>
+          <h4>Outbound Calling</h4>
+          <p>AI-driven outbound calls for reminders and follow-ups — currently in development.</p>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -507,13 +741,13 @@
 <section class="vs-section">
   <div class="container">
     <div class="section-label">Comparison</div>
-    <h2>Why Ring & Book</h2>
+    <h2>Why Ring & Booked</h2>
     <p class="section-sub">We're not just another answering service.</p>
     <table class="vs-table">
       <thead>
         <tr>
           <th>Feature</th>
-          <th class="us">Ring & Book</th>
+          <th class="us">Ring & Booked</th>
           <th>Generic AI Answering</th>
           <th>Human Answering Service</th>
         </tr>
@@ -550,10 +784,10 @@
           <td><span class="partial">~ Extra cost for after-hours</span></td>
         </tr>
         <tr>
-          <td>Flat monthly pricing</td>
-          <td><span class="check">✓ Predictable cost</span></td>
-          <td><span class="partial">~ Often per-minute billing</span></td>
-          <td><span class="cross">✗ Per-minute or per-call</span></td>
+          <td>Overage pricing</td>
+          <td><span class="check">✓ $0.35/min, published upfront</span></td>
+          <td><span class="partial">~ Often hidden or tiered</span></td>
+          <td><span class="cross">✗ Rate unclear until you're billed</span></td>
         </tr>
         <tr>
           <td>Setup time</td>
@@ -570,38 +804,59 @@
 <section id="pricing" style="background:var(--bg2)">
   <div class="container" style="text-align:center">
     <div class="section-label">Pricing</div>
-    <h2>Simple, flat pricing</h2>
-    <p class="section-sub" style="margin:0 auto">No per-minute fees. No hidden charges. Cancel anytime.</p>
+    <h2>Pricing that scales with your call volume</h2>
+    <p class="section-sub" style="margin:0 auto">Every plan is set up and tested for you, and starts with a 7-day free trial. Clear included minutes, transparent overage pricing, cancel anytime.</p>
+
+    <div class="pricing-toggle">
+      <span class="toggle-label active" data-period="monthly">Monthly</span>
+      <button class="toggle-switch" id="billing-toggle" role="switch" aria-checked="false" onclick="toggleBilling()" aria-label="Toggle annual billing">
+        <span class="toggle-knob"></span>
+      </button>
+      <span class="toggle-label" data-period="annually">Annually <span class="toggle-save">Get 1 month free</span></span>
+    </div>
+
     <div class="pricing-grid">
       <div class="pricing-card">
         <div class="plan-name">Starter</div>
-        <div class="plan-price">$99<span>/mo</span></div>
+        <div class="plan-price">
+          <span class="price-monthly">$89<span>/mo</span></span>
+          <span class="price-annually">$82<span>/mo</span></span>
+        </div>
+        <div class="plan-price-note price-annually">Billed $979/year</div>
         <div class="plan-desc">For solo operators and small shops just getting started.</div>
         <ul class="plan-features">
-          <li>Up to 150 calls/month</li>
+          <li>250 minutes included/month</li>
           <li>1 phone number forwarded</li>
           <li>English language</li>
           <li>Cal.com appointment booking</li>
-          <li>Email summary daily</li>
+          <li>AI-written daily call summary</li>
+          <li>Call recording &amp; transcript</li>
           <li class="dim">1 language only</li>
           <li class="dim">No urgent escalation</li>
         </ul>
+        <div class="plan-overage">$0.35/min after included minutes</div>
         <a href="#" class="plan-btn outline" data-plan="starter">Start Starter</a>
       </div>
       <div class="pricing-card featured">
         <div class="featured-badge">Most Popular</div>
         <div class="plan-name">Growth</div>
-        <div class="plan-price">$199<span>/mo</span></div>
+        <div class="plan-price">
+          <span class="price-monthly">$189<span>/mo</span></span>
+          <span class="price-annually">$173<span>/mo</span></span>
+        </div>
+        <div class="plan-price-note price-annually">Billed $2,079/year</div>
         <div class="plan-desc">For established businesses that can't afford to miss a call.</div>
         <ul class="plan-features">
-          <li>Up to 500 calls/month</li>
+          <li>700 minutes included/month</li>
           <li>1 phone number forwarded</li>
           <li>3 languages (English + 2 of your choice)</li>
           <li>Cal.com appointment booking</li>
           <li>Urgent escalation transfer</li>
           <li>Read-back confirmation</li>
+          <li>Call recording, transcript &amp; AI summary</li>
           <li>Slack / SMS notification per booking</li>
         </ul>
+        <div class="plan-overage">$0.35/min after included minutes</div>
         <a href="#" class="plan-btn fill" data-plan="growth">Start Growth</a>
       </div>
       <div class="pricing-card">
@@ -609,14 +864,14 @@
         <div class="plan-price">Custom</div>
         <div class="plan-desc">For multi-location businesses or franchise groups.</div>
         <ul class="plan-features">
-          <li>Unlimited calls</li>
+          <li>Custom minute allotment, scaled to your call volume</li>
           <li>Multiple numbers / locations</li>
-          <li>10+ languages, full multilingual support</li>
-          <li>CRM integration</li>
+          <li>Full multilingual support, configured and tested for your markets</li>
           <li>Dedicated account manager</li>
           <li>SLA &amp; uptime guarantee</li>
           <li>White-label available</li>
         </ul>
+        <div class="plan-overage">Custom overage rate in your contract</div>
         <a href="#contact" class="plan-btn outline">Contact Sales</a>
       </div>
     </div>
@@ -627,12 +882,12 @@
 <section class="testimonials">
   <div class="container">
     <div class="section-label" style="text-align:center">Testimonials</div>
-    <h2 style="text-align:center">Businesses love Ring & Book</h2>
+    <h2 style="text-align:center">Businesses love Ring & Booked</h2>
     <p class="section-sub" style="text-align:center;margin:0 auto 60px">Real results from real service businesses.</p>
     <div class="testi-grid">
       <div class="testi-card">
         <div class="stars">★★★★★</div>
-        <p class="testi-quote">Before Ring & Book, I'd come back from a job to find 4 missed calls and no idea who they were. Now every caller gets booked. My calendar fills itself.</p>
+        <p class="testi-quote">Before Ring & Booked, I'd come back from a job to find 4 missed calls and no idea who they were. Now every caller gets booked. My calendar fills itself.</p>
         <div class="testi-author">
           <div class="testi-avatar" style="background:#1e40af">T</div>
           <div>
@@ -643,7 +898,7 @@
       </div>
       <div class="testi-card">
         <div class="stars">★★★★★</div>
-        <p class="testi-quote">My customers speak Chinese, Spanish, and Korean. Every other answering service was useless. Ring & Book handles all of them automatically — it's exactly what I needed.</p>
+        <p class="testi-quote">My customers speak Chinese, Spanish, and Korean. Every other answering service was useless. Ring & Booked handles all of them automatically — it's exactly what I needed.</p>
         <div class="testi-author">
           <div class="testi-avatar" style="background:#065f46">L</div>
           <div>
@@ -679,7 +934,7 @@
           Does the AI actually book into my calendar, or just take messages?
           <span class="arrow">▼</span>
         </button>
-        <div class="faq-a">It books for real. Ring & Book integrates with Cal.com to write confirmed appointments directly into your calendar. You'll see the customer's name, phone, address, and service type — no callback required.</div>
+        <div class="faq-a">It books for real. Ring & Booked integrates with Cal.com to write confirmed appointments directly into your calendar. You'll see the customer's name, phone, address, and service type — no callback required.</div>
       </div>
       <div class="faq-item">
         <button class="faq-q" onclick="toggleFaq(this)">
@@ -690,17 +945,17 @@
       </div>
       <div class="faq-item">
         <button class="faq-q" onclick="toggleFaq(this)">
-          What languages does Ring & Book support?
+          What languages does Ring & Booked support?
           <span class="arrow">▼</span>
         </button>
-        <div class="faq-a">Ring & Book supports 10+ languages including English, Spanish, Mandarin Chinese, Korean, Vietnamese, Japanese, French, Portuguese, Tagalog, and Hindi. The AI detects the caller's language automatically and switches mid-call — no separate number or setup needed. You choose which languages to enable for your business.</div>
+        <div class="faq-a">Ring & Booked supports 10+ languages including English, Spanish, Mandarin Chinese, Korean, Vietnamese, Japanese, French, Portuguese, Tagalog, and Hindi. Tell us which languages your customers speak, and our team configures and tests your AI in those languages before you go live — including automatic detection and mid-call switching for the ones you enable.</div>
       </div>
       <div class="faq-item">
         <button class="faq-q" onclick="toggleFaq(this)">
           What happens with emergency calls — leaks, gas smells, floods?
           <span class="arrow">▼</span>
         </button>
-        <div class="faq-a">Ring & Book detects emergency keywords and immediately tells the caller "I'm connecting you with our dispatcher now" — then transfers the call with the caller's info already collected. No 20-question interview before help arrives.</div>
+        <div class="faq-a">Ring & Booked detects emergency keywords and immediately tells the caller "I'm connecting you with our dispatcher now" — then transfers the call with the caller's info already collected. No 20-question interview before help arrives.</div>
       </div>
       <div class="faq-item">
         <button class="faq-q" onclick="toggleFaq(this)">
@@ -714,7 +969,21 @@
           Can I listen to call recordings?
           <span class="arrow">▼</span>
         </button>
-        <div class="faq-a">Yes. Every call is logged with a transcript and recording (where legally permitted). You can review any call from your dashboard. Bookings also appear in your calendar with a summary of the call.</div>
+        <div class="faq-a">Yes. Every call is recorded and fully transcribed, and you get an AI-written summary with the caller's name, phone, address, and service request. You can review any call from your dashboard. Bookings also appear in your calendar with a summary of the call.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          What happens if I go over my included minutes?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-a">Extra usage is billed at a flat $0.35 per minute — the same published rate for every plan, with no hidden tiers. It shows up clearly on your invoice, so there's never a surprise bill.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          How does the 7-day free trial work?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-a">New accounts get a 7-day free trial to put Ring & Booked on real calls before committing to a paid plan. We still do the full setup and testing for you first — the trial starts once your AI receptionist is live on your line.</div>
       </div>
     </div>
   </div>
@@ -774,7 +1043,7 @@
       <div class="contact-info">
         <div class="section-label">Get in touch</div>
         <h3>Stop losing bookings to voicemail</h3>
-        <p>Most service businesses recover 20–30% more bookings in the first month. Book a demo to see if Ring & Book is right for your business.</p>
+        <p>Most service businesses recover 20–30% more bookings in the first month. Book a demo to see if Ring & Booked is right for your business.</p>
         <ul class="contact-perks">
           <li><span class="icon">🎯</span><div><strong>Free setup consultation</strong><br><span style="color:var(--muted);font-size:0.85rem">We review your call flow and show you exactly what your AI would say.</span></div></li>
           <li><span class="icon">⚡</span><div><strong>Live in 1 business day</strong><br><span style="color:var(--muted);font-size:0.85rem">No long contracts, no technical setup on your side.</span></div></li>
@@ -788,15 +1057,15 @@
 
 <!-- FOOTER -->
 <footer>
-  <div class="footer-logo">Ring &amp; <span>Book</span></div>
+  <div class="footer-logo">Ring &amp; <span>Booked</span></div>
   <p style="margin-top:8px">AI receptionist that books, not just answers.</p>
-  <p style="margin-top:12px">© 2026 Ring & Book. Built for service businesses.</p>
+  <p style="margin-top:12px">© 2026 Ring & Booked. Built for service businesses.</p>
 </footer>
 
 <div class="modal-backdrop" id="auth-modal" aria-hidden="true">
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="auth-title">
     <button class="modal-close" type="button" aria-label="Close" data-close-modal>&times;</button>
-    <h3 id="auth-title">Welcome to Ring &amp; Book</h3>
+    <h3 id="auth-title">Welcome to Ring &amp; Booked</h3>
     <p class="modal-intro" id="auth-intro">Create your client account to choose a plan and begin onboarding.</p>
     <form id="auth-form">
       <div class="form-group" id="name-group"><label for="auth-name">Full name</label><input id="auth-name" type="text" autocomplete="name" placeholder="Your name"></div>
@@ -824,12 +1093,42 @@
 </div>
 
 <script>
+function toggleBilling() {
+  const grid = document.querySelector('.pricing-grid');
+  const toggle = document.getElementById('billing-toggle');
+  const isAnnual = grid.classList.toggle('annually');
+  toggle.setAttribute('aria-checked', String(isAnnual));
+  document.querySelector('.toggle-label[data-period="monthly"]').classList.toggle('active', !isAnnual);
+  document.querySelector('.toggle-label[data-period="annually"]').classList.toggle('active', isAnnual);
+}
+
 function toggleFaq(btn) {
   const answer = btn.nextElementSibling;
   const isOpen = answer.classList.contains('open');
   document.querySelectorAll('.faq-a.open').forEach(a => a.classList.remove('open'));
   document.querySelectorAll('.faq-q.open').forEach(b => b.classList.remove('open'));
   if (!isOpen) { answer.classList.add('open'); btn.classList.add('open'); }
+}
+
+// Analytics events contain no form values or other personally identifiable information.
+document.querySelectorAll('a[href="#contact"]').forEach(link => {
+  link.addEventListener('click', () => {
+    gtag('event', 'cta_click', {
+      cta_text: link.textContent.trim(),
+      cta_location: link.closest('section')?.id || 'navigation'
+    });
+  });
+});
+
+function formatSubmissionTime() {
+  const now = new Date();
+  const pad = n => String(n).padStart(2, '0');
+  const datePart = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())}`;
+  const timePart = `${pad(now.getHours())}:${pad(now.getMinutes())}`;
+  const tzPart = new Intl.DateTimeFormat('en-US', { timeZoneName: 'short' })
+    .formatToParts(now)
+    .find(p => p.type === 'timeZoneName').value;
+  return `${datePart} ${timePart} ${tzPart}`;
 }
 
 document.getElementById('demo-form').addEventListener('submit', function(e) {
@@ -839,17 +1138,33 @@ document.getElementById('demo-form').addEventListener('submit', function(e) {
   btn.textContent = 'Sending...';
   btn.disabled = true;
 
+  const fullName = document.getElementById('first_name').value + ' ' + document.getElementById('last_name').value;
+  const email = document.getElementById('from_email').value;
+  const business = document.getElementById('business').value;
+  const phone = document.getElementById('phone').value;
+  const industry = document.getElementById('industry').value;
+  const rawMessage = document.getElementById('message').value;
+
   const params = {
-    from_name: document.getElementById('first_name').value + ' ' + document.getElementById('last_name').value,
-    from_email: document.getElementById('from_email').value,
-    business: document.getElementById('business').value,
-    phone: document.getElementById('phone').value,
-    industry: document.getElementById('industry').value,
-    message: document.getElementById('message').value,
+    // Fields matching the EmailJS template's current variables ({{name}}, {{time}}, {{message}})
+    name: fullName,
+    email: email,
+    title: business,
+    time: formatSubmissionTime(),
+    message: `Name: ${fullName}\nEmail: ${email}\nPhone: ${phone}\nBusiness: ${business}\nIndustry: ${industry}\n\n${rawMessage}`,
+    // Original fields, kept for the Subject/From Name/Reply To settings configured in EmailJS
+    from_name: fullName,
+    from_email: email,
+    business: business,
+    phone: phone,
+    industry: industry,
   };
 
   emailjs.send('service_fq5u7h2', 'template_1kcax3r', params)
     .then(() => {
+      gtag('event', 'generate_lead', {
+        lead_source: 'website_demo_form'
+      });
       status.style.display = 'block';
       status.style.color = '#10b981';
       status.textContent = '✓ Request sent! We\'ll reach out within 1 business day.';
@@ -865,8 +1180,6 @@ document.getElementById('demo-form').addEventListener('submit', function(e) {
     });
 });
 
-// Public client-side configuration. Add only Supabase's anon key and Stripe Payment Link URLs here.
-// Never add a Supabase service-role key or a Stripe secret key to this page.
 const CLIENT_CONFIG = {
   supabaseUrl: 'https://gwzabzztchktjxrbqzzc.supabase.co',
   supabaseAnonKey: 'sb_publishable_0JBNUQeJOKXoKnVNKM8ucw_pF9E-SoX',
@@ -885,13 +1198,13 @@ function setStatus(id, message, color) { const el = document.getElementById(id);
 function setAuthMode(mode) {
   authMode = mode;
   const signup = mode === 'signup';
-  document.getElementById('auth-title').textContent = signup ? 'Welcome to Ring & Book' : 'Welcome back';
-  document.getElementById('auth-intro').textContent = signup ? 'Create your client account to choose a plan and begin onboarding.' : 'Log in to manage your Ring & Book account.';
+  document.getElementById('auth-title').textContent = signup ? 'Welcome to Ring & Booked' : 'Welcome back';
+  document.getElementById('auth-intro').textContent = signup ? 'Create your client account to choose a plan and begin onboarding.' : 'Log in to manage your Ring & Booked account.';
   document.getElementById('name-group').style.display = signup ? 'flex' : 'none';
   document.getElementById('auth-name').required = signup;
   document.getElementById('auth-password').autocomplete = signup ? 'new-password' : 'current-password';
   document.getElementById('auth-submit').textContent = signup ? 'Create account' : 'Log in';
-  document.getElementById('auth-switch').innerHTML = signup ? 'Already a client? <button class="text-button" id="show-login" type="button">Log in</button>' : 'New to Ring &amp; Book? <button class="text-button" id="show-signup" type="button">Create an account</button>';
+  document.getElementById('auth-switch').innerHTML = signup ? 'Already a client? <button class="text-button" id="show-login" type="button">Log in</button>' : 'New to Ring &amp; Booked? <button class="text-button" id="show-signup" type="button">Create an account</button>';
   document.getElementById('auth-status').style.display = 'none';
 }
 function showCheckout(plan) {
@@ -903,7 +1216,6 @@ function showCheckout(plan) {
   openModal('checkout-modal');
 }
 async function beginPlan(plan) {
-  if (!client) { setAuthMode('signup'); selectedPlan = plan; openModal('auth-modal'); return; }
   const { data } = await client.auth.getSession();
   if (data.session) showCheckout(plan); else { setAuthMode('signup'); selectedPlan = plan; openModal('auth-modal'); }
 }
@@ -913,13 +1225,11 @@ document.querySelectorAll('[data-plan]').forEach(button => button.addEventListen
 document.addEventListener('click', e => { if (e.target.matches('[data-close-modal]') || e.target.classList.contains('modal-backdrop')) closeModals(); if (e.target.id === 'show-login') setAuthMode('login'); if (e.target.id === 'show-signup') setAuthMode('signup'); });
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModals(); });
 document.getElementById('google-login').addEventListener('click', async () => {
-  if (!client) { setStatus('auth-status', 'Google sign-in will be available once the account service is configured.', '#fbbf24'); return; }
   const { error } = await client.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: window.location.origin } });
   if (error) setStatus('auth-status', error.message, '#f87171');
 });
 document.getElementById('auth-form').addEventListener('submit', async e => {
   e.preventDefault();
-  if (!client) { setStatus('auth-status', 'Account setup is being finalized. Please contact us to activate online signup.', '#fbbf24'); return; }
   const submit = document.getElementById('auth-submit'); submit.disabled = true; submit.textContent = authMode === 'signup' ? 'Creating account...' : 'Logging in...';
   const email = document.getElementById('auth-email').value.trim(); const password = document.getElementById('auth-password').value;
   let result;
@@ -935,7 +1245,20 @@ document.getElementById('checkout-button').addEventListener('click', () => {
   if (!link) { setStatus('checkout-status', 'Secure checkout is being configured. Please contact us and we will activate your subscription.', '#fbbf24'); return; }
   window.location.assign(link);
 });
-
 </script>
+
+<!--Start of Tawk.to Script-->
+<script type="text/javascript">
+var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
+(function () {
+  var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
+  s1.async = true;
+  s1.src = 'https://embed.tawk.to/6aa0b37e4bac343441941e81/default';
+  s1.charset = 'UTF-8';
+  s1.setAttribute('crossorigin', '*');
+  s0.parentNode.insertBefore(s1, s0);
+})();
+</script>
+<!--End of Tawk.to Script-->
 </body>
 </html>
