@@ -6,6 +6,7 @@
   <title>Ring & Book — AI Receptionist That Actually Books</title>
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='bg' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0%25' stop-color='%230a0e1a'/%3E%3Cstop offset='100%25' stop-color='%230f1528'/%3E%3C/linearGradient%3E%3C/defs%3E%3Crect width='32' height='32' rx='8' fill='url(%23bg)'/%3E%3Crect width='32' height='32' rx='8' fill='%233b82f6' opacity='0.15'/%3E%3Cpath d='M21.8 19.4c-.3-.8-1.2-1.2-2-.8l-1.6.8c-.5.3-1.1.1-1.4-.4l-2.5-4.1c-.3-.5-.1-1.2.4-1.5l1.4-.9c.7-.4.9-1.3.5-2l-1.3-2c-.4-.7-1.3-.9-2-.4l-1.4.8c-.9.6-1.3 1.7-1 2.8.7 3 3.4 7.5 7 9.7 1.1.7 2.4.8 3.5.3l1.5-.8c.7-.4 1-1.3.6-2l-.7.5z' fill='%233b82f6'/%3E%3Ccircle cx='23.5' cy='10.5' r='4.5' fill='%2310b981'/%3E%3Cpath d='M21.8 10.5l1 1 2.2-2.2' stroke='white' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round' fill='none'/%3E%3C/svg%3E" />
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script>emailjs.init('8Me5zJ1pZR4aqhRVa');</script>
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-N3M64HSJKR"></script>
@@ -48,6 +49,9 @@
     .nav-links a:hover { color: var(--text); }
     .nav-cta { background: var(--accent); color: #fff; border: none; padding: 10px 22px; border-radius: 8px; font-size: 0.9rem; font-weight: 600; cursor: pointer; transition: background .2s; text-decoration: none; }
     .nav-cta:hover { background: var(--accent2); }
+    .nav-actions { display: flex; align-items: center; gap: 12px; }
+    .nav-login { color: var(--text); font-size: .9rem; font-weight: 600; text-decoration: none; cursor: pointer; }
+    .nav-login:hover { color: var(--accent2); }
 
     /* HERO */
     .hero {
@@ -271,6 +275,24 @@
     .contact-perks li { display: flex; gap: 12px; align-items: flex-start; font-size: 0.9rem; }
     .contact-perks li .icon { font-size: 1.3rem; flex-shrink: 0; }
 
+    /* ACCOUNT & CHECKOUT */
+    .modal-backdrop { position: fixed; inset: 0; z-index: 1000; display: none; align-items: center; justify-content: center; padding: 20px; background: rgba(3, 7, 18, .76); backdrop-filter: blur(6px); }
+    .modal-backdrop.open { display: flex; }
+    .modal { position: relative; width: min(100%, 480px); max-height: calc(100vh - 40px); overflow: auto; background: var(--bg3); border: 1px solid var(--border); border-radius: 18px; padding: 32px; box-shadow: 0 24px 70px rgba(0,0,0,.45); }
+    .modal-close { position: absolute; top: 14px; right: 16px; color: var(--muted); background: none; border: 0; font-size: 1.6rem; line-height: 1; cursor: pointer; }
+    .modal h3 { font-size: 1.5rem; margin-bottom: 6px; }
+    .modal-intro { color: var(--muted); font-size: .9rem; margin-bottom: 24px; }
+    .auth-switch { margin-top: 18px; color: var(--muted); font-size: .88rem; text-align: center; }
+    .oauth-divider { display: flex; align-items: center; gap: 12px; color: var(--muted); font-size: .8rem; margin: 18px 0; }
+    .oauth-divider::before, .oauth-divider::after { content: ''; height: 1px; flex: 1; background: var(--border); }
+    .google-button { width: 100%; display: flex; align-items: center; justify-content: center; gap: 10px; padding: 12px; border: 1px solid var(--border); border-radius: 10px; color: var(--text); background: var(--bg); font-size: .95rem; font-weight: 700; cursor: pointer; }
+    .google-button:hover { border-color: var(--accent); }
+    .text-button { border: 0; background: none; color: var(--accent2); font: inherit; cursor: pointer; font-weight: 700; }
+    .checkout-plan { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 14px; margin: 18px 0; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; }
+    .checkout-plan strong { display: block; }
+    .checkout-plan span { color: var(--muted); font-size: .85rem; }
+    .secure-note { display: flex; gap: 8px; color: var(--muted); font-size: .8rem; margin-top: 14px; }
+
     /* FOOTER */
     footer {
       background: var(--bg); border-top: 1px solid var(--border);
@@ -303,7 +325,10 @@
     <li><a href="#pricing">Pricing</a></li>
     <li><a href="#faq">FAQ</a></li>
   </ul>
-  <a href="#contact" class="nav-cta">Book a Demo</a>
+  <div class="nav-actions">
+    <a href="#" class="nav-login" id="login-link">Log in</a>
+    <a href="#" class="nav-cta" id="signup-link">Get started</a>
+  </div>
 </nav>
 
 <!-- HERO -->
@@ -561,7 +586,7 @@
           <li class="dim">1 language only</li>
           <li class="dim">No urgent escalation</li>
         </ul>
-        <a href="#contact" class="plan-btn outline">Get Started</a>
+        <a href="#" class="plan-btn outline" data-plan="starter">Start Starter</a>
       </div>
       <div class="pricing-card featured">
         <div class="featured-badge">Most Popular</div>
@@ -577,7 +602,7 @@
           <li>Read-back confirmation</li>
           <li>Slack / SMS notification per booking</li>
         </ul>
-        <a href="#contact" class="plan-btn fill">Book a Demo</a>
+        <a href="#" class="plan-btn fill" data-plan="growth">Start Growth</a>
       </div>
       <div class="pricing-card">
         <div class="plan-name">Enterprise</div>
@@ -768,6 +793,36 @@
   <p style="margin-top:12px">© 2026 Ring & Book. Built for service businesses.</p>
 </footer>
 
+<div class="modal-backdrop" id="auth-modal" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="auth-title">
+    <button class="modal-close" type="button" aria-label="Close" data-close-modal>&times;</button>
+    <h3 id="auth-title">Welcome to Ring &amp; Book</h3>
+    <p class="modal-intro" id="auth-intro">Create your client account to choose a plan and begin onboarding.</p>
+    <form id="auth-form">
+      <div class="form-group" id="name-group"><label for="auth-name">Full name</label><input id="auth-name" type="text" autocomplete="name" placeholder="Your name"></div>
+      <div class="form-group"><label for="auth-email">Business email</label><input id="auth-email" type="email" autocomplete="email" placeholder="you@business.com" required></div>
+      <div class="form-group"><label for="auth-password">Password</label><input id="auth-password" type="password" autocomplete="current-password" minlength="8" placeholder="At least 8 characters" required></div>
+      <button class="form-submit" id="auth-submit" type="submit">Create account</button>
+      <div class="oauth-divider">or</div>
+      <button class="google-button" id="google-login" type="button"><span aria-hidden="true">G</span> Continue with Google</button>
+      <div id="auth-status" style="margin-top:12px;font-size:.9rem;display:none"></div>
+    </form>
+    <p class="auth-switch" id="auth-switch">Already a client? <button class="text-button" id="show-login" type="button">Log in</button></p>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="checkout-modal" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="checkout-title">
+    <button class="modal-close" type="button" aria-label="Close" data-close-modal>&times;</button>
+    <h3 id="checkout-title">Complete your subscription</h3>
+    <p class="modal-intro">You will complete payment securely on Stripe, then return to begin onboarding.</p>
+    <div class="checkout-plan"><div><strong id="checkout-plan-name">Growth</strong><span id="checkout-plan-detail">$199 / month</span></div><strong id="checkout-plan-price">$199/mo</strong></div>
+    <button class="form-submit" id="checkout-button" type="button">Continue to secure payment →</button>
+    <p class="secure-note"><span>🔒</span> Card details are handled by Stripe and never stored on this website.</p>
+    <div id="checkout-status" style="margin-top:12px;font-size:.9rem;display:none"></div>
+  </div>
+</div>
+
 <script>
 function toggleFaq(btn) {
   const answer = btn.nextElementSibling;
@@ -809,6 +864,78 @@ document.getElementById('demo-form').addEventListener('submit', function(e) {
       console.error(err);
     });
 });
+
+// Public client-side configuration. Add only Supabase's anon key and Stripe Payment Link URLs here.
+// Never add a Supabase service-role key or a Stripe secret key to this page.
+const CLIENT_CONFIG = {
+  supabaseUrl: 'https://gwzabzztchktjxrbqzzc.supabase.co',
+  supabaseAnonKey: 'sb_publishable_0JBNUQeJOKXoKnVNKM8ucw_pF9E-SoX',
+  stripePaymentLinks: { starter: '', growth: '' }
+};
+let client = null;
+let authMode = 'signup';
+let selectedPlan = null;
+try {
+  if (CLIENT_CONFIG.supabaseUrl && CLIENT_CONFIG.supabaseAnonKey) client = supabase.createClient(CLIENT_CONFIG.supabaseUrl, CLIENT_CONFIG.supabaseAnonKey);
+} catch (error) { console.error('Account service unavailable', error); }
+
+function openModal(id) { document.getElementById(id).classList.add('open'); document.getElementById(id).setAttribute('aria-hidden', 'false'); }
+function closeModals() { document.querySelectorAll('.modal-backdrop').forEach(m => { m.classList.remove('open'); m.setAttribute('aria-hidden', 'true'); }); }
+function setStatus(id, message, color) { const el = document.getElementById(id); el.style.display = 'block'; el.style.color = color; el.textContent = message; }
+function setAuthMode(mode) {
+  authMode = mode;
+  const signup = mode === 'signup';
+  document.getElementById('auth-title').textContent = signup ? 'Welcome to Ring & Book' : 'Welcome back';
+  document.getElementById('auth-intro').textContent = signup ? 'Create your client account to choose a plan and begin onboarding.' : 'Log in to manage your Ring & Book account.';
+  document.getElementById('name-group').style.display = signup ? 'flex' : 'none';
+  document.getElementById('auth-name').required = signup;
+  document.getElementById('auth-password').autocomplete = signup ? 'new-password' : 'current-password';
+  document.getElementById('auth-submit').textContent = signup ? 'Create account' : 'Log in';
+  document.getElementById('auth-switch').innerHTML = signup ? 'Already a client? <button class="text-button" id="show-login" type="button">Log in</button>' : 'New to Ring &amp; Book? <button class="text-button" id="show-signup" type="button">Create an account</button>';
+  document.getElementById('auth-status').style.display = 'none';
+}
+function showCheckout(plan) {
+  selectedPlan = plan;
+  const details = plan === 'starter' ? ['Starter', '$99 / month', '$99/mo'] : ['Growth', '$199 / month', '$199/mo'];
+  document.getElementById('checkout-plan-name').textContent = details[0];
+  document.getElementById('checkout-plan-detail').textContent = details[1];
+  document.getElementById('checkout-plan-price').textContent = details[2];
+  openModal('checkout-modal');
+}
+async function beginPlan(plan) {
+  if (!client) { setAuthMode('signup'); selectedPlan = plan; openModal('auth-modal'); return; }
+  const { data } = await client.auth.getSession();
+  if (data.session) showCheckout(plan); else { setAuthMode('signup'); selectedPlan = plan; openModal('auth-modal'); }
+}
+document.getElementById('login-link').addEventListener('click', e => { e.preventDefault(); setAuthMode('login'); openModal('auth-modal'); });
+document.getElementById('signup-link').addEventListener('click', e => { e.preventDefault(); setAuthMode('signup'); openModal('auth-modal'); });
+document.querySelectorAll('[data-plan]').forEach(button => button.addEventListener('click', e => { e.preventDefault(); beginPlan(button.dataset.plan); }));
+document.addEventListener('click', e => { if (e.target.matches('[data-close-modal]') || e.target.classList.contains('modal-backdrop')) closeModals(); if (e.target.id === 'show-login') setAuthMode('login'); if (e.target.id === 'show-signup') setAuthMode('signup'); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModals(); });
+document.getElementById('google-login').addEventListener('click', async () => {
+  if (!client) { setStatus('auth-status', 'Google sign-in will be available once the account service is configured.', '#fbbf24'); return; }
+  const { error } = await client.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: window.location.origin } });
+  if (error) setStatus('auth-status', error.message, '#f87171');
+});
+document.getElementById('auth-form').addEventListener('submit', async e => {
+  e.preventDefault();
+  if (!client) { setStatus('auth-status', 'Account setup is being finalized. Please contact us to activate online signup.', '#fbbf24'); return; }
+  const submit = document.getElementById('auth-submit'); submit.disabled = true; submit.textContent = authMode === 'signup' ? 'Creating account...' : 'Logging in...';
+  const email = document.getElementById('auth-email').value.trim(); const password = document.getElementById('auth-password').value;
+  let result;
+  if (authMode === 'signup') result = await client.auth.signUp({ email, password, options: { data: { full_name: document.getElementById('auth-name').value.trim() } } });
+  else result = await client.auth.signInWithPassword({ email, password });
+  if (result.error) setStatus('auth-status', result.error.message, '#f87171');
+  else if (authMode === 'signup' && !result.data.session) setStatus('auth-status', 'Check your email to confirm your account, then return to log in.', '#10b981');
+  else { closeModals(); showCheckout(selectedPlan || 'growth'); }
+  submit.disabled = false; submit.textContent = authMode === 'signup' ? 'Create account' : 'Log in';
+});
+document.getElementById('checkout-button').addEventListener('click', () => {
+  const link = CLIENT_CONFIG.stripePaymentLinks[selectedPlan];
+  if (!link) { setStatus('checkout-status', 'Secure checkout is being configured. Please contact us and we will activate your subscription.', '#fbbf24'); return; }
+  window.location.assign(link);
+});
+
 </script>
 </body>
 </html>
