@@ -474,6 +474,18 @@
     .checkout-plan strong { display: block; }
     .checkout-plan span { color: var(--muted); font-size: .85rem; }
     .secure-note { display: flex; gap: 8px; color: var(--muted); font-size: .8rem; margin-top: 14px; }
+    .account-actions { display: none; align-items: center; gap: 10px; }
+    .account-actions.visible { display: flex; }
+    .account-button { display: inline-flex; align-items: center; gap: 9px; border: 1px solid var(--border); background: var(--bg2); color: var(--text); padding: 7px 11px 7px 7px; border-radius: 999px; font: inherit; font-size: .85rem; font-weight: 700; cursor: pointer; }
+    .account-button:hover { border-color: var(--accent); }
+    .account-avatar { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: var(--accent); color: #fff; font-size: .78rem; }
+    .dashboard-grid { display: grid; gap: 14px; margin: 20px 0; }
+    .dashboard-card { background: var(--bg); border: 1px solid var(--border); border-radius: 12px; padding: 16px; }
+    .dashboard-card small { display: block; color: var(--muted); margin-bottom: 5px; font-size: .78rem; text-transform: uppercase; letter-spacing: .06em; }
+    .dashboard-card strong { font-size: 1rem; }
+    .dashboard-actions { display: grid; gap: 10px; margin-top: 18px; }
+    .secondary-action { width: 100%; border: 1px solid var(--border); background: transparent; color: var(--text); padding: 12px; border-radius: 10px; font: inherit; font-weight: 700; cursor: pointer; }
+    .secondary-action:hover { border-color: var(--accent); }
 
     /* FOOTER */
     footer {
@@ -507,9 +519,12 @@
     <li><a href="#pricing">Pricing</a></li>
     <li><a href="#faq">FAQ</a></li>
   </ul>
-  <div class="nav-actions">
+  <div class="nav-actions" id="guest-actions">
     <a href="#" class="nav-login" id="login-link">Log in</a>
     <a href="#" class="nav-cta" id="signup-link">Get started</a>
+  </div>
+  <div class="account-actions" id="account-actions">
+    <button class="account-button" id="account-button" type="button" aria-label="Open account"><span class="account-avatar" id="account-avatar">A</span><span id="account-name">Account</span></button>
   </div>
 </nav>
 
@@ -1092,6 +1107,24 @@
   </div>
 </div>
 
+<div class="modal-backdrop" id="account-modal" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="account-title">
+    <button class="modal-close" type="button" aria-label="Close" data-close-modal>&times;</button>
+    <h3 id="account-title">Your account</h3>
+    <p class="modal-intro" id="account-email"></p>
+    <div class="dashboard-grid">
+      <div class="dashboard-card"><small>Subscription</small><strong id="subscription-status">No active subscription</strong><p class="modal-intro" style="margin:7px 0 0">Choose a plan to start your 7-day free trial.</p></div>
+      <div class="dashboard-card"><small>Account</small><strong id="account-display-name">—</strong></div>
+    </div>
+    <div class="dashboard-actions">
+      <button class="form-submit" id="choose-plan-button" type="button">Choose a plan</button>
+      <button class="secondary-action" id="manage-subscription-button" type="button">Manage subscription</button>
+      <button class="text-button" id="signout-button" type="button">Log out</button>
+    </div>
+    <div id="account-status" style="margin-top:12px;font-size:.9rem;display:none"></div>
+  </div>
+</div>
+
 <script>
 function toggleBilling() {
   const grid = document.querySelector('.pricing-grid');
@@ -1195,6 +1228,24 @@ try {
 function openModal(id) { document.getElementById(id).classList.add('open'); document.getElementById(id).setAttribute('aria-hidden', 'false'); }
 function closeModals() { document.querySelectorAll('.modal-backdrop').forEach(m => { m.classList.remove('open'); m.setAttribute('aria-hidden', 'true'); }); }
 function setStatus(id, message, color) { const el = document.getElementById(id); el.style.display = 'block'; el.style.color = color; el.textContent = message; }
+function accountName(user) { return user?.user_metadata?.full_name || user?.user_metadata?.name || user?.email?.split('@')[0] || 'Account'; }
+function renderAccount(user) {
+  const signedIn = Boolean(user);
+  document.getElementById('guest-actions').style.display = signedIn ? 'none' : 'flex';
+  document.getElementById('account-actions').classList.toggle('visible', signedIn);
+  if (!signedIn) return;
+  const name = accountName(user);
+  document.getElementById('account-name').textContent = name.split(' ')[0];
+  document.getElementById('account-avatar').textContent = name.charAt(0).toUpperCase();
+  document.getElementById('account-title').textContent = `Welcome, ${name.split(' ')[0]}`;
+  document.getElementById('account-email').textContent = user.email || '';
+  document.getElementById('account-display-name').textContent = name;
+}
+async function refreshAccount() {
+  if (!client) return;
+  const { data: { user } } = await client.auth.getUser();
+  renderAccount(user);
+}
 function setAuthMode(mode) {
   authMode = mode;
   const signup = mode === 'signup';
@@ -1221,6 +1272,12 @@ async function beginPlan(plan) {
 }
 document.getElementById('login-link').addEventListener('click', e => { e.preventDefault(); setAuthMode('login'); openModal('auth-modal'); });
 document.getElementById('signup-link').addEventListener('click', e => { e.preventDefault(); setAuthMode('signup'); openModal('auth-modal'); });
+document.getElementById('account-button').addEventListener('click', () => openModal('account-modal'));
+document.getElementById('choose-plan-button').addEventListener('click', () => { closeModals(); document.getElementById('pricing').scrollIntoView({ behavior: 'smooth' }); });
+document.getElementById('manage-subscription-button').addEventListener('click', () => {
+  setStatus('account-status', 'Subscription management will be available here after Stripe checkout is connected. You do not have an active subscription yet.', '#fbbf24');
+});
+document.getElementById('signout-button').addEventListener('click', async () => { await client.auth.signOut(); closeModals(); renderAccount(null); });
 document.querySelectorAll('[data-plan]').forEach(button => button.addEventListener('click', e => { e.preventDefault(); beginPlan(button.dataset.plan); }));
 document.addEventListener('click', e => { if (e.target.matches('[data-close-modal]') || e.target.classList.contains('modal-backdrop')) closeModals(); if (e.target.id === 'show-login') setAuthMode('login'); if (e.target.id === 'show-signup') setAuthMode('signup'); });
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModals(); });
@@ -1237,7 +1294,7 @@ document.getElementById('auth-form').addEventListener('submit', async e => {
   else result = await client.auth.signInWithPassword({ email, password });
   if (result.error) setStatus('auth-status', result.error.message, '#f87171');
   else if (authMode === 'signup' && !result.data.session) setStatus('auth-status', 'Check your email to confirm your account, then return to log in.', '#10b981');
-  else { closeModals(); showCheckout(selectedPlan || 'growth'); }
+  else { closeModals(); await refreshAccount(); if (selectedPlan) showCheckout(selectedPlan); else openModal('account-modal'); }
   submit.disabled = false; submit.textContent = authMode === 'signup' ? 'Create account' : 'Log in';
 });
 document.getElementById('checkout-button').addEventListener('click', () => {
@@ -1245,6 +1302,10 @@ document.getElementById('checkout-button').addEventListener('click', () => {
   if (!link) { setStatus('checkout-status', 'Secure checkout is being configured. Please contact us and we will activate your subscription.', '#fbbf24'); return; }
   window.location.assign(link);
 });
+if (client) {
+  refreshAccount();
+  client.auth.onAuthStateChange((_event, session) => renderAccount(session?.user || null));
+}
 </script>
 
 <!--Start of Tawk.to Script-->
