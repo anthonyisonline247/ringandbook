@@ -495,6 +495,8 @@
     .footer-logo { font-size: 1.2rem; font-weight: 700; margin-bottom: 8px; }
     .footer-logo span { color: var(--accent); }
     footer p { color: var(--muted); font-size: 0.85rem; }
+    .email-link { color: var(--muted); text-decoration: none; border-bottom: 1px solid transparent; transition: color .2s, border-color .2s; }
+    .email-link:hover { color: var(--accent2); border-color: var(--accent2); }
 
     /* MOBILE */
     @media (max-width: 768px) {
@@ -1064,6 +1066,7 @@
           <li><span class="icon">⚡</span><div><strong>Live in 1 business day</strong><br><span style="color:var(--muted);font-size:0.85rem">No long contracts, no technical setup on your side.</span></div></li>
           <li><span class="icon">🔄</span><div><strong>30-day money-back guarantee</strong><br><span style="color:var(--muted);font-size:0.85rem">If you're not happy, we refund you — no questions asked.</span></div></li>
           <li><span class="icon">🌐</span><div><strong>Serving Seattle metro &amp; beyond</strong><br><span style="color:var(--muted);font-size:0.85rem">Currently serving WA state, expanding to other cities soon.</span></div></li>
+          <li><span class="icon">✉️</span><div><strong>Prefer email?</strong><br><span style="color:var(--muted);font-size:0.85rem">Reach us directly at <a href="mailto:support@otterbeacon.com" class="email-link">support@otterbeacon.com</a></span></div></li>
         </ul>
       </div>
     </div>
@@ -1074,6 +1077,7 @@
 <footer>
   <div class="footer-logo">Ring &amp; <span>Booked</span></div>
   <p style="margin-top:8px">AI receptionist that books, not just answers.</p>
+  <p style="margin-top:12px">Questions? <a href="mailto:support@otterbeacon.com" class="email-link">support@otterbeacon.com</a></p>
   <p style="margin-top:12px">© 2026 Ring & Booked. Built for service businesses.</p>
 </footer>
 
@@ -1099,9 +1103,11 @@
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="checkout-title">
     <button class="modal-close" type="button" aria-label="Close" data-close-modal>&times;</button>
     <h3 id="checkout-title">Complete your subscription</h3>
-    <p class="modal-intro">You will complete payment securely on Stripe, then return to begin onboarding.</p>
-    <div class="checkout-plan"><div><strong id="checkout-plan-name">Growth</strong><span id="checkout-plan-detail">$199 / month</span></div><strong id="checkout-plan-price">$199/mo</strong></div>
-    <button class="form-submit" id="checkout-button" type="button">Continue to secure payment →</button>
+    <p class="modal-intro">Save your payment method securely with Stripe. Nothing is charged today. Your 7-day trial begins when your phone service goes live.</p>
+    <div class="checkout-plan"><div><strong id="checkout-plan-name">Growth</strong><span id="checkout-plan-detail">$189 / month</span></div><strong id="checkout-plan-price">$189/mo</strong></div>
+    <p id="billing-terms" class="modal-intro" style="margin:12px 0"></p>
+    <label style="display:flex;gap:10px;align-items:flex-start;margin:16px 0;font-size:.9rem"><input type="checkbox" id="billing-consent" style="margin-top:4px"> <span>I agree to the recurring charges above and understand how to cancel.</span></label>
+    <button class="form-submit" id="checkout-button" type="button">Save payment method →</button>
     <p class="secure-note"><span>🔒</span> Card details are handled by Stripe and never stored on this website.</p>
     <div id="checkout-status" style="margin-top:12px;font-size:.9rem;display:none"></div>
   </div>
@@ -1113,12 +1119,13 @@
     <h3 id="account-title">Your account</h3>
     <p class="modal-intro" id="account-email"></p>
     <div class="dashboard-grid">
-      <div class="dashboard-card"><small>Subscription</small><strong id="subscription-status">No active subscription</strong><p class="modal-intro" style="margin:7px 0 0">Choose a plan to start your 7-day free trial.</p></div>
+      <div class="dashboard-card"><small>Subscription</small><strong id="subscription-status">Loading subscription…</strong><p id="subscription-detail" class="modal-intro" style="margin:7px 0 0">Your trial starts when your phone service is live.</p></div>
       <div class="dashboard-card"><small>Account</small><strong id="account-display-name">—</strong></div>
     </div>
     <div class="dashboard-actions">
       <button class="form-submit" id="choose-plan-button" type="button">Choose a plan</button>
       <button class="secondary-action" id="manage-subscription-button" type="button">Manage subscription</button>
+      <button class="secondary-action" id="cancel-setup-button" type="button" hidden>Cancel setup request</button>
       <button class="text-button" id="signout-button" type="button">Log out</button>
     </div>
     <div id="account-status" style="margin-top:12px;font-size:.9rem;display:none"></div>
@@ -1206,7 +1213,7 @@ document.getElementById('demo-form').addEventListener('submit', function(e) {
     .catch((err) => {
       status.style.display = 'block';
       status.style.color = '#f87171';
-      status.textContent = 'Something went wrong. Please email us directly.';
+      status.innerHTML = 'Something went wrong. Please email us directly at <a href="mailto:support@otterbeacon.com" style="color:#f87171;text-decoration:underline">support@otterbeacon.com</a>.';
       btn.textContent = 'Request Demo →';
       btn.disabled = false;
       console.error(err);
@@ -1215,12 +1222,12 @@ document.getElementById('demo-form').addEventListener('submit', function(e) {
 
 const CLIENT_CONFIG = {
   supabaseUrl: 'https://gwzabzztchktjxrbqzzc.supabase.co',
-  supabaseAnonKey: 'sb_publishable_0JBNUQeJOKXoKnVNKM8ucw_pF9E-SoX',
-  stripePaymentLinks: { starter: '', growth: '' }
+  supabaseAnonKey: 'sb_publishable_0JBNUQeJOKXoKnVNKM8ucw_pF9E-SoX'
 };
 let client = null;
 let authMode = 'signup';
 let selectedPlan = null;
+let selectedBillingPeriod = 'monthly';
 try {
   if (CLIENT_CONFIG.supabaseUrl && CLIENT_CONFIG.supabaseAnonKey) client = supabase.createClient(CLIENT_CONFIG.supabaseUrl, CLIENT_CONFIG.supabaseAnonKey);
 } catch (error) { console.error('Account service unavailable', error); }
@@ -1233,7 +1240,7 @@ function renderAccount(user) {
   const signedIn = Boolean(user);
   document.getElementById('guest-actions').style.display = signedIn ? 'none' : 'flex';
   document.getElementById('account-actions').classList.toggle('visible', signedIn);
-  if (!signedIn) return;
+  if (!signedIn) { document.getElementById('subscription-status').textContent = 'Sign in to view your subscription'; return; }
   const name = accountName(user);
   document.getElementById('account-name').textContent = name.split(' ')[0];
   document.getElementById('account-avatar').textContent = name.charAt(0).toUpperCase();
@@ -1245,6 +1252,7 @@ async function refreshAccount() {
   if (!client) return;
   const { data: { user } } = await client.auth.getUser();
   renderAccount(user);
+  if (user) await refreshBilling();
 }
 function setAuthMode(mode) {
   authMode = mode;
@@ -1260,22 +1268,78 @@ function setAuthMode(mode) {
 }
 function showCheckout(plan) {
   selectedPlan = plan;
-  const details = plan === 'starter' ? ['Starter', '$99 / month', '$99/mo'] : ['Growth', '$199 / month', '$199/mo'];
+  selectedBillingPeriod = document.getElementById('billing-toggle').getAttribute('aria-checked') === 'true' ? 'annually' : 'monthly';
+  const prices = {
+    starter: { monthly: ['Starter', '$89 / month', '$89/mo'], annually: ['Starter', '$979 billed annually', '$979/year'] },
+    growth: { monthly: ['Growth', '$189 / month', '$189/mo'], annually: ['Growth', '$2,079 billed annually', '$2,079/year'] }
+  };
+  const details = prices[plan]?.[selectedBillingPeriod];
+  if (!details) return;
+  document.getElementById('checkout-status').style.display = 'none';
+  document.getElementById('billing-consent').checked = false;
+  const included = plan === 'starter' ? 250 : 700;
+  document.getElementById('billing-terms').textContent = `No charge today. After your 7-day trial, ${details[2]} renews automatically until canceled. Includes ${included} minutes per month; extra minutes cost $0.35 each, billed monthly. Cancel from your account before the trial ends to avoid the subscription charge.`;
   document.getElementById('checkout-plan-name').textContent = details[0];
   document.getElementById('checkout-plan-detail').textContent = details[1];
   document.getElementById('checkout-plan-price').textContent = details[2];
   openModal('checkout-modal');
 }
 async function beginPlan(plan) {
+  if (!client) { alert('Account service is unavailable. Please try again shortly.'); return; }
   const { data } = await client.auth.getSession();
   if (data.session) showCheckout(plan); else { setAuthMode('signup'); selectedPlan = plan; openModal('auth-modal'); }
 }
 document.getElementById('login-link').addEventListener('click', e => { e.preventDefault(); setAuthMode('login'); openModal('auth-modal'); });
 document.getElementById('signup-link').addEventListener('click', e => { e.preventDefault(); setAuthMode('signup'); openModal('auth-modal'); });
-document.getElementById('account-button').addEventListener('click', () => openModal('account-modal'));
+document.getElementById('account-button').addEventListener('click', () => { openModal('account-modal'); refreshBilling(); });
 document.getElementById('choose-plan-button').addEventListener('click', () => { closeModals(); document.getElementById('pricing').scrollIntoView({ behavior: 'smooth' }); });
-document.getElementById('manage-subscription-button').addEventListener('click', () => {
-  setStatus('account-status', 'Subscription management will be available here after Stripe checkout is connected. You do not have an active subscription yet.', '#fbbf24');
+async function billingRequest(payload) {
+  if (!client) throw new Error('Account service is unavailable. Please try again shortly.');
+  const { data, error } = await client.functions.invoke('billing', { body: payload });
+  if (error) {
+    let message = 'Billing is temporarily unavailable. Please try again shortly.';
+    if (error.context instanceof Response) {
+      const detail = await error.context.json().catch(() => null);
+      if (typeof detail?.error === 'string') message = detail.error;
+    }
+    throw new Error(message);
+  }
+  return data;
+}
+let billingRefreshVersion = 0;
+async function refreshBilling() {
+  const version = ++billingRefreshVersion;
+  try {
+    const info = await billingRequest({ action: 'status' });
+    if (version !== billingRefreshVersion) return;
+    const labels = { not_started: 'No subscription yet', awaiting_payment_method: 'Payment method needed', pending_setup: 'Preparing your phone service', starting: 'Starting your trial', trialing: '7-day free trial', active: 'Active', canceled: 'Canceled', past_due: 'Payment needs attention', unpaid: 'Payment needed', paused: 'Paused', incomplete: 'Payment setup incomplete', incomplete_expired: 'Payment setup expired' };
+    document.getElementById('subscription-status').textContent = labels[info.status] || 'Contact support';
+    document.getElementById('subscription-detail').textContent = info.status === 'pending_setup' ? 'Payment method saved. No charge today. We will contact you to finish setup; your trial begins when your phone service goes live.' : info.status === 'trialing' && info.trialEnd ? `Trial ends ${new Date(info.trialEnd).toLocaleDateString()}. ${info.cancelAtPeriodEnd ? 'Cancellation is scheduled.' : 'Your selected plan renews automatically afterward.'}` : info.cancelAtPeriodEnd ? 'Your subscription is scheduled to cancel at the end of its current period.' : info.plan ? `${info.plan === 'starter' ? 'Starter' : 'Growth'} · ${info.period === 'annually' ? 'Annual billing' : 'Monthly billing'}` : 'Choose a plan. Your 7-day trial starts when your phone service is live.';
+    document.getElementById('manage-subscription-button').disabled = !info.canManage;
+    document.getElementById('cancel-setup-button').hidden = !['awaiting_payment_method', 'pending_setup'].includes(info.status);
+    return info;
+  } catch (error) {
+    if (version === billingRefreshVersion) {
+      document.getElementById('subscription-status').textContent = 'Status temporarily unavailable';
+      document.getElementById('subscription-detail').textContent = error.message;
+    }
+  }
+}
+document.getElementById('manage-subscription-button').addEventListener('click', async () => {
+  const button = document.getElementById('manage-subscription-button'); button.disabled = true;
+  try {
+    const data = await billingRequest({ action: 'portal' });
+    if (!data?.url || new URL(data.url).hostname !== 'billing.stripe.com') throw new Error('Unable to open billing management.');
+    window.location.assign(data.url);
+  } catch (error) { setStatus('account-status', error.message, '#fbbf24'); }
+  finally { button.disabled = false; }
+});
+document.getElementById('cancel-setup-button').addEventListener('click', async () => {
+  if (!confirm('Cancel your setup request? Your phone service and free trial will not be activated.')) return;
+  const button = document.getElementById('cancel-setup-button'); button.disabled = true;
+  try { await billingRequest({ action: 'cancel_setup' }); await refreshBilling(); }
+  catch (error) { setStatus('account-status', error.message, '#fbbf24'); }
+  finally { button.disabled = false; }
 });
 document.getElementById('signout-button').addEventListener('click', async () => { await client.auth.signOut(); closeModals(); renderAccount(null); });
 document.querySelectorAll('[data-plan]').forEach(button => button.addEventListener('click', e => { e.preventDefault(); beginPlan(button.dataset.plan); }));
@@ -1297,15 +1361,34 @@ document.getElementById('auth-form').addEventListener('submit', async e => {
   else { closeModals(); await refreshAccount(); if (selectedPlan) showCheckout(selectedPlan); else openModal('account-modal'); }
   submit.disabled = false; submit.textContent = authMode === 'signup' ? 'Create account' : 'Log in';
 });
-document.getElementById('checkout-button').addEventListener('click', () => {
-  const link = CLIENT_CONFIG.stripePaymentLinks[selectedPlan];
-  if (!link) { setStatus('checkout-status', 'Secure checkout is being configured. Please contact us and we will activate your subscription.', '#fbbf24'); return; }
-  window.location.assign(link);
+document.getElementById('checkout-button').addEventListener('click', async () => {
+  if (!document.getElementById('billing-consent').checked) { setStatus('checkout-status', 'Please accept the billing terms to continue.', '#fbbf24'); return; }
+  const button = document.getElementById('checkout-button'); button.disabled = true; button.textContent = 'Opening Stripe…';
+  try {
+    const data = await billingRequest({ action: 'checkout', plan: selectedPlan, period: selectedBillingPeriod, consent: true });
+    if (!data?.url || new URL(data.url).hostname !== 'checkout.stripe.com') throw new Error('Unable to open secure checkout.');
+    window.location.assign(data.url);
+  } catch (error) { setStatus('checkout-status', error.message, '#fbbf24'); }
+  finally { button.disabled = false; button.textContent = 'Save payment method →'; }
 });
 if (client) {
   refreshAccount();
-  client.auth.onAuthStateChange((_event, session) => renderAccount(session?.user || null));
+  client.auth.onAuthStateChange((_event, session) => {
+    renderAccount(session?.user || null);
+    if (session?.user) setTimeout(refreshBilling, 0);
+    else ++billingRefreshVersion;
+  });
+  const result = new URLSearchParams(window.location.search).get('billing');
+  if (result) {
+    openModal('account-modal');
+    setStatus('account-status', result === 'setup_complete' ? 'Confirming your payment method. Your trial starts after your phone service is set up.' : result === 'canceled' ? 'Payment setup was not completed. You have not been charged.' : 'Checking your subscription status…', '#10b981');
+    // A redirect is not proof of a successful payment or setup. Only the server
+    // can report the verified state received from Stripe.
+    const cleaned = new URL(window.location.href); cleaned.searchParams.delete('billing');
+    history.replaceState(null, '', cleaned);
+  }
 }
+
 </script>
 
 <!--Start of Tawk.to Script-->

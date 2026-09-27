@@ -1,0 +1,14 @@
+[functions.billing]
+verify_jwt = false
+
+[functions.stripe-webhook]
+verify_jwt = false
+
+[functions.activate-service]
+verify_jwt = false
+
+[functions.report-usage]
+verify_jwt = false
+
+[functions.bootstrap-billing-test]
+verify_jwt = false

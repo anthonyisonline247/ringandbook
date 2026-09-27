@@ -1,0 +1,82 @@
+import { account, checked, cors, db, errorResponse, HttpError, required, siteUrl, stripe, syncSubscription, updateAccount, userFor, withLock } from '../_shared/runtime.ts';
+import { billingConsent, publicAccount, selectPlan } from '../_shared/plans.mjs';
+
+export async function handleBilling(req: Request) {
+  let headers: Record<string, string> = {};
+  try {
+    headers = cors(req);
+    if (req.method === 'OPTIONS') return new Response(null, { status: 204, headers });
+    if (req.method !== 'POST') throw new HttpError(405, 'Method not allowed');
+    const user = await userFor(req);
+    const body = await req.json().catch(() => { throw new HttpError(400, 'Invalid request'); });
+    if (body.action === 'status') {
+      let row = await account(user.id);
+      if (row?.stripe_subscription_id) {
+        await syncSubscription(row.stripe_subscription_id);
+        row = await account(user.id);
+      }
+      return Response.json(publicAccount(row), { headers });
+    }
+    if (body.action === 'portal') {
+      const row = await account(user.id);
+      if (!row?.stripe_customer_id) throw new HttpError(409, 'Choose a plan first');
+      const portal = await stripe.billingPortal.sessions.create({
+        customer: row.stripe_customer_id, return_url: `${siteUrl}/?billing=returned`,
+        configuration: required('STRIPE_PORTAL_CONFIGURATION_ID'),
+      });
+      return Response.json({ url: portal.url }, { headers });
+    }
+    if (body.action === 'cancel_setup') {
+      const existing = await account(user.id);
+      if (!existing) throw new HttpError(409, 'No setup request found');
+      const result = await withLock(user.id, async () => {
+        const row = await account(user.id);
+        if (row.stripe_subscription_id || !['awaiting_payment_method', 'pending_setup', 'canceled'].includes(row.status)) {
+          throw new HttpError(409, 'Manage your subscription to cancel it');
+        }
+        // Save cancellation first. A late setup webhook cannot activate this account.
+        await updateAccount(user.id, { status: 'canceled' });
+        if (row.stripe_setup_session_id) {
+          const session = await stripe.checkout.sessions.retrieve(row.stripe_setup_session_id);
+          if (session.status === 'open') await stripe.checkout.sessions.expire(session.id);
+        }
+        return { status: 'canceled' };
+      });
+      return Response.json(result, { headers });
+    }
+    if (body.action !== 'checkout') throw new HttpError(400, 'Unknown action');
+    if (Deno.env.get('BILLING_ENABLED') !== 'true') throw new HttpError(503, 'Enrollment is being prepared. Please contact us to arrange your setup.');
+    try { selectPlan(body.plan, body.period); } catch { throw new HttpError(400, 'Invalid plan or billing period'); }
+    if (body.consent !== true) throw new HttpError(400, 'Please accept the billing terms');
+    checked(await db.from('billing_accounts').upsert({ user_id: user.id, plan: body.plan, period: body.period }, { onConflict: 'user_id', ignoreDuplicates: true }));
+    const result = await withLock(user.id, async () => {
+      let row = await account(user.id);
+      if (row.stripe_subscription_id || row.status !== 'awaiting_payment_method') throw new HttpError(409, 'You already have a setup request or subscription. Open your account to manage it.');
+      if (row.plan !== body.plan || row.period !== body.period) throw new HttpError(409, 'A different plan is already being set up. Contact us to change it.');
+      if (!row.stripe_customer_id) {
+        const customer = await stripe.customers.create({ email: user.email, metadata: { app: 'ringandbooked', user_id: user.id } }, { idempotencyKey: `rab-customer-${user.id}` });
+        await updateAccount(user.id, { stripe_customer_id: customer.id });
+        row = await account(user.id);
+      }
+      if (row.stripe_setup_session_id) {
+        const previous = await stripe.checkout.sessions.retrieve(row.stripe_setup_session_id);
+        if (previous.status === 'open') return { url: previous.url };
+        if (previous.status === 'complete') throw new HttpError(409, 'Your payment method is being confirmed. Refresh your account shortly.');
+        await updateAccount(user.id, { checkout_generation: crypto.randomUUID(), stripe_setup_session_id: null });
+        row = await account(user.id);
+      }
+      const session = await stripe.checkout.sessions.create({
+        mode: 'setup', currency: 'usd', payment_method_types: ['card'], customer: row.stripe_customer_id,
+        client_reference_id: user.id,
+        metadata: { app: 'ringandbooked', user_id: user.id, generation: row.checkout_generation },
+        setup_intent_data: { metadata: { app: 'ringandbooked', user_id: user.id } },
+        success_url: `${siteUrl}/?billing=setup_complete`, cancel_url: `${siteUrl}/?billing=canceled#pricing`,
+        custom_text: { submit: { message: billingConsent(row.plan, row.period) } },
+      }, { idempotencyKey: `rab-setup-${row.checkout_generation}` });
+      await updateAccount(user.id, { stripe_setup_session_id: session.id });
+      return { url: session.url };
+    });
+    return Response.json(result, { headers });
+  } catch (error) { return errorResponse(error, headers); }
+}
+if (import.meta.main) Deno.serve(handleBilling);
