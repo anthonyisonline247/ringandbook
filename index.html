@@ -139,7 +139,7 @@
         "name": "Can I listen to call recordings?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Yes. Every call is recorded and fully transcribed, and you get an AI-written summary with the caller's name, phone, address, and service request. You can review any call from your dashboard. Bookings also appear in your calendar with a summary of the call."
+          "text": "Yes. Every call is recorded and fully transcribed, and you get an AI-written summary with the caller's name, phone, address, and service request. Contact our team to access call information; call history is not yet available in your workspace. Bookings also appear in your calendar with a summary of the call."
         }
       },
       {
@@ -509,6 +509,7 @@
       .hero { padding: 70px 20px 60px; }
     }
   </style>
+<link rel="stylesheet" href="/workspace.css">
 </head>
 <body>
 
@@ -986,7 +987,7 @@
           Can I listen to call recordings?
           <span class="arrow">▼</span>
         </button>
-        <div class="faq-a">Yes. Every call is recorded and fully transcribed, and you get an AI-written summary with the caller's name, phone, address, and service request. You can review any call from your dashboard. Bookings also appear in your calendar with a summary of the call.</div>
+        <div class="faq-a">Yes. Every call is recorded and fully transcribed, and you get an AI-written summary with the caller's name, phone, address, and service request. Contact our team to access call information; call history is not yet available in your workspace. Bookings also appear in your calendar with a summary of the call.</div>
       </div>
       <div class="faq-item">
         <button class="faq-q" onclick="toggleFaq(this)">
@@ -1116,11 +1117,19 @@
 <div class="modal-backdrop" id="account-modal" aria-hidden="true">
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="account-title">
     <button class="modal-close" type="button" aria-label="Close" data-close-modal>&times;</button>
-    <h3 id="account-title">Your account</h3>
+    <h3 id="account-title">Your business workspace</h3>
     <p class="modal-intro" id="account-email"></p>
+    <p class="modal-intro">We configure and test your receptionist for you. Manage your business details and subscription here.</p>
+    <div class="workspace-tabs" aria-label="Workspace sections">
+      <button type="button" data-workspace="overview" aria-pressed="true">Overview</button>
+      <button type="button" data-workspace="profile" aria-pressed="false">Business details</button>
+      <button type="button" data-workspace="activity" aria-pressed="false">Calls &amp; bookings</button>
+    </div>
+    <div id="workspace-overview" class="workspace-panel">
     <div class="dashboard-grid">
       <div class="dashboard-card"><small>Subscription</small><strong id="subscription-status">Loading subscription…</strong><p id="subscription-detail" class="modal-intro" style="margin:7px 0 0">Your trial starts when your phone service is live.</p></div>
       <div class="dashboard-card"><small>Account</small><strong id="account-display-name">—</strong></div>
+      <div class="dashboard-card"><small>Current usage cycle</small><strong id="workspace-usage">Loading usage…</strong><p class="modal-intro" id="workspace-usage-detail"></p></div>
     </div>
     <div class="dashboard-actions">
       <button class="form-submit" id="choose-plan-button" type="button">Choose a plan</button>
@@ -1129,6 +1138,31 @@
       <button class="text-button" id="signout-button" type="button">Log out</button>
     </div>
     <div id="account-status" style="margin-top:12px;font-size:.9rem;display:none"></div>
+    </div>
+    <div id="workspace-profile" class="workspace-panel" hidden>
+      <p class="modal-intro">Save your business information for onboarding. Saving preferences does not change your live receptionist; contact our team to arrange configuration changes.</p>
+      <form id="merchant-profile-form">
+        <fieldset id="merchant-profile-fields" disabled>
+          <label>Business name<input name="business_name" maxlength="160" required autocomplete="organization"></label>
+          <label>Contact name<input name="contact_name" maxlength="120" required autocomplete="name"></label>
+          <label>Business phone<input name="phone" type="tel" maxlength="50" autocomplete="tel"></label>
+          <label>Business address<input name="address" maxlength="300" autocomplete="street-address"></label>
+          <label>Service area<input name="service_area" maxlength="300" placeholder="Cities or ZIP codes you serve"></label>
+          <label>Business hours<textarea name="business_hours" maxlength="1500" placeholder="Include days, hours and exceptions"></textarea></label>
+          <label>Time zone<input name="timezone" maxlength="100" required placeholder="America/Los_Angeles"></label>
+          <label>Services offered<textarea name="services" maxlength="1500"></textarea></label>
+          <label>Preferred caller languages<input name="language_preferences" maxlength="300" placeholder="Our team configures and tests these with you"></label>
+          <label>Emergency transfer number<input name="transfer_phone" type="tel" maxlength="50"></label>
+          <button class="form-submit" type="submit">Save business details</button>
+        </fieldset>
+      </form>
+      <p id="merchant-profile-status" role="status" aria-live="polite"></p>
+      <button class="secondary-action" type="button" id="reload-workspace">Reload business details</button>
+    </div>
+    <div id="workspace-activity" class="workspace-panel" hidden>
+      <div class="dashboard-card"><small>Call history</small><h4>Call history is not connected to this workspace yet</h4><p class="modal-intro">Recordings, transcripts and summaries are not available here yet. Contact our team to request your call information.</p></div>
+      <div class="dashboard-card"><small>Appointments</small><h4>Use your connected calendar</h4><p class="modal-intro">Review appointments in the calendar configured during onboarding. An appointment list is not available in this workspace yet.</p></div>
+    </div>
   </div>
 </div>
 
@@ -1232,11 +1266,12 @@ try {
   if (CLIENT_CONFIG.supabaseUrl && CLIENT_CONFIG.supabaseAnonKey) client = supabase.createClient(CLIENT_CONFIG.supabaseUrl, CLIENT_CONFIG.supabaseAnonKey);
 } catch (error) { console.error('Account service unavailable', error); }
 
-function openModal(id) { document.getElementById(id).classList.add('open'); document.getElementById(id).setAttribute('aria-hidden', 'false'); }
+function openModal(id) { document.getElementById(id).classList.add('open'); document.getElementById(id).setAttribute('aria-hidden', 'false'); if (id === 'account-modal') window.dispatchEvent(new Event('workspace-open')); }
 function closeModals() { document.querySelectorAll('.modal-backdrop').forEach(m => { m.classList.remove('open'); m.setAttribute('aria-hidden', 'true'); }); }
 function setStatus(id, message, color) { const el = document.getElementById(id); el.style.display = 'block'; el.style.color = color; el.textContent = message; }
 function accountName(user) { return user?.user_metadata?.full_name || user?.user_metadata?.name || user?.email?.split('@')[0] || 'Account'; }
 function renderAccount(user) {
+  window.dispatchEvent(new CustomEvent('workspace-user', { detail: user?.id || null }));
   const signedIn = Boolean(user);
   document.getElementById('guest-actions').style.display = signedIn ? 'none' : 'flex';
   document.getElementById('account-actions').classList.toggle('visible', signedIn);
@@ -1404,5 +1439,6 @@ var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
 })();
 </script>
 <!--End of Tawk.to Script-->
+<script src="/workspace.js"></script>
 </body>
 </html>

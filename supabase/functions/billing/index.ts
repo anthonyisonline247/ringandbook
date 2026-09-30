@@ -9,6 +9,13 @@ export async function handleBilling(req: Request) {
     if (req.method !== 'POST') throw new HttpError(405, 'Method not allowed');
     const user = await userFor(req);
     const body = await req.json().catch(() => { throw new HttpError(400, 'Invalid request'); });
+    if (body.action === 'usage') {
+      const now = new Date().toISOString();
+      const cycle = checked(await db.from('billing_usage_cycles').select('period_start,period_end,seconds')
+        .eq('user_id', user.id).lte('period_start', now).gt('period_end', now).order('period_start', { ascending: false }).limit(1).maybeSingle());
+      const row = await account(user.id);
+      return Response.json({ cycle, allowance: row ? (row.plan === 'starter' ? 250 : 700) : null }, { headers });
+    }
     if (body.action === 'status') {
       let row = await account(user.id);
       if (row?.stripe_subscription_id) {
