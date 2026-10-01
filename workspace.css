@@ -12,3 +12,7 @@
 #workspace-activity .dashboard-card { margin-bottom: 16px; }
 .workspace-tabs button:focus-visible, #merchant-profile-fields :focus-visible { outline: 2px solid var(--accent2); outline-offset: 3px; }
 @media (max-width: 600px) { #merchant-profile-fields { grid-template-columns: 1fr; } .workspace-tabs button { flex: 1; padding: 10px; } }
+@media (max-width: 768px) {
+  .roadmap-grid { grid-template-columns: 1fr; }
+  .vs-table { display: block; overflow-x: auto; }
+}
