@@ -283,7 +283,7 @@
     .check-list { list-style: none; display: flex; flex-direction: column; gap: 12px; }
     .check-list li { display: flex; align-items: flex-start; gap: 10px; color: var(--text); font-size: 0.95rem; }
     .check-list li::before { content: '✓'; color: var(--green); font-weight: 700; flex-shrink: 0; }
-    .demo-video-block { margin-top: 64px; text-align: center; }
+    .demo-video-block { margin: 0 0 64px; text-align: center; }
     .demo-video-caption { color: var(--muted); font-size: 0.95rem; margin-bottom: 20px; }
     .demo-video {
       position: relative; width: 100%; max-width: 380px; margin: 0 auto;
@@ -587,6 +587,19 @@
 <!-- DEMO -->
 <section class="demo-section" id="demo">
   <div class="container">
+    <div class="demo-video-block">
+      <p class="demo-video-caption">See Ring &amp; Booked answer a call and book an appointment.</p>
+      <div class="demo-video">
+        <iframe
+          src="https://www.youtube-nocookie.com/embed/4eVvqsl6CsI"
+          title="Ring & Booked AI receptionist — real call demo"
+          loading="lazy"
+          allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen>
+        </iframe>
+      </div>
+    </div>
     <div class="demo-wrap">
       <div class="demo-phone">
         <div class="demo-phone-header">
@@ -624,19 +637,7 @@
         </ul>
       </div>
     </div>
-    <div class="demo-video-block">
-      <p class="demo-video-caption">Prefer to watch? Here's Ring &amp; Booked handling a real call.</p>
-      <div class="demo-video">
-        <iframe
-          src="https://www.youtube-nocookie.com/embed/jsuP0ZRLW9c"
-          title="Ring & Booked AI receptionist — real call demo"
-          loading="lazy"
-          allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          referrerpolicy="strict-origin-when-cross-origin"
-          allowfullscreen>
-        </iframe>
-      </div>
-    </div>
+
   </div>
 </section>
 
@@ -1104,11 +1105,11 @@
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="checkout-title">
     <button class="modal-close" type="button" aria-label="Close" data-close-modal>&times;</button>
     <h3 id="checkout-title">Complete your subscription</h3>
-    <p class="modal-intro">Save your payment method securely with Stripe. Nothing is charged today. Your 7-day trial begins when your phone service goes live.</p>
+    <p class="modal-intro">Continue to Stripe to set up your subscription and add a payment method. Nothing is charged today. Your 7-day trial begins when your phone service goes live.</p>
     <div class="checkout-plan"><div><strong id="checkout-plan-name">Growth</strong><span id="checkout-plan-detail">$189 / month</span></div><strong id="checkout-plan-price">$189/mo</strong></div>
     <p id="billing-terms" class="modal-intro" style="margin:12px 0"></p>
     <label style="display:flex;gap:10px;align-items:flex-start;margin:16px 0;font-size:.9rem"><input type="checkbox" id="billing-consent" style="margin-top:4px"> <span>I agree to the recurring charges above and understand how to cancel.</span></label>
-    <button class="form-submit" id="checkout-button" type="button">Save payment method →</button>
+    <button class="form-submit" id="checkout-button" type="button">Subscribe →</button>
     <p class="secure-note"><span>🔒</span> Card details are handled by Stripe and never stored on this website.</p>
     <div id="checkout-status" style="margin-top:12px;font-size:.9rem;display:none"></div>
   </div>
@@ -1314,7 +1315,7 @@ document.getElementById('checkout-button').addEventListener('click', async () =>
     if (!data?.url || new URL(data.url).hostname !== 'checkout.stripe.com') throw new Error('Unable to open secure checkout.');
     window.location.assign(data.url);
   } catch (error) { setStatus('checkout-status', error.message, '#92400e'); }
-  finally { button.disabled = false; button.textContent = 'Save payment method →'; }
+  finally { button.disabled = false; button.textContent = 'Subscribe →'; }
 });
 if (client) {
   refreshAccount();
