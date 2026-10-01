@@ -13,10 +13,17 @@
     form.reset(); fields.disabled = true; status.textContent = '';
     usage.textContent = 'Loading usage…'; detail.textContent = '';
   }
+  function selectSection(name) {
+    if (!document.getElementById(`workspace-${name}`)) name = 'overview';
+    document.querySelectorAll('[data-workspace]').forEach(tab => tab.setAttribute('aria-pressed', String(tab.dataset.workspace === name)));
+    document.querySelectorAll('.workspace-panel').forEach(panel => { panel.hidden = panel.id !== `workspace-${name}`; });
+  }
+  window.addEventListener('hashchange', () => selectSection(location.hash.slice(1)));
+  selectSection(location.hash.slice(1));
   document.querySelectorAll('[data-workspace]').forEach(button => {
     button.addEventListener('click', () => {
-      document.querySelectorAll('[data-workspace]').forEach(tab => tab.setAttribute('aria-pressed', String(tab === button)));
-      document.querySelectorAll('.workspace-panel').forEach(panel => { panel.hidden = panel.id !== `workspace-${button.dataset.workspace}`; });
+      location.hash = button.dataset.workspace;
+      selectSection(button.dataset.workspace);
     });
   });
   async function load() {
@@ -77,5 +84,5 @@
   window.addEventListener('workspace-open', load);
   window.addEventListener('workspace-user', event => { if (event.detail !== owner) reset(); });
   document.getElementById('reload-workspace').addEventListener('click', load);
-  if (document.getElementById('account-modal').classList.contains('open')) load();
+  if (document.getElementById('account-modal')?.classList.contains('open')) load();
 })();

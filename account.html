@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex, nofollow"><title>Your workspace | Ring &amp; Booked</title><link rel="icon" href="/favicon.svg"><link rel="stylesheet" href="/workspace.css"><link rel="stylesheet" href="/account.css"><script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script defer src="/account-billing.js"></script><script defer src="/account.js"></script><script defer src="/workspace.js"></script></head>
+<body><a class="skip-link" href="#account-main">Skip to content</a>
+<div id="session-gate" role="status">Checking your session…</div>
+<div id="account-shell" hidden>
+<aside class="sidebar"><a class="brand" href="/">Ring &amp; <span>Booked</span></a><p class="sidebar-caption">BUSINESS WORKSPACE</p>
+<nav class="workspace-tabs" aria-label="Account navigation">
+<button data-workspace="overview" aria-pressed="true">Overview &amp; billing</button>
+<button data-workspace="profile" aria-pressed="false">Business details</button>
+<button data-workspace="activity" aria-pressed="false">Calls &amp; bookings</button>
+<button data-workspace="personal" aria-pressed="false">Personal profile</button>
+<button data-workspace="security" aria-pressed="false">Password &amp; security</button>
+</nav><div class="sidebar-footer"><a href="/">← Back to website</a><a href="mailto:support@otterbeacon.com">Contact support</a><button id="signout-button" class="secondary-action">Log out</button></div></aside>
+<main id="account-main" tabindex="-1"><header><p class="eyebrow">YOUR ACCOUNT</p><h1 id="account-title">Your workspace</h1><p id="account-email"></p><p>We configure your receptionist. You stay in control of your business information.</p></header>
+    <div id="workspace-overview" class="workspace-panel">
+    <div class="dashboard-grid">
+      <div class="dashboard-card"><small>Subscription</small><strong id="subscription-status">Loading subscription…</strong><p id="subscription-detail" class="modal-intro" style="margin:7px 0 0">Your trial starts when your phone service is live.</p></div>
+      <div class="dashboard-card"><small>Account</small><strong id="account-display-name">—</strong></div>
+      <div class="dashboard-card"><small>Current usage cycle</small><strong id="workspace-usage">Loading usage…</strong><p class="modal-intro" id="workspace-usage-detail"></p></div>
+    </div>
+    <div class="dashboard-actions">
+      <button class="form-submit" id="choose-plan-button" type="button">Choose a plan</button>
+      <button class="secondary-action" id="manage-subscription-button" type="button">Manage subscription</button>
+      <button class="secondary-action" id="cancel-setup-button" type="button" hidden>Cancel setup request</button>
+      
+    </div>
+    <div id="account-status" style="margin-top:12px;font-size:.9rem;display:none"></div>
+    </div>
+    <div id="workspace-profile" class="workspace-panel" hidden>
+      <p class="modal-intro">Save your business information for onboarding. Saving preferences does not change your live receptionist; contact our team to arrange configuration changes.</p>
+      <form id="merchant-profile-form">
+        <fieldset id="merchant-profile-fields" disabled>
+          <label>Business name<input name="business_name" maxlength="160" required autocomplete="organization"></label>
+          <label>Contact name<input name="contact_name" maxlength="120" required autocomplete="name"></label>
+          <label>Business phone<input name="phone" type="tel" maxlength="50" autocomplete="tel"></label>
+          <label>Business address<input name="address" maxlength="300" autocomplete="street-address"></label>
+          <label>Service area<input name="service_area" maxlength="300" placeholder="Cities or ZIP codes you serve"></label>
+          <label>Business hours<textarea name="business_hours" maxlength="1500" placeholder="Include days, hours and exceptions"></textarea></label>
+          <label>Time zone<input name="timezone" maxlength="100" required placeholder="America/Los_Angeles"></label>
+          <label>Services offered<textarea name="services" maxlength="1500"></textarea></label>
+          <label>Preferred caller languages<input name="language_preferences" maxlength="300" placeholder="Our team configures and tests these with you"></label>
+          <label>Emergency transfer number<input name="transfer_phone" type="tel" maxlength="50"></label>
+          <button class="form-submit" type="submit">Save business details</button>
+        </fieldset>
+      </form>
+      <p id="merchant-profile-status" role="status" aria-live="polite"></p>
+      <button class="secondary-action" type="button" id="reload-workspace">Reload business details</button>
+    </div>
+    <div id="workspace-activity" class="workspace-panel" hidden>
+      <div class="dashboard-card"><small>Call history</small><h4>Call history is not connected to this workspace yet</h4><p class="modal-intro">Recordings, transcripts and summaries are not available here yet. Contact our team to request your call information.</p></div>
+      <div class="dashboard-card"><small>Appointments</small><h4>Use your connected calendar</h4><p class="modal-intro">Review appointments in the calendar configured during onboarding. An appointment list is not available in this workspace yet.</p></div>
+    </div>
+<section id="workspace-personal" class="workspace-panel" hidden><h2>Personal profile</h2><p>Your personal account is separate from the business contact details used by your receptionist.</p><form id="personal-form" class="settings-form"><label>Display name<input id="personal-name" autocomplete="name" required maxlength="120"></label><label>Sign-in email<input id="personal-email" type="email" readonly></label><p class="hint">Your sign-in email is shown for reference. Contact support if you need help changing it.</p><button class="form-submit" type="submit">Save profile</button><p id="personal-status" role="status" aria-live="polite"></p></form></section>
+<section id="workspace-security" class="workspace-panel" hidden><h2>Password &amp; security</h2><p id="password-help">Confirm your current password to choose a new one.</p><form id="password-form" class="settings-form"><label>Current password<input id="current-password" type="password" autocomplete="current-password" required></label><label>New password<input id="new-password" type="password" autocomplete="new-password" minlength="12" required></label><label>Confirm new password<input id="confirm-password" type="password" autocomplete="new-password" minlength="12" required></label><p class="hint">Use at least 12 characters. After changing your password, you will be signed out of this browser.</p><button class="form-submit" type="submit">Update password</button></form><p id="password-status" role="status" aria-live="polite"></p></section>
+</main></div></body></html>

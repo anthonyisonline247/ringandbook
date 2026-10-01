@@ -1114,57 +1114,6 @@
   </div>
 </div>
 
-<div class="modal-backdrop" id="account-modal" aria-hidden="true">
-  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="account-title">
-    <button class="modal-close" type="button" aria-label="Close" data-close-modal>&times;</button>
-    <h3 id="account-title">Your business workspace</h3>
-    <p class="modal-intro" id="account-email"></p>
-    <p class="modal-intro">We configure and test your receptionist for you. Manage your business details and subscription here.</p>
-    <div class="workspace-tabs" aria-label="Workspace sections">
-      <button type="button" data-workspace="overview" aria-pressed="true">Overview</button>
-      <button type="button" data-workspace="profile" aria-pressed="false">Business details</button>
-      <button type="button" data-workspace="activity" aria-pressed="false">Calls &amp; bookings</button>
-    </div>
-    <div id="workspace-overview" class="workspace-panel">
-    <div class="dashboard-grid">
-      <div class="dashboard-card"><small>Subscription</small><strong id="subscription-status">Loading subscription…</strong><p id="subscription-detail" class="modal-intro" style="margin:7px 0 0">Your trial starts when your phone service is live.</p></div>
-      <div class="dashboard-card"><small>Account</small><strong id="account-display-name">—</strong></div>
-      <div class="dashboard-card"><small>Current usage cycle</small><strong id="workspace-usage">Loading usage…</strong><p class="modal-intro" id="workspace-usage-detail"></p></div>
-    </div>
-    <div class="dashboard-actions">
-      <button class="form-submit" id="choose-plan-button" type="button">Choose a plan</button>
-      <button class="secondary-action" id="manage-subscription-button" type="button">Manage subscription</button>
-      <button class="secondary-action" id="cancel-setup-button" type="button" hidden>Cancel setup request</button>
-      <button class="text-button" id="signout-button" type="button">Log out</button>
-    </div>
-    <div id="account-status" style="margin-top:12px;font-size:.9rem;display:none"></div>
-    </div>
-    <div id="workspace-profile" class="workspace-panel" hidden>
-      <p class="modal-intro">Save your business information for onboarding. Saving preferences does not change your live receptionist; contact our team to arrange configuration changes.</p>
-      <form id="merchant-profile-form">
-        <fieldset id="merchant-profile-fields" disabled>
-          <label>Business name<input name="business_name" maxlength="160" required autocomplete="organization"></label>
-          <label>Contact name<input name="contact_name" maxlength="120" required autocomplete="name"></label>
-          <label>Business phone<input name="phone" type="tel" maxlength="50" autocomplete="tel"></label>
-          <label>Business address<input name="address" maxlength="300" autocomplete="street-address"></label>
-          <label>Service area<input name="service_area" maxlength="300" placeholder="Cities or ZIP codes you serve"></label>
-          <label>Business hours<textarea name="business_hours" maxlength="1500" placeholder="Include days, hours and exceptions"></textarea></label>
-          <label>Time zone<input name="timezone" maxlength="100" required placeholder="America/Los_Angeles"></label>
-          <label>Services offered<textarea name="services" maxlength="1500"></textarea></label>
-          <label>Preferred caller languages<input name="language_preferences" maxlength="300" placeholder="Our team configures and tests these with you"></label>
-          <label>Emergency transfer number<input name="transfer_phone" type="tel" maxlength="50"></label>
-          <button class="form-submit" type="submit">Save business details</button>
-        </fieldset>
-      </form>
-      <p id="merchant-profile-status" role="status" aria-live="polite"></p>
-      <button class="secondary-action" type="button" id="reload-workspace">Reload business details</button>
-    </div>
-    <div id="workspace-activity" class="workspace-panel" hidden>
-      <div class="dashboard-card"><small>Call history</small><h4>Call history is not connected to this workspace yet</h4><p class="modal-intro">Recordings, transcripts and summaries are not available here yet. Contact our team to request your call information.</p></div>
-      <div class="dashboard-card"><small>Appointments</small><h4>Use your connected calendar</h4><p class="modal-intro">Review appointments in the calendar configured during onboarding. An appointment list is not available in this workspace yet.</p></div>
-    </div>
-  </div>
-</div>
 
 <script>
 function toggleBilling() {
@@ -1266,7 +1215,7 @@ try {
   if (CLIENT_CONFIG.supabaseUrl && CLIENT_CONFIG.supabaseAnonKey) client = supabase.createClient(CLIENT_CONFIG.supabaseUrl, CLIENT_CONFIG.supabaseAnonKey);
 } catch (error) { console.error('Account service unavailable', error); }
 
-function openModal(id) { document.getElementById(id).classList.add('open'); document.getElementById(id).setAttribute('aria-hidden', 'false'); if (id === 'account-modal') window.dispatchEvent(new Event('workspace-open')); }
+function openModal(id) { if (id === 'account-modal') { location.assign('/account.html'); return; } document.getElementById(id).classList.add('open'); document.getElementById(id).setAttribute('aria-hidden', 'false'); }
 function closeModals() { document.querySelectorAll('.modal-backdrop').forEach(m => { m.classList.remove('open'); m.setAttribute('aria-hidden', 'true'); }); }
 function setStatus(id, message, color) { const el = document.getElementById(id); el.style.display = 'block'; el.style.color = color; el.textContent = message; }
 function accountName(user) { return user?.user_metadata?.full_name || user?.user_metadata?.name || user?.email?.split('@')[0] || 'Account'; }
@@ -1275,19 +1224,16 @@ function renderAccount(user) {
   const signedIn = Boolean(user);
   document.getElementById('guest-actions').style.display = signedIn ? 'none' : 'flex';
   document.getElementById('account-actions').classList.toggle('visible', signedIn);
-  if (!signedIn) { document.getElementById('subscription-status').textContent = 'Sign in to view your subscription'; return; }
+  if (!signedIn) return;
   const name = accountName(user);
   document.getElementById('account-name').textContent = name.split(' ')[0];
   document.getElementById('account-avatar').textContent = name.charAt(0).toUpperCase();
-  document.getElementById('account-title').textContent = `Welcome, ${name.split(' ')[0]}`;
-  document.getElementById('account-email').textContent = user.email || '';
-  document.getElementById('account-display-name').textContent = name;
 }
 async function refreshAccount() {
   if (!client) return;
   const { data: { user } } = await client.auth.getUser();
   renderAccount(user);
-  if (user) await refreshBilling();
+
 }
 function setAuthMode(mode) {
   authMode = mode;
@@ -1326,8 +1272,7 @@ async function beginPlan(plan) {
 }
 document.getElementById('login-link').addEventListener('click', e => { e.preventDefault(); setAuthMode('login'); openModal('auth-modal'); });
 document.getElementById('signup-link').addEventListener('click', e => { e.preventDefault(); setAuthMode('signup'); openModal('auth-modal'); });
-document.getElementById('account-button').addEventListener('click', () => { openModal('account-modal'); refreshBilling(); });
-document.getElementById('choose-plan-button').addEventListener('click', () => { closeModals(); document.getElementById('pricing').scrollIntoView({ behavior: 'smooth' }); });
+document.getElementById('account-button').addEventListener('click', () => location.assign('/account.html'));
 async function billingRequest(payload) {
   if (!client) throw new Error('Account service is unavailable. Please try again shortly.');
   const { data, error } = await client.functions.invoke('billing', { body: payload });
@@ -1341,46 +1286,11 @@ async function billingRequest(payload) {
   }
   return data;
 }
-let billingRefreshVersion = 0;
-async function refreshBilling() {
-  const version = ++billingRefreshVersion;
-  try {
-    const info = await billingRequest({ action: 'status' });
-    if (version !== billingRefreshVersion) return;
-    const labels = { not_started: 'No subscription yet', awaiting_payment_method: 'Payment method needed', pending_setup: 'Preparing your phone service', starting: 'Starting your trial', trialing: '7-day free trial', active: 'Active', canceled: 'Canceled', past_due: 'Payment needs attention', unpaid: 'Payment needed', paused: 'Paused', incomplete: 'Payment setup incomplete', incomplete_expired: 'Payment setup expired' };
-    document.getElementById('subscription-status').textContent = labels[info.status] || 'Contact support';
-    document.getElementById('subscription-detail').textContent = info.status === 'pending_setup' ? 'Payment method saved. No charge today. We will contact you to finish setup; your trial begins when your phone service goes live.' : info.status === 'trialing' && info.trialEnd ? `Trial ends ${new Date(info.trialEnd).toLocaleDateString()}. ${info.cancelAtPeriodEnd ? 'Cancellation is scheduled.' : 'Your selected plan renews automatically afterward.'}` : info.cancelAtPeriodEnd ? 'Your subscription is scheduled to cancel at the end of its current period.' : info.plan ? `${info.plan === 'starter' ? 'Starter' : 'Growth'} · ${info.period === 'annually' ? 'Annual billing' : 'Monthly billing'}` : 'Choose a plan. Your 7-day trial starts when your phone service is live.';
-    document.getElementById('manage-subscription-button').disabled = !info.canManage;
-    document.getElementById('cancel-setup-button').hidden = !['awaiting_payment_method', 'pending_setup'].includes(info.status);
-    return info;
-  } catch (error) {
-    if (version === billingRefreshVersion) {
-      document.getElementById('subscription-status').textContent = 'Status temporarily unavailable';
-      document.getElementById('subscription-detail').textContent = error.message;
-    }
-  }
-}
-document.getElementById('manage-subscription-button').addEventListener('click', async () => {
-  const button = document.getElementById('manage-subscription-button'); button.disabled = true;
-  try {
-    const data = await billingRequest({ action: 'portal' });
-    if (!data?.url || new URL(data.url).hostname !== 'billing.stripe.com') throw new Error('Unable to open billing management.');
-    window.location.assign(data.url);
-  } catch (error) { setStatus('account-status', error.message, '#fbbf24'); }
-  finally { button.disabled = false; }
-});
-document.getElementById('cancel-setup-button').addEventListener('click', async () => {
-  if (!confirm('Cancel your setup request? Your phone service and free trial will not be activated.')) return;
-  const button = document.getElementById('cancel-setup-button'); button.disabled = true;
-  try { await billingRequest({ action: 'cancel_setup' }); await refreshBilling(); }
-  catch (error) { setStatus('account-status', error.message, '#fbbf24'); }
-  finally { button.disabled = false; }
-});
-document.getElementById('signout-button').addEventListener('click', async () => { await client.auth.signOut(); closeModals(); renderAccount(null); });
 document.querySelectorAll('[data-plan]').forEach(button => button.addEventListener('click', e => { e.preventDefault(); beginPlan(button.dataset.plan); }));
 document.addEventListener('click', e => { if (e.target.matches('[data-close-modal]') || e.target.classList.contains('modal-backdrop')) closeModals(); if (e.target.id === 'show-login') setAuthMode('login'); if (e.target.id === 'show-signup') setAuthMode('signup'); });
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModals(); });
 document.getElementById('google-login').addEventListener('click', async () => {
+  sessionStorage.setItem('account-after-auth', 'yes');
   const { error } = await client.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: window.location.origin } });
   if (error) setStatus('auth-status', error.message, '#f87171');
 });
@@ -1410,18 +1320,11 @@ if (client) {
   refreshAccount();
   client.auth.onAuthStateChange((_event, session) => {
     renderAccount(session?.user || null);
-    if (session?.user) setTimeout(refreshBilling, 0);
-    else ++billingRefreshVersion;
+    if (session?.user && sessionStorage.getItem('account-after-auth') === 'yes') { sessionStorage.removeItem('account-after-auth'); location.assign('/account.html'); }
   });
   const result = new URLSearchParams(window.location.search).get('billing');
-  if (result) {
-    openModal('account-modal');
-    setStatus('account-status', result === 'setup_complete' ? 'Confirming your payment method. Your trial starts after your phone service is set up.' : result === 'canceled' ? 'Payment setup was not completed. You have not been charged.' : 'Checking your subscription status…', '#10b981');
-    // A redirect is not proof of a successful payment or setup. Only the server
-    // can report the verified state received from Stripe.
-    const cleaned = new URL(window.location.href); cleaned.searchParams.delete('billing');
-    history.replaceState(null, '', cleaned);
-  }
+  if (result) location.replace('/account.html?billing=' + encodeURIComponent(result));
+  if (new URLSearchParams(location.search).get('login') === '1') { setAuthMode('login'); openModal('auth-modal'); }
 }
 
 </script>
@@ -1439,6 +1342,6 @@ var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
 })();
 </script>
 <!--End of Tawk.to Script-->
-<script src="/workspace.js"></script>
+
 </body>
 </html>
