@@ -510,7 +510,7 @@
     }
   </style>
 <link rel="stylesheet" href="/workspace.css">
-</head>
+<link rel="stylesheet" href="/theme.css"></head>
 <body>
 
 <!-- NAV -->
@@ -1189,14 +1189,14 @@ document.getElementById('demo-form').addEventListener('submit', function(e) {
         lead_source: 'website_demo_form'
       });
       status.style.display = 'block';
-      status.style.color = '#10b981';
+      status.style.color = '#14734b';
       status.textContent = '✓ Request sent! We\'ll reach out within 1 business day.';
       btn.textContent = 'Request Sent ✓';
     })
     .catch((err) => {
       status.style.display = 'block';
-      status.style.color = '#f87171';
-      status.innerHTML = 'Something went wrong. Please email us directly at <a href="mailto:support@otterbeacon.com" style="color:#f87171;text-decoration:underline">support@otterbeacon.com</a>.';
+      status.style.color = '#b42332';
+      status.innerHTML = 'Something went wrong. Please email us directly at <a href="mailto:support@otterbeacon.com" style="color:#b42332;text-decoration:underline">support@otterbeacon.com</a>.';
       btn.textContent = 'Request Demo →';
       btn.disabled = false;
       console.error(err);
@@ -1292,7 +1292,7 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModals(
 document.getElementById('google-login').addEventListener('click', async () => {
   sessionStorage.setItem('account-after-auth', 'yes');
   const { error } = await client.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: window.location.origin } });
-  if (error) setStatus('auth-status', error.message, '#f87171');
+  if (error) setStatus('auth-status', error.message, '#b42332');
 });
 document.getElementById('auth-form').addEventListener('submit', async e => {
   e.preventDefault();
@@ -1301,19 +1301,19 @@ document.getElementById('auth-form').addEventListener('submit', async e => {
   let result;
   if (authMode === 'signup') result = await client.auth.signUp({ email, password, options: { data: { full_name: document.getElementById('auth-name').value.trim() } } });
   else result = await client.auth.signInWithPassword({ email, password });
-  if (result.error) setStatus('auth-status', result.error.message, '#f87171');
-  else if (authMode === 'signup' && !result.data.session) setStatus('auth-status', 'Check your email to confirm your account, then return to log in.', '#10b981');
+  if (result.error) setStatus('auth-status', result.error.message, '#b42332');
+  else if (authMode === 'signup' && !result.data.session) setStatus('auth-status', 'Check your email to confirm your account, then return to log in.', '#14734b');
   else { closeModals(); await refreshAccount(); if (selectedPlan) showCheckout(selectedPlan); else openModal('account-modal'); }
   submit.disabled = false; submit.textContent = authMode === 'signup' ? 'Create account' : 'Log in';
 });
 document.getElementById('checkout-button').addEventListener('click', async () => {
-  if (!document.getElementById('billing-consent').checked) { setStatus('checkout-status', 'Please accept the billing terms to continue.', '#fbbf24'); return; }
+  if (!document.getElementById('billing-consent').checked) { setStatus('checkout-status', 'Please accept the billing terms to continue.', '#92400e'); return; }
   const button = document.getElementById('checkout-button'); button.disabled = true; button.textContent = 'Opening Stripe…';
   try {
     const data = await billingRequest({ action: 'checkout', plan: selectedPlan, period: selectedBillingPeriod, consent: true });
     if (!data?.url || new URL(data.url).hostname !== 'checkout.stripe.com') throw new Error('Unable to open secure checkout.');
     window.location.assign(data.url);
-  } catch (error) { setStatus('checkout-status', error.message, '#fbbf24'); }
+  } catch (error) { setStatus('checkout-status', error.message, '#92400e'); }
   finally { button.disabled = false; button.textContent = 'Save payment method →'; }
 });
 if (client) {

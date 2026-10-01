@@ -1,0 +1,58 @@
+/* Shared light theme for the public site and merchant workspace. */
+:root {
+  color-scheme: light;
+  --bg: #fafbf8;
+  --bg2: #f0f4f8;
+  --bg3: #ffffff;
+  --card: #ffffff;
+  --text: #192d45;
+  --muted: #526379;
+  --border: #d8e1ec;
+  --accent: #2563eb;
+  --accent2: #1d4ed8;
+  --green: #14734b;
+}
+body { background: var(--bg); color: var(--text); }
+body > nav { background: rgba(250,251,248,.96); box-shadow: 0 2px 16px rgba(25,45,69,.035); }
+.hero { background: radial-gradient(ellipse at 50% 0%, #e9f1ff 0%, transparent 65%), var(--bg); }
+.badge { background: #edf3ff; border-color: #ccdfff; color: #1d4ed8; }
+.btn-primary, .nav-cta, .plan-btn.fill, .form-submit { color: #fff; background: var(--accent); box-shadow: 0 4px 12px rgba(37,99,235,.15); }
+.btn-primary:hover, .nav-cta:hover, .plan-btn.fill:hover, .form-submit:hover { background: #1d4ed8; }
+.btn-secondary, .plan-btn.outline { background: #fff; border-color: #c5d2e4; color: var(--text); }
+.stats-bar { background: #fff; }
+.feature-card, .pricing-card, .testi-card, .demo-phone, .contact-form, .dashboard-card {
+  box-shadow: 0 8px 28px rgba(25,45,69,.045);
+}
+.pricing-card.featured { background: #fff; border: 2px solid var(--accent); box-shadow: 0 12px 36px rgba(37,99,235,.10); }
+.plan-price > .price-monthly, .plan-price > .price-annually { font-size: inherit; font-weight: inherit; color: var(--text); }
+.problem-box { background: #fffaf7; border-color: #efdbd0; }
+.problem-box .box-title { color: #9c3f25; }
+.solution-box { background: #f5faf6; border-color: #c7dfce; }
+.solution-box .box-title, .feature-tag.green, .toggle-save { color: #14633d; }
+.feature-tag.green, .toggle-save { background: #eaf5ed; border-color: #c6e2cf; }
+.feature-tag { background: #edf3ff; border-color: #ccdfff; }
+.roadmap-card { background: #fafbf8; opacity: 1; }
+.roadmap-badge { color: #92400e; background: #fff2dd; border-color: #f0d4a7; }
+.partial { color: #92400e; }
+.cross { color: #b42332; }
+.stars { color: #936000; }
+.testi-avatar, .demo-phone-avatar { color: white; }
+.bubble.system { background: #edf7ef; border-color: #c7dfce; }
+.vs-table thead { background: #eaf0f8; }
+.modal-backdrop { background: rgba(25,45,69,.35); }
+.modal { box-shadow: 0 24px 80px rgba(25,45,69,.18); }
+input::placeholder, textarea::placeholder { color: #66768b; opacity: 1; }
+input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-visible, a:focus-visible {
+  outline: 2px solid var(--accent); outline-offset: 3px;
+}
+.sidebar { background: #fff; }
+.sidebar-caption, .eyebrow { color: #526379; }
+.workspace-tabs button[aria-pressed="true"] { color: #fff; background: var(--accent); border-color: var(--accent); }
+.workspace-tabs button:not([aria-pressed="true"]):hover { background: #edf3ff; }
+.settings-form { background: #fff; padding: 28px; border: 1px solid var(--border); border-radius: 16px; }
+.settings-form input, #merchant-profile-fields input, #merchant-profile-fields textarea { background: #fff; border-color: #bccbdd; }
+.settings-form input[readonly] { background: #f0f4f8; color: var(--muted); }
+.settings-form .form-submit { color: #fff; }
+#workspace-profile { background: #fff; border: 1px solid var(--border); padding: 28px; border-radius: 16px; }
+@media (max-width: 600px) { .settings-form, #workspace-profile { padding: 20px; } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }

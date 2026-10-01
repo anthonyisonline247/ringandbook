@@ -1,5 +1,5 @@
 let currentUser = null;
-function setStatus(id, message, color = '#a8b6d1') {
+function setStatus(id, message, color = '#526379') {
   const el = document.getElementById(id); el.style.display = 'block'; el.style.color = color; el.textContent = message;
 }
 function showIdentity(user) {

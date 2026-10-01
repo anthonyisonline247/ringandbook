@@ -41,14 +41,13 @@ document.getElementById('manage-subscription-button').addEventListener('click', 
     const data = await billingRequest({ action: 'portal' });
     if (!data?.url || new URL(data.url).hostname !== 'billing.stripe.com') throw new Error('Unable to open billing management.');
     window.location.assign(data.url);
-  } catch (error) { setStatus('account-status', error.message, '#fbbf24'); }
+  } catch (error) { setStatus('account-status', error.message, '#92400e'); }
   finally { button.disabled = false; }
 });
 document.getElementById('cancel-setup-button').addEventListener('click', async () => {
   if (!confirm('Cancel your setup request? Your phone service and free trial will not be activated.')) return;
   const button = document.getElementById('cancel-setup-button'); button.disabled = true;
   try { await billingRequest({ action: 'cancel_setup' }); await refreshBilling(); }
-  catch (error) { setStatus('account-status', error.message, '#fbbf24'); }
+  catch (error) { setStatus('account-status', error.message, '#92400e'); }
   finally { button.disabled = false; }
 });
-
