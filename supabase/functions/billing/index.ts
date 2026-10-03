@@ -1,5 +1,5 @@
 import { account, checked, cors, db, errorResponse, HttpError, required, siteUrl, stripe, syncSubscription, updateAccount, userFor, withLock } from '../_shared/runtime.ts';
-import { billingConsent, publicAccount, selectPlan } from '../_shared/plans.mjs';
+import { publicAccount, selectPlan } from '../_shared/plans.mjs';
 
 export async function handleBilling(req: Request) {
   let headers: Record<string, string> = {};
@@ -72,14 +72,27 @@ export async function handleBilling(req: Request) {
         await updateAccount(user.id, { checkout_generation: crypto.randomUUID(), stripe_setup_session_id: null });
         row = await account(user.id);
       }
-      const session = await stripe.checkout.sessions.create({
-        mode: 'setup', currency: 'usd', payment_method_types: ['card'], customer: row.stripe_customer_id,
-        client_reference_id: user.id,
-        metadata: { app: 'ringandbooked', user_id: user.id, generation: row.checkout_generation },
-        setup_intent_data: { metadata: { app: 'ringandbooked', user_id: user.id } },
-        success_url: `${siteUrl}/?billing=setup_complete`, cancel_url: `${siteUrl}/?billing=canceled#pricing`,
-        custom_text: { submit: { message: billingConsent(row.plan, row.period) } },
-      }, { idempotencyKey: `rab-setup-${row.checkout_generation}` });
+      let session;
+      try {
+        // Card is explicit, so Setup mode doesn't need a currency. Keeping this
+        // request minimal avoids optional Checkout settings differing by account.
+        session = await stripe.checkout.sessions.create({
+          mode: 'setup', payment_method_types: ['card'], customer: row.stripe_customer_id,
+          client_reference_id: user.id,
+          metadata: { app: 'ringandbooked', user_id: user.id, generation: row.checkout_generation },
+          setup_intent_data: { metadata: { app: 'ringandbooked', user_id: user.id } },
+          success_url: `${siteUrl}/?billing=setup_complete`, cancel_url: `${siteUrl}/?billing=canceled#pricing`,
+        }, { idempotencyKey: `rab-setup-${row.checkout_generation}` });
+      } catch (error) {
+        const stripeError = error as { type?: unknown; code?: unknown; statusCode?: unknown; requestId?: unknown };
+        // Keep provider diagnostics searchable in Supabase logs without exposing
+        // request bodies, card data, or credentials.
+        console.error('Stripe Checkout creation failed', JSON.stringify({
+          type: stripeError.type, code: stripeError.code,
+          statusCode: stripeError.statusCode, requestId: stripeError.requestId,
+        }));
+        throw error;
+      }
       await updateAccount(user.id, { stripe_setup_session_id: session.id });
       return { url: session.url };
     });
