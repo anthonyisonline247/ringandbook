@@ -1,20 +1,23 @@
 import Stripe from 'npm:stripe@18.5.0';
 import { createClient } from 'npm:@supabase/supabase-js@2.57.4';
+import { validStripeKey } from './stripe-key.mjs';
 
 export function required(name: string) {
   const value = Deno.env.get(name);
   if (!value) throw new Error(`Missing server setting: ${name}`);
   return value;
 }
-export const stripe = new Stripe(required('STRIPE_SECRET_KEY'), {
+export const stripeMode = required('STRIPE_MODE');
+const stripeKey = stripeMode === 'live'
+  ? (Deno.env.get('STRIPE_RING_BOOK_LIVE_SECRET_KEY') || Deno.env.get('STRIPE_LIVE_SECRET_KEY') || required('STRIPE_SECRET_KEY'))
+  : required('STRIPE_SECRET_KEY');
+if (!validStripeKey(stripeKey, stripeMode)) throw new Error('Stripe key/mode mismatch');
+export const stripe = new Stripe(stripeKey, {
   apiVersion: '2025-08-27.basil', httpClient: Stripe.createFetchHttpClient(),
 });
 const rawDb = createClient(required('SUPABASE_URL'), required('SUPABASE_SERVICE_ROLE_KEY'), {
   auth: { persistSession: false, autoRefreshToken: false },
 });
-export const stripeMode = required('STRIPE_MODE');
-if (!['test', 'live'].includes(stripeMode)) throw new Error('Invalid Stripe mode');
-if (!required('STRIPE_SECRET_KEY').startsWith(stripeMode === 'test' ? 'sk_test_' : 'sk_live_')) throw new Error('Stripe key/mode mismatch');
 // Test fixtures must never share billing state with future paying customers.
 export const db = new Proxy(rawDb, { get(target, property) {
   if (property === 'from') return (name: string) => target.from(stripeMode === 'test' ? name.replace(/^billing_/, 'billing_test_') : name);
