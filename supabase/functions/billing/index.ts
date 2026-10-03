@@ -85,6 +85,9 @@ export async function handleBilling(req: Request) {
         // request minimal avoids optional Checkout settings differing by account.
         session = await stripe.checkout.sessions.create({
           mode: 'setup', payment_method_types: ['card'], customer: row.stripe_customer_id,
+          // The account defaults to Stripe Managed Payments, which does not
+          // support Setup mode. This flow deliberately only saves a method.
+          managed_payments: { enabled: false },
           client_reference_id: user.id,
           metadata: { app: 'ringandbooked', user_id: user.id, generation: row.checkout_generation },
           setup_intent_data: { metadata: { app: 'ringandbooked', user_id: user.id } },
