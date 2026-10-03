@@ -72,6 +72,13 @@ export async function handleBilling(req: Request) {
         await updateAccount(user.id, { checkout_generation: crypto.randomUUID(), stripe_setup_session_id: null });
         row = await account(user.id);
       }
+      // Stripe permanently associates an idempotency key with its first request.
+      // A prior failed setup can therefore not be retried after request settings
+      // change. Rotate only after a recorded failure; the lock prevents races.
+      if (row.last_checkout_error) {
+        await updateAccount(user.id, { checkout_generation: crypto.randomUUID(), last_checkout_error: null });
+        row = await account(user.id);
+      }
       let session;
       try {
         // Card is explicit, so Setup mode doesn't need a currency. Keeping this
@@ -85,15 +92,20 @@ export async function handleBilling(req: Request) {
         }, { idempotencyKey: `rab-setup-${row.checkout_generation}` });
       } catch (error) {
         const stripeError = error as { type?: unknown; code?: unknown; statusCode?: unknown; requestId?: unknown };
+        const diagnostic = {
+          type: typeof stripeError.type === 'string' ? stripeError.type : null,
+          code: typeof stripeError.code === 'string' ? stripeError.code : null,
+          statusCode: typeof stripeError.statusCode === 'number' ? stripeError.statusCode : null,
+          requestId: typeof stripeError.requestId === 'string' ? stripeError.requestId : null,
+          occurredAt: new Date().toISOString(),
+        };
+        await updateAccount(user.id, { last_checkout_error: diagnostic });
         // Keep provider diagnostics searchable in Supabase logs without exposing
         // request bodies, card data, or credentials.
-        console.error('Stripe Checkout creation failed', JSON.stringify({
-          type: stripeError.type, code: stripeError.code,
-          statusCode: stripeError.statusCode, requestId: stripeError.requestId,
-        }));
+        console.error('Stripe Checkout creation failed', JSON.stringify(diagnostic));
         throw error;
       }
-      await updateAccount(user.id, { stripe_setup_session_id: session.id });
+      await updateAccount(user.id, { stripe_setup_session_id: session.id, last_checkout_error: null });
       return { url: session.url };
     });
     return Response.json(result, { headers });
