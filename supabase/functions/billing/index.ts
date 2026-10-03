@@ -91,12 +91,20 @@ export async function handleBilling(req: Request) {
           success_url: `${siteUrl}/?billing=setup_complete`, cancel_url: `${siteUrl}/?billing=canceled#pricing`,
         }, { idempotencyKey: `rab-setup-${row.checkout_generation}` });
       } catch (error) {
-        const stripeError = error as { type?: unknown; code?: unknown; statusCode?: unknown; requestId?: unknown };
+        const stripeError = error as { type?: unknown; code?: unknown; statusCode?: unknown; requestId?: unknown; param?: unknown; message?: unknown };
+        const providerMessage = typeof stripeError.message === 'string'
+          ? stripeError.message
+            .replace(/\b(?:acct|cus|cs|pm|pi|seti|req)_[A-Za-z0-9_]+\b/g, '[redacted-id]')
+            .replace(/[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}/gi, '[redacted-email]')
+            .slice(0, 500)
+          : null;
         const diagnostic = {
           type: typeof stripeError.type === 'string' ? stripeError.type : null,
           code: typeof stripeError.code === 'string' ? stripeError.code : null,
           statusCode: typeof stripeError.statusCode === 'number' ? stripeError.statusCode : null,
           requestId: typeof stripeError.requestId === 'string' ? stripeError.requestId : null,
+          param: typeof stripeError.param === 'string' ? stripeError.param : null,
+          message: providerMessage,
           occurredAt: new Date().toISOString(),
         };
         await updateAccount(user.id, { last_checkout_error: diagnostic });
