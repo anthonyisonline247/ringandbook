@@ -55,10 +55,11 @@ export async function handleBilling(req: Request) {
     if (Deno.env.get('BILLING_ENABLED') !== 'true') throw new HttpError(503, 'Enrollment is being prepared. Please contact us to arrange your setup.');
     try { selectPlan(body.plan, body.period); } catch { throw new HttpError(400, 'Invalid plan or billing period'); }
     if (body.consent !== true) throw new HttpError(400, 'Please accept the billing terms');
+    const e2eTestMode = Deno.env.get('BILLING_E2E_TEST_MODE') === 'true';
     checked(await db.from('billing_accounts').upsert({ user_id: user.id, plan: body.plan, period: body.period }, { onConflict: 'user_id', ignoreDuplicates: true }));
     const result = await withLock(user.id, async () => {
       let row = await account(user.id);
-      if (row.stripe_subscription_id || row.status !== 'awaiting_payment_method') throw new HttpError(409, 'You already have a setup request or subscription. Open your account to manage it.');
+      if (row.stripe_subscription_id || (!e2eTestMode && row.status !== 'awaiting_payment_method')) throw new HttpError(409, 'You already have a setup request or subscription. Open your account to manage it.');
       if (row.plan !== body.plan || row.period !== body.period) throw new HttpError(409, 'A different plan is already being set up. Contact us to change it.');
       if (!row.stripe_customer_id) {
         const customer = await stripe.customers.create({ email: user.email, metadata: { app: 'ringandbooked', user_id: user.id } }, { idempotencyKey: `rab-customer-${user.id}` });
@@ -67,8 +68,9 @@ export async function handleBilling(req: Request) {
       }
       if (row.stripe_setup_session_id) {
         const previous = await stripe.checkout.sessions.retrieve(row.stripe_setup_session_id);
-        if (previous.status === 'open') return { url: previous.url };
+        if (previous.status === 'open' && !e2eTestMode) return { url: previous.url };
         if (previous.status === 'complete') throw new HttpError(409, 'Your payment method is being confirmed. Refresh your account shortly.');
+        if (previous.status === 'open') await stripe.checkout.sessions.expire(previous.id);
         await updateAccount(user.id, { checkout_generation: crypto.randomUUID(), stripe_setup_session_id: null });
         row = await account(user.id);
       }
@@ -81,18 +83,30 @@ export async function handleBilling(req: Request) {
       }
       let session;
       try {
-        // Card is explicit, so Setup mode doesn't need a currency. Keeping this
-        // request minimal avoids optional Checkout settings differing by account.
-        session = await stripe.checkout.sessions.create({
-          mode: 'setup', payment_method_types: ['card'], customer: row.stripe_customer_id,
-          // The account defaults to Stripe Managed Payments, which does not
-          // support Setup mode. This flow deliberately only saves a method.
-          managed_payments: { enabled: false },
-          client_reference_id: user.id,
-          metadata: { app: 'ringandbooked', user_id: user.id, generation: row.checkout_generation },
-          setup_intent_data: { metadata: { app: 'ringandbooked', user_id: user.id } },
-          success_url: `${siteUrl}/?billing=setup_complete`, cancel_url: `${siteUrl}/?billing=canceled#pricing`,
-        }, { idempotencyKey: `rab-setup-${row.checkout_generation}` });
+        if (e2eTestMode) {
+          const testPrice = required(`STRIPE_E2E_TEST_PRICE_${body.period.toUpperCase()}`);
+          session = await stripe.checkout.sessions.create({
+            mode: 'subscription', payment_method_types: ['card'], customer: row.stripe_customer_id,
+            managed_payments: { enabled: false }, client_reference_id: user.id,
+            line_items: [{ price: testPrice, quantity: 1 }],
+            metadata: { app: 'ringandbooked', user_id: user.id, generation: row.checkout_generation, purpose: 'e2e_live_test' },
+            subscription_data: { metadata: { app: 'ringandbooked', user_id: user.id, plan: row.plan, period: row.period, purpose: 'e2e_live_test' } },
+            success_url: `${siteUrl}/?billing=checkout_complete`, cancel_url: `${siteUrl}/?billing=canceled#pricing`,
+          }, { idempotencyKey: `rab-e2e-subscription-${row.checkout_generation}` });
+        } else {
+          // Card is explicit, so Setup mode doesn't need a currency. Keeping this
+          // request minimal avoids optional Checkout settings differing by account.
+          session = await stripe.checkout.sessions.create({
+            mode: 'setup', payment_method_types: ['card'], customer: row.stripe_customer_id,
+            // The account defaults to Stripe Managed Payments, which does not
+            // support Setup mode. This flow deliberately only saves a method.
+            managed_payments: { enabled: false },
+            client_reference_id: user.id,
+            metadata: { app: 'ringandbooked', user_id: user.id, generation: row.checkout_generation },
+            setup_intent_data: { metadata: { app: 'ringandbooked', user_id: user.id } },
+            success_url: `${siteUrl}/?billing=setup_complete`, cancel_url: `${siteUrl}/?billing=canceled#pricing`,
+          }, { idempotencyKey: `rab-setup-${row.checkout_generation}` });
+        }
       } catch (error) {
         const stripeError = error as { type?: unknown; code?: unknown; statusCode?: unknown; requestId?: unknown; param?: unknown; message?: unknown };
         const providerMessage = typeof stripeError.message === 'string'

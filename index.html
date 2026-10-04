@@ -73,14 +73,14 @@
       {
         "@type": "Offer",
         "name": "Starter",
-        "price": "89",
+        "price": "1",
         "priceCurrency": "USD",
         "url": "https://ringandbooked.com/#pricing"
       },
       {
         "@type": "Offer",
         "name": "Growth",
-        "price": "189",
+        "price": "1",
         "priceCurrency": "USD",
         "url": "https://ringandbooked.com/#pricing"
       }
@@ -833,24 +833,24 @@
   <div class="container" style="text-align:center">
     <div class="section-label">Pricing</div>
     <h2>Pricing that scales with your call volume</h2>
-    <p class="section-sub" style="margin:0 auto">Every plan is set up and tested for you, and starts with a 7-day free trial. Clear included minutes, transparent overage pricing, cancel anytime.</p>
+    <p class="section-sub" style="margin:0 auto">Temporary checkout verification: start either plan for $1. Every plan is set up and tested for you; cancel anytime from your account.</p>
 
     <div class="pricing-toggle">
       <span class="toggle-label active" data-period="monthly">Monthly</span>
       <button class="toggle-switch" id="billing-toggle" role="switch" aria-checked="false" onclick="toggleBilling()" aria-label="Toggle annual billing">
         <span class="toggle-knob"></span>
       </button>
-      <span class="toggle-label" data-period="annually">Annually <span class="toggle-save">Get 1 month free</span></span>
+      <span class="toggle-label" data-period="annually">Annually <span class="toggle-save">$1 test price</span></span>
     </div>
 
     <div class="pricing-grid">
       <div class="pricing-card">
         <div class="plan-name">Starter</div>
         <div class="plan-price">
-          <span class="price-monthly">$89<span>/mo</span></span>
-          <span class="price-annually">$82<span>/mo</span></span>
+          <span class="price-monthly">$1<span>/mo</span></span>
+          <span class="price-annually">$1<span>/year</span></span>
         </div>
-        <div class="plan-price-note price-annually">Billed $979/year</div>
+        <div class="plan-price-note price-annually">Billed $1/year for testing</div>
         <div class="plan-desc">For solo operators and small shops just getting started.</div>
         <ul class="plan-features">
           <li>250 minutes included/month</li>
@@ -869,10 +869,10 @@
         <div class="featured-badge">Most Popular</div>
         <div class="plan-name">Growth</div>
         <div class="plan-price">
-          <span class="price-monthly">$189<span>/mo</span></span>
-          <span class="price-annually">$173<span>/mo</span></span>
+          <span class="price-monthly">$1<span>/mo</span></span>
+          <span class="price-annually">$1<span>/year</span></span>
         </div>
-        <div class="plan-price-note price-annually">Billed $2,079/year</div>
+        <div class="plan-price-note price-annually">Billed $1/year for testing</div>
         <div class="plan-desc">For established businesses that can't afford to miss a call.</div>
         <ul class="plan-features">
           <li>700 minutes included/month</li>
@@ -1091,8 +1091,8 @@
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="checkout-title">
     <button class="modal-close" type="button" aria-label="Close" data-close-modal>&times;</button>
     <h3 id="checkout-title">Complete your subscription</h3>
-    <p class="modal-intro">Continue to Stripe to set up your subscription and add a payment method. Nothing is charged today. Your 7-day trial begins when your phone service goes live.</p>
-    <div class="checkout-plan"><div><strong id="checkout-plan-name">Growth</strong><span id="checkout-plan-detail">$189 / month</span></div><strong id="checkout-plan-price">$189/mo</strong></div>
+    <p class="modal-intro">Continue to Stripe to complete a live checkout verification. Your $1 test subscription is charged today and can be canceled from your account.</p>
+    <div class="checkout-plan"><div><strong id="checkout-plan-name">Growth</strong><span id="checkout-plan-detail">$1 / month</span></div><strong id="checkout-plan-price">$1/mo</strong></div>
     <p id="billing-terms" class="modal-intro" style="margin:12px 0"></p>
     <label style="display:flex;gap:10px;align-items:flex-start;margin:16px 0;font-size:.9rem"><input type="checkbox" id="billing-consent" style="margin-top:4px"> <span>I agree to the recurring charges above and understand how to cancel.</span></label>
     <button class="form-submit" id="checkout-button" type="button">Subscribe →</button>
@@ -1269,15 +1269,15 @@ function showCheckout(plan) {
   selectedPlan = plan;
   selectedBillingPeriod = document.getElementById('billing-toggle').getAttribute('aria-checked') === 'true' ? 'annually' : 'monthly';
   const prices = {
-    starter: { monthly: ['Starter', '$89 / month', '$89/mo'], annually: ['Starter', '$979 billed annually', '$979/year'] },
-    growth: { monthly: ['Growth', '$189 / month', '$189/mo'], annually: ['Growth', '$2,079 billed annually', '$2,079/year'] }
+    starter: { monthly: ['Starter', '$1 / month', '$1/mo'], annually: ['Starter', '$1 billed annually', '$1/year'] },
+    growth: { monthly: ['Growth', '$1 / month', '$1/mo'], annually: ['Growth', '$1 billed annually', '$1/year'] }
   };
   const details = prices[plan]?.[selectedBillingPeriod];
   if (!details) return;
   document.getElementById('checkout-status').style.display = 'none';
   document.getElementById('billing-consent').checked = false;
   const included = plan === 'starter' ? 250 : 700;
-  document.getElementById('billing-terms').textContent = `No charge today. After your 7-day trial, ${details[2]} renews automatically until canceled. Includes ${included} minutes per month; extra minutes cost $0.35 each, billed monthly. Cancel from your account before the trial ends to avoid the subscription charge.`;
+  document.getElementById('billing-terms').textContent = `A $1 test subscription is charged today, then renews at ${details[2]} until canceled. Includes ${included} minutes per month; extra minutes cost $0.35 each, billed monthly. Cancel anytime from your account.`;
   document.getElementById('checkout-plan-name').textContent = details[0];
   document.getElementById('checkout-plan-detail').textContent = details[1];
   document.getElementById('checkout-plan-price').textContent = details[2];
