@@ -294,8 +294,9 @@
       border: 2px solid #c7d8f5; background: var(--bg3); box-shadow: 0 18px 42px rgba(25,45,69,0.18);
     }
     .demo-video iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
-    .demo-video-play-hint { pointer-events: none; position: absolute; z-index: 1; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,.55); font-size: 1.1rem; font-weight: 850; letter-spacing: .7px; }
+    .demo-video-play-hint { pointer-events: none; position: absolute; z-index: 1; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,.55); font-size: 1.1rem; font-weight: 850; letter-spacing: .7px; transition: opacity .2s ease, visibility .2s ease; }
     .demo-video-play-hint span { display: grid; place-items: center; width: 78px; height: 78px; padding-left: 4px; border-radius: 50%; background: var(--accent); border: 4px solid rgba(255,255,255,.95); box-shadow: 0 8px 22px rgba(0,0,0,.34); font-size: 1.55rem; }
+    .demo-video-play-hint.is-hidden { opacity: 0; visibility: hidden; }
 
     /* HOW IT WORKS */
     .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin-top: 60px; }
@@ -597,7 +598,8 @@
       <p class="demo-video-caption">Tap play to watch Ring &amp; Booked answer the call, collect the details, and secure the booking.</p>
       <div class="demo-video">
         <iframe
-          src="https://www.youtube-nocookie.com/embed/4eVvqsl6CsI"
+          id="demo-video-player"
+          src="https://www.youtube-nocookie.com/embed/4eVvqsl6CsI?enablejsapi=1&amp;playsinline=1"
           title="Ring & Booked AI receptionist — real call demo"
           loading="lazy"
           allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -1140,6 +1142,36 @@ function toggleFaq(btn) {
   document.querySelectorAll('.faq-q.open').forEach(b => b.classList.remove('open'));
   if (!isOpen) { answer.classList.add('open'); btn.classList.add('open'); }
 }
+
+// The privacy-enhanced YouTube player reports state through its official IFrame
+// API. The large custom play cue is only for the unplayed preview.
+function initialiseDemoVideoPlayer() {
+  const iframe = document.getElementById('demo-video-player');
+  const hint = document.querySelector('.demo-video-play-hint');
+  if (!iframe || !hint || !window.YT?.Player) return;
+  new window.YT.Player(iframe.id, {
+    events: {
+      onStateChange(event) {
+        if (event.data === window.YT.PlayerState.PLAYING) hint.classList.add('is-hidden');
+      }
+    }
+  });
+}
+function loadDemoVideoApi() {
+  if (window.YT?.Player) { initialiseDemoVideoPlayer(); return; }
+  const priorReady = window.onYouTubeIframeAPIReady;
+  window.onYouTubeIframeAPIReady = () => { priorReady?.(); initialiseDemoVideoPlayer(); };
+  const api = document.createElement('script');
+  api.src = 'https://www.youtube.com/iframe_api'; api.async = true;
+  document.head.append(api);
+}
+const demoVideo = document.getElementById('demo-video-player');
+if (demoVideo && 'IntersectionObserver' in window) {
+  const observer = new IntersectionObserver(entries => {
+    if (entries.some(entry => entry.isIntersecting)) { observer.disconnect(); loadDemoVideoApi(); }
+  }, { rootMargin: '200px' });
+  observer.observe(demoVideo);
+} else if (demoVideo) loadDemoVideoApi();
 
 // Analytics events contain no form values or other personally identifiable information.
 document.querySelectorAll('a[href="#contact"]').forEach(link => {
