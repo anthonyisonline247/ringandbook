@@ -524,7 +524,7 @@
   </ul>
   <div class="nav-actions" id="guest-actions">
     <a href="#" class="nav-login" id="login-link">Log in</a>
-    <a href="#" class="nav-cta" id="signup-link">Get started</a>
+    <a href="/onboarding.html" class="nav-cta" id="signup-link">Get started</a>
   </div>
   <div class="account-actions" id="account-actions">
     <button class="account-button" id="account-button" type="button" aria-label="Open account"><span class="account-avatar" id="account-avatar">A</span><span id="account-name">Account</span></button>
@@ -537,7 +537,7 @@
   <h1>Every Call Answered.<br><em>Every Appointment Booked.</em></h1>
   <p class="hero-sub">Ring & Booked is the AI phone receptionist that knows your business inside out — and books real appointments into your calendar, 24/7.</p>
   <div class="hero-btns">
-    <a href="#contact" class="btn-primary">Start 7-Day Free Trial</a>
+    <a href="/onboarding.html" class="btn-primary">Start 7-Day Free Trial</a>
     <a href="#contact" class="btn-secondary">Book a Demo</a>
   </div>
 </section>
@@ -1212,6 +1212,7 @@ let client = null;
 let authMode = 'signup';
 let selectedPlan = null;
 let selectedBillingPeriod = 'monthly';
+if (new URLSearchParams(location.search).get('trial') === '1') sessionStorage.setItem('account-after-auth', 'onboarding');
 try {
   if (CLIENT_CONFIG.supabaseUrl && CLIENT_CONFIG.supabaseAnonKey) client = supabase.createClient(CLIENT_CONFIG.supabaseUrl, CLIENT_CONFIG.supabaseAnonKey);
 } catch (error) { console.error('Account service unavailable', error); }
@@ -1304,7 +1305,12 @@ document.getElementById('auth-form').addEventListener('submit', async e => {
   else result = await client.auth.signInWithPassword({ email, password });
   if (result.error) setStatus('auth-status', result.error.message, '#b42332');
   else if (authMode === 'signup' && !result.data.session) setStatus('auth-status', 'Check your email to confirm your account, then return to log in.', '#14734b');
-  else { closeModals(); await refreshAccount(); if (selectedPlan) showCheckout(selectedPlan); else openModal('account-modal'); }
+  else {
+    closeModals(); await refreshAccount();
+    if (sessionStorage.getItem('account-after-auth') === 'onboarding') { sessionStorage.removeItem('account-after-auth'); location.assign('/onboarding.html'); }
+    else if (selectedPlan) showCheckout(selectedPlan);
+    else openModal('account-modal');
+  }
   submit.disabled = false; submit.textContent = authMode === 'signup' ? 'Create account' : 'Log in';
 });
 document.getElementById('checkout-button').addEventListener('click', async () => {
@@ -1321,7 +1327,8 @@ if (client) {
   refreshAccount();
   client.auth.onAuthStateChange((_event, session) => {
     renderAccount(session?.user || null);
-    if (session?.user && sessionStorage.getItem('account-after-auth') === 'yes') { sessionStorage.removeItem('account-after-auth'); location.assign('/account.html'); }
+    if (session?.user && sessionStorage.getItem('account-after-auth') === 'onboarding') { sessionStorage.removeItem('account-after-auth'); location.assign('/onboarding.html'); }
+    else if (session?.user && sessionStorage.getItem('account-after-auth') === 'yes') { sessionStorage.removeItem('account-after-auth'); location.assign('/account.html'); }
   });
   const result = new URLSearchParams(window.location.search).get('billing');
   if (result) location.replace('/account.html?billing=' + encodeURIComponent(result));

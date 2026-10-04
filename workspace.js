@@ -4,6 +4,8 @@
   const status = document.getElementById('merchant-profile-status');
   const usage = document.getElementById('workspace-usage');
   const detail = document.getElementById('workspace-usage-detail');
+  const setup = document.getElementById('workspace-setup');
+  const setupDetail = document.getElementById('workspace-setup-detail');
   const names = [...form.querySelectorAll('[name]')].map(input => input.name);
   let generation = 0;
   let owner = null;
@@ -12,6 +14,7 @@
     owner = null;
     form.reset(); fields.disabled = true; status.textContent = '';
     usage.textContent = 'Loading usage…'; detail.textContent = '';
+    setup.textContent = 'Loading setup status…'; setupDetail.textContent = '';
   }
   function selectSection(name) {
     if (!document.getElementById(`workspace-${name}`)) name = 'overview';
@@ -50,14 +53,21 @@
       }).catch(() => {
         if (version === generation) { usage.textContent = 'Usage temporarily unavailable'; detail.textContent = 'Please reopen your workspace to retry. This does not mean your usage is zero.'; }
       });
-      const result = await client.from('merchant_profiles').select(names.join(',')).eq('user_id', owner).maybeSingle();
+      const result = await client.from('merchant_profiles').select([...names, 'onboarding_submitted_at'].join(',')).eq('user_id', owner).maybeSingle();
       if (version !== generation) return;
       if (result.error) throw result.error;
       names.forEach(name => { form.elements.namedItem(name).value = result.data?.[name] ?? (name === 'timezone' ? 'America/Los_Angeles' : ''); });
+      if (result.data?.onboarding_submitted_at) {
+        setup.textContent = 'Setup request received';
+        setupDetail.textContent = 'We will review your details, confirm your calendar and call-forwarding plan, then configure and test your receptionist.';
+      } else {
+        setup.textContent = 'Business details needed';
+        setupDetail.textContent = 'Complete your setup brief so we can prepare your receptionist.';
+      }
       fields.disabled = false;
       status.textContent = result.data ? 'Your saved business details.' : 'Add your business details to help us prepare your receptionist.';
     } catch {
-      if (version === generation) { fields.disabled = true; status.textContent = 'Business details could not be loaded. Please retry or contact support.'; }
+      if (version === generation) { fields.disabled = true; setup.textContent = 'Setup status unavailable'; status.textContent = 'Business details could not be loaded. Please retry or contact support.'; }
     }
   }
   form.addEventListener('submit', async event => {

@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Start your setup | Ring &amp; Booked</title>
+  <link rel="icon" href="/favicon.svg">
+  <link rel="stylesheet" href="/onboarding.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script defer src="/onboarding.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#onboarding-main">Skip to form</a>
+  <header class="topbar">
+    <a class="brand" href="/">Ring &amp; <span>Booked</span></a>
+    <a class="back-link" href="/">← Back to website</a>
+  </header>
+  <main id="onboarding-main">
+    <section id="onboarding-gate" class="gate" role="status">Checking your account…</section>
+    <section id="onboarding-shell" hidden>
+      <div class="intro">
+        <p class="eyebrow">START YOUR FREE SETUP</p>
+        <h1>Tell us how your business works.</h1>
+        <p>We use these details to build and test your AI receptionist. This is a done-for-you setup—not a self-serve configuration screen.</p>
+        <div class="expectation"><strong>Your 7-day free trial begins when your phone service is live.</strong><span>Nothing in this form turns on calls or starts billing.</span></div>
+      </div>
+
+      <div class="progress" aria-label="Onboarding progress"><span class="progress-step active" data-progress="1">1 <b>Business</b></span><i></i><span class="progress-step" data-progress="2">2 <b>Call handling</b></span><i></i><span class="progress-step" data-progress="3">3 <b>Review</b></span></div>
+
+      <form id="onboarding-form" novalidate>
+        <section class="form-step" data-step="1">
+          <h2>Business basics</h2><p>Start with the essentials our setup team needs.</p>
+          <div class="fields two-col">
+            <label>Business name <em>*</em><input name="business_name" maxlength="160" autocomplete="organization" required></label>
+            <label>Your name <em>*</em><input name="contact_name" maxlength="120" autocomplete="name" required></label>
+            <label>Business phone <em>*</em><input name="phone" type="tel" maxlength="50" autocomplete="tel" required></label>
+            <label>Time zone <em>*</em><input name="timezone" maxlength="100" value="America/Los_Angeles" placeholder="America/Los_Angeles" required></label>
+          </div>
+          <div class="fields">
+            <label>Business address <em>*</em><input name="address" maxlength="300" autocomplete="street-address" required></label>
+            <label>Where do you serve? <em>*</em><input name="service_area" maxlength="300" placeholder="Cities, neighborhoods, or ZIP codes" required></label>
+          </div>
+        </section>
+
+        <section class="form-step" data-step="2" hidden>
+          <h2>How should calls be handled?</h2><p>Plain-language notes are perfect. Our team turns them into the receptionist’s call flow.</p>
+          <div class="fields">
+            <label>Services you offer <em>*</em><textarea name="services" maxlength="1500" placeholder="For example: drain cleaning, water-heater repairs, emergency plumbing" required></textarea></label>
+            <label>Business hours and after-hours rules <em>*</em><textarea name="business_hours" maxlength="1500" placeholder="Include regular hours, weekend availability, and any exceptions" required></textarea></label>
+            <label>Emergency transfer number <span class="optional">Optional</span><input name="transfer_phone" type="tel" maxlength="50" placeholder="A person to call for urgent issues"></label>
+            <label>Preferred caller languages <span class="optional">Optional</span><input name="language_preferences" maxlength="300" placeholder="For example: English and Spanish"></label>
+            <label>Anything else we should know? <span class="optional">Optional</span><textarea name="onboarding_notes" maxlength="3000" placeholder="Scheduling preferences, pricing guardrails, policies, common questions, or calendar details"></textarea></label>
+          </div>
+        </section>
+
+        <section class="form-step" data-step="3" hidden>
+          <h2>Review your setup request</h2>
+          <p>We’ll save the details below for our setup team. You can still edit business information later from your workspace.</p>
+          <div id="review-details" class="review-details"></div>
+          <label class="acknowledgement"><input id="setup-acknowledgement" type="checkbox" required> <span>I understand that Ring &amp; Booked will review and configure my receptionist before it goes live.</span></label>
+        </section>
+
+        <p id="onboarding-status" class="status" role="status" aria-live="polite"></p>
+        <div class="form-actions"><button class="secondary" id="back-button" type="button" hidden>Back</button><button class="primary" id="next-button" type="button">Continue</button><button class="primary" id="submit-button" type="submit" hidden>Send setup request</button></div>
+      </form>
+
+      <section id="complete-panel" class="complete" hidden>
+        <div class="checkmark">✓</div><p class="eyebrow">SETUP REQUEST RECEIVED</p><h1>We’ve got the details we need to begin.</h1>
+        <p>Our team will review your business brief, confirm your calendar and call-forwarding plan with you, then configure and test your receptionist. Your 7-day trial starts once your service is live.</p>
+        <div class="next-steps"><div><b>1</b><span>We review your business details.</span></div><div><b>2</b><span>We confirm scheduling and call-forwarding details.</span></div><div><b>3</b><span>We build, test, and launch your receptionist.</span></div></div>
+        <a class="primary complete-link" href="/account.html">Go to your workspace</a>
+      </section>
+    </section>
+  </main>
+</body>
+</html>
