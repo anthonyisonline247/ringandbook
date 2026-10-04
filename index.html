@@ -538,7 +538,6 @@
   <p class="hero-sub">Ring & Booked is the AI phone receptionist that knows your business inside out — and books real appointments into your calendar, 24/7.</p>
   <div class="hero-btns">
     <a href="/onboarding.html" class="btn-primary">Start 7-Day Free Trial</a>
-    <a href="#contact" class="btn-secondary">Book a Demo</a>
   </div>
 </section>
 
@@ -625,7 +624,7 @@
         </div>
       </div>
       <div class="demo-text">
-        <div class="section-label">Live Demo</div>
+        <div class="section-label">See It In Action</div>
         <h3>Watch it handle a real call end-to-end</h3>
         <p>Ring & Booked doesn't just take messages — it completes the booking. The appointment lands directly in your Cal.com calendar, with the customer's name, phone, address, and service type.</p>
         <ul class="check-list">
@@ -1013,9 +1012,9 @@
   <div class="container">
     <div class="contact-wrap">
       <div class="contact-form">
-        <h3 style="font-size:1.4rem;font-weight:800;margin-bottom:8px">Book a free demo</h3>
-        <p style="color:var(--muted);font-size:0.9rem;margin-bottom:24px">We'll set up a 20-minute call to show you how it works with your actual business.</p>
-        <form id="demo-form">
+        <h3 style="font-size:1.4rem;font-weight:800;margin-bottom:8px">Questions before you start?</h3>
+        <p style="color:var(--muted);font-size:0.9rem;margin-bottom:24px">Watch the real call above, then send us any question about your business. Ready to move forward? Start your free setup instead.</p>
+        <form id="contact-form">
         <div class="form-row">
           <div class="form-group">
             <label>First Name</label>
@@ -1055,16 +1054,16 @@
           <label>What's your biggest challenge with calls?</label>
           <textarea id="message" rows="3" placeholder="e.g. Missed calls after hours, Chinese-speaking customers, staff too busy to answer..."></textarea>
         </div>
-        <button type="submit" class="form-submit" id="submit-btn">Request Demo →</button>
+        <button type="submit" class="form-submit" id="submit-btn">Send message →</button>
         <div id="form-status" style="margin-top:12px;font-size:0.9rem;display:none;"></div>
         </form>
       </div>
       <div class="contact-info">
         <div class="section-label">Get in touch</div>
         <h3>Stop losing bookings to voicemail</h3>
-        <p>Most service businesses recover 20–30% more bookings in the first month. Book a demo to see if Ring & Booked is right for your business.</p>
+        <p>Start with your business details and we’ll configure the receptionist around your real services, rules, and calendar.</p>
         <ul class="contact-perks">
-          <li><span class="icon">🎯</span><div><strong>Free setup consultation</strong><br><span style="color:var(--muted);font-size:0.85rem">We review your call flow and show you exactly what your AI would say.</span></div></li>
+          <li><span class="icon">🎯</span><div><strong>Done-for-you setup</strong><br><span style="color:var(--muted);font-size:0.85rem">You share the business rules; we configure and test the receptionist.</span></div></li>
           <li><span class="icon">⚡</span><div><strong>Live in 1 business day</strong><br><span style="color:var(--muted);font-size:0.85rem">No long contracts, no technical setup on your side.</span></div></li>
           <li><span class="icon">🔄</span><div><strong>30-day money-back guarantee</strong><br><span style="color:var(--muted);font-size:0.85rem">If you're not happy, we refund you — no questions asked.</span></div></li>
           <li><span class="icon">🌐</span><div><strong>Serving Seattle metro &amp; beyond</strong><br><span style="color:var(--muted);font-size:0.85rem">Currently serving WA state, expanding to other cities soon.</span></div></li>
@@ -1155,7 +1154,7 @@ function formatSubmissionTime() {
   return `${datePart} ${timePart} ${tzPart}`;
 }
 
-document.getElementById('demo-form').addEventListener('submit', function(e) {
+document.getElementById('contact-form').addEventListener('submit', function(e) {
   e.preventDefault();
   const btn = document.getElementById('submit-btn');
   const status = document.getElementById('form-status');
@@ -1187,7 +1186,7 @@ document.getElementById('demo-form').addEventListener('submit', function(e) {
   emailjs.send('service_fq5u7h2', 'template_1kcax3r', params)
     .then(() => {
       gtag('event', 'generate_lead', {
-        lead_source: 'website_demo_form'
+        lead_source: 'website_contact_form'
       });
       status.style.display = 'block';
       status.style.color = '#14734b';
@@ -1198,7 +1197,7 @@ document.getElementById('demo-form').addEventListener('submit', function(e) {
       status.style.display = 'block';
       status.style.color = '#b42332';
       status.innerHTML = 'Something went wrong. Please email us directly at <a href="mailto:support@otterbeacon.com" style="color:#b42332;text-decoration:underline">support@otterbeacon.com</a>.';
-      btn.textContent = 'Request Demo →';
+      btn.textContent = 'Send message →';
       btn.disabled = false;
       console.error(err);
     });
