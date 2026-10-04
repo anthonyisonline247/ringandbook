@@ -69,7 +69,7 @@ export async function handleBilling(req: Request) {
       if (row.stripe_setup_session_id) {
         const previous = await stripe.checkout.sessions.retrieve(row.stripe_setup_session_id);
         if (previous.status === 'open' && !e2eTestMode) return { url: previous.url };
-        if (previous.status === 'complete') throw new HttpError(409, 'Your payment method is being confirmed. Refresh your account shortly.');
+        if (previous.status === 'complete' && !e2eTestMode) throw new HttpError(409, 'Your payment method is being confirmed. Refresh your account shortly.');
         if (previous.status === 'open') await stripe.checkout.sessions.expire(previous.id);
         await updateAccount(user.id, { checkout_generation: crypto.randomUUID(), stripe_setup_session_id: null });
         row = await account(user.id);
