@@ -1025,44 +1025,21 @@
         <h3 style="font-size:1.4rem;font-weight:800;margin-bottom:8px">Questions before you start?</h3>
         <p style="color:var(--muted);font-size:0.9rem;margin-bottom:24px">Watch the real call above, then send us any question about your business. Ready to move forward? Start your free setup instead.</p>
         <form id="contact-form">
-        <div class="form-row">
-          <div class="form-group">
-            <label>First Name</label>
-            <input type="text" id="first_name" placeholder="Enter your first name" required>
-          </div>
-          <div class="form-group">
-            <label>Last Name</label>
-            <input type="text" id="last_name" placeholder="Enter your last name" required>
-          </div>
+        <div class="form-group">
+          <label>Name</label>
+          <input type="text" id="contact_name" placeholder="Business name or your name" required>
         </div>
         <div class="form-group">
           <label>Business Email</label>
           <input type="email" id="from_email" placeholder="Enter your business email" required>
         </div>
         <div class="form-group">
-          <label>Business Name</label>
-          <input type="text" id="business" placeholder="Enter your business name" required>
+          <label>Phone <span style="color:var(--muted);font-weight:400">(optional)</span></label>
+          <input type="tel" id="phone" placeholder="A number we can call">
         </div>
         <div class="form-group">
-          <label>Business Phone</label>
-          <input type="tel" id="phone" placeholder="Enter the best number to reach you">
-        </div>
-        <div class="form-group">
-          <label>Industry</label>
-          <select id="industry">
-            <option value="">Select your industry</option>
-            <option>Plumbing</option>
-            <option>HVAC / Heating</option>
-            <option>Electrical</option>
-            <option>Auto Repair</option>
-            <option>Cleaning Services</option>
-            <option>Landscaping</option>
-            <option>Other</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>What's your biggest challenge with calls?</label>
-          <textarea id="message" rows="3" placeholder="Briefly describe the call-handling question you need help with"></textarea>
+          <label>What would you like help with? <span style="color:var(--muted);font-weight:400">(optional)</span></label>
+          <textarea id="message" rows="3" placeholder="Briefly describe your question"></textarea>
         </div>
         <button type="submit" class="form-submit" id="submit-btn">Send message →</button>
         <div id="form-status" style="margin-top:12px;font-size:0.9rem;display:none;"></div>
@@ -1201,26 +1178,26 @@ document.getElementById('contact-form').addEventListener('submit', function(e) {
   btn.textContent = 'Sending...';
   btn.disabled = true;
 
-  const fullName = document.getElementById('first_name').value + ' ' + document.getElementById('last_name').value;
+  const fullName = document.getElementById('contact_name').value.trim();
   const email = document.getElementById('from_email').value;
-  const business = document.getElementById('business').value;
   const phone = document.getElementById('phone').value;
-  const industry = document.getElementById('industry').value;
   const rawMessage = document.getElementById('message').value;
 
   const params = {
     // Fields matching the EmailJS template's current variables ({{name}}, {{time}}, {{message}})
     name: fullName,
     email: email,
-    title: business,
+    title: fullName,
     time: formatSubmissionTime(),
-    message: `Name: ${fullName}\nEmail: ${email}\nPhone: ${phone}\nBusiness: ${business}\nIndustry: ${industry}\n\n${rawMessage}`,
+    message: `Name: ${fullName}\nEmail: ${email}\nPhone: ${phone || 'Not provided'}\n\n${rawMessage || 'No additional message provided.'}`,
     // Original fields, kept for the Subject/From Name/Reply To settings configured in EmailJS
     from_name: fullName,
     from_email: email,
-    business: business,
+    // The current EmailJS subject uses {{business}}. Use the supplied name as
+    // a backwards-compatible subject label; no business-name field is shown.
+    business: fullName,
     phone: phone,
-    industry: industry,
+    industry: '',
   };
 
   emailjs.send('service_fq5u7h2', 'template_1kcax3r', params)
