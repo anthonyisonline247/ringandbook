@@ -33,6 +33,20 @@ export async function handleBilling(req: Request) {
       });
       return Response.json({ url: portal.url }, { headers });
     }
+    if (body.action === 'upgrade') {
+      if (body.plan !== 'growth') throw new HttpError(400, 'Only Starter-to-Growth upgrades are available here');
+      const row = await account(user.id);
+      if (!row?.stripe_customer_id || !row.stripe_subscription_id || row.plan !== 'starter') throw new HttpError(409, 'An active Starter subscription is required to upgrade');
+      const subscription = await stripe.subscriptions.retrieve(row.stripe_subscription_id);
+      if (subscription.metadata?.app !== 'ringandbooked' || subscription.metadata?.user_id !== user.id || !['active', 'trialing'].includes(subscription.status)) {
+        throw new HttpError(409, 'Your subscription is not ready for an upgrade. Open your account to manage it.');
+      }
+      const portal = await stripe.billingPortal.sessions.create({
+        customer: row.stripe_customer_id, return_url: `${siteUrl}/account.html?billing=upgrade_returned`,
+        configuration: required('STRIPE_PORTAL_CONFIGURATION_ID'),
+      });
+      return Response.json({ url: portal.url }, { headers });
+    }
     if (body.action === 'cancel_setup') {
       const existing = await account(user.id);
       if (!existing) throw new HttpError(409, 'No setup request found');

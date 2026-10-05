@@ -855,11 +855,11 @@
         <ul class="plan-features">
           <li>250 minutes included/month</li>
           <li>1 phone number forwarded</li>
-          <li>English language</li>
+          <li>Multi-language support, configured for your callers</li>
           <li>Cal.com appointment booking</li>
           <li>AI-written daily call summary</li>
           <li>Call recording &amp; transcript</li>
-          <li class="dim">1 language only</li>
+          <li class="dim">Language preferences configured during setup</li>
           <li class="dim">No urgent escalation</li>
         </ul>
         <div class="plan-overage">$0.35/min after included minutes</div>
@@ -877,7 +877,7 @@
         <ul class="plan-features">
           <li>700 minutes included/month</li>
           <li>1 phone number forwarded</li>
-          <li>3 languages (English + 2 of your choice)</li>
+          <li>Multi-language support, configured for your callers</li>
           <li>Cal.com appointment booking</li>
           <li>Urgent escalation transfer</li>
           <li>Read-back confirmation</li>
@@ -1228,6 +1228,7 @@ let client = null;
 let authMode = 'signup';
 let selectedPlan = null;
 let selectedBillingPeriod = 'monthly';
+let pricingBillingState = null;
 if (new URLSearchParams(location.search).get('trial') === '1') sessionStorage.setItem('account-after-auth', 'onboarding');
 try {
   if (CLIENT_CONFIG.supabaseUrl && CLIENT_CONFIG.supabaseAnonKey) client = supabase.createClient(CLIENT_CONFIG.supabaseUrl, CLIENT_CONFIG.supabaseAnonKey);
@@ -1242,16 +1243,33 @@ function renderAccount(user) {
   const signedIn = Boolean(user);
   document.getElementById('guest-actions').style.display = signedIn ? 'none' : 'flex';
   document.getElementById('account-actions').classList.toggle('visible', signedIn);
-  if (!signedIn) return;
+  if (!signedIn) { pricingBillingState = null; renderPlanActions(); return; }
   const name = accountName(user);
   document.getElementById('account-name').textContent = name.split(' ')[0];
   document.getElementById('account-avatar').textContent = name.charAt(0).toUpperCase();
+}
+function hasActiveSubscription() {
+  return Boolean(pricingBillingState?.plan) && ['trialing', 'active'].includes(pricingBillingState.status);
+}
+function renderPlanActions() {
+  document.querySelectorAll('[data-plan]').forEach(button => {
+    const plan = button.dataset.plan;
+    const defaultLabel = button.dataset.defaultLabel || button.textContent.trim();
+    button.dataset.defaultLabel = defaultLabel;
+    if (!hasActiveSubscription()) { button.textContent = defaultLabel; return; }
+    if (pricingBillingState.plan === plan) button.textContent = 'Current plan';
+    else if (pricingBillingState.plan === 'starter' && plan === 'growth') button.textContent = 'Upgrade to Growth';
+    else button.textContent = 'Manage plan';
+  });
 }
 async function refreshAccount() {
   if (!client) return;
   const { data: { user } } = await client.auth.getUser();
   renderAccount(user);
-
+  if (!user) return;
+  try { pricingBillingState = await billingRequest({ action: 'status' }); }
+  catch { pricingBillingState = null; }
+  renderPlanActions();
 }
 function setAuthMode(mode) {
   authMode = mode;
@@ -1286,7 +1304,19 @@ function showCheckout(plan) {
 async function beginPlan(plan) {
   if (!client) { alert('Account service is unavailable. Please try again shortly.'); return; }
   const { data } = await client.auth.getSession();
-  if (data.session) showCheckout(plan); else { setAuthMode('signup'); selectedPlan = plan; openModal('auth-modal'); }
+  if (!data.session) { setAuthMode('signup'); selectedPlan = plan; openModal('auth-modal'); return; }
+  if (!hasActiveSubscription()) { showCheckout(plan); return; }
+  if (pricingBillingState.plan === plan) { location.assign('/account.html'); return; }
+  if (pricingBillingState.plan !== 'starter' || plan !== 'growth') { location.assign('/account.html'); return; }
+  const button = document.querySelector(`[data-plan="${plan}"]`);
+  const label = button?.textContent;
+  if (button) { button.textContent = 'Opening secure upgrade…'; button.setAttribute('aria-busy', 'true'); }
+  try {
+    const upgrade = await billingRequest({ action: 'upgrade', plan: 'growth' });
+    if (!upgrade?.url || new URL(upgrade.url).hostname !== 'billing.stripe.com') throw new Error('Unable to open secure upgrade.');
+    window.location.assign(upgrade.url);
+  } catch (error) { alert(error.message || 'Unable to open secure upgrade. Please try again.'); }
+  finally { if (button) { button.textContent = label || 'Upgrade to Growth'; button.removeAttribute('aria-busy'); } }
 }
 document.getElementById('login-link').addEventListener('click', e => { e.preventDefault(); setAuthMode('login'); openModal('auth-modal'); });
 document.getElementById('signup-link').addEventListener('click', e => { e.preventDefault(); setAuthMode('signup'); openModal('auth-modal'); });
