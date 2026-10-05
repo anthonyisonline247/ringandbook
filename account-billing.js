@@ -17,11 +17,22 @@ async function billingRequest(payload) {
   return data;
 }
 let billingRefreshVersion = 0;
+function resetBillingView() {
+  ++billingRefreshVersion;
+  document.getElementById('subscription-status').textContent = 'Loading subscription…';
+  document.getElementById('subscription-detail').textContent = 'Checking your account securely…';
+  document.getElementById('manage-subscription-button').disabled = true;
+  document.getElementById('cancel-setup-button').hidden = true;
+}
 async function refreshBilling() {
   const version = ++billingRefreshVersion;
+  const expectedUserId = currentUser?.id;
+  if (!expectedUserId) { resetBillingView(); return; }
+  document.getElementById('manage-subscription-button').disabled = true;
   try {
     const info = await billingRequest({ action: 'status' });
-    if (version !== billingRefreshVersion) return;
+    const { data, error } = await client.auth.getUser();
+    if (version !== billingRefreshVersion || error || data.user?.id !== expectedUserId || currentUser?.id !== expectedUserId || info.ownerId !== expectedUserId) return;
     const labels = { not_started: 'No subscription yet', awaiting_payment_method: 'Payment method needed', pending_setup: 'Preparing your phone service', starting: 'Starting your trial', trialing: '7-day free trial', active: 'Active', canceled: 'Canceled', past_due: 'Payment needs attention', unpaid: 'Payment needed', paused: 'Paused', incomplete: 'Payment setup incomplete', incomplete_expired: 'Payment setup expired' };
     document.getElementById('subscription-status').textContent = labels[info.status] || 'Contact support';
     document.getElementById('subscription-detail').textContent = info.status === 'pending_setup' ? 'Payment method saved. No charge today. We will contact you to finish setup; your trial begins when your phone service goes live.' : info.status === 'trialing' && info.trialEnd ? `Trial ends ${new Date(info.trialEnd).toLocaleDateString()}. ${info.cancelAtPeriodEnd ? 'Cancellation is scheduled.' : 'Your selected plan renews automatically afterward.'}` : info.cancelAtPeriodEnd ? 'Your subscription is scheduled to cancel at the end of its current period.' : info.plan ? `${info.plan === 'starter' ? 'Starter' : 'Growth'} · ${info.period === 'annually' ? 'Annual billing' : 'Monthly billing'}` : 'Choose a plan. Your 7-day trial starts when your phone service is live.';
@@ -35,6 +46,9 @@ async function refreshBilling() {
     }
   }
 }
+window.addEventListener('workspace-user', event => {
+  if (!event.detail || event.detail !== currentUser?.id) resetBillingView();
+});
 document.getElementById('manage-subscription-button').addEventListener('click', async () => {
   const button = document.getElementById('manage-subscription-button'); button.disabled = true;
   try {

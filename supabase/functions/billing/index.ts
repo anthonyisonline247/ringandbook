@@ -22,7 +22,7 @@ export async function handleBilling(req: Request) {
         await syncSubscription(row.stripe_subscription_id);
         row = await account(user.id);
       }
-      return Response.json(publicAccount(row), { headers });
+      return Response.json({ ...publicAccount(row), ownerId: user.id }, { headers });
     }
     if (body.action === 'portal') {
       const row = await account(user.id);

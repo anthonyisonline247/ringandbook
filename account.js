@@ -4,6 +4,8 @@ function setStatus(id, message, color = '#526379') {
 }
 function showIdentity(user) {
   currentUser = user;
+  if (typeof resetBillingView === 'function') resetBillingView();
+  window.dispatchEvent(new CustomEvent('workspace-user', {detail:user.id}));
   const name = user.user_metadata?.full_name || user.user_metadata?.name || user.email?.split('@')[0] || 'Your account';
   document.getElementById('account-title').textContent = `Welcome, ${name}`;
   document.getElementById('account-email').textContent = user.email || '';
@@ -40,7 +42,12 @@ async function bootAccount() {
     }
     client.auth.onAuthStateChange((event,session) => {
       if (event === 'SIGNED_OUT' || !session) lockAccount();
-      else if (currentUser && currentUser.id !== session.user.id) location.reload();
+      else if (currentUser && currentUser.id !== session.user.id) {
+        // Never leave the previous customer's workspace visible while an OAuth
+        // session is being replaced. Reload under the new, verified identity.
+        lockAccount();
+        location.replace('/account.html');
+      }
     });
   } catch {
     document.getElementById('session-gate').textContent = 'Unable to load your account. Please refresh this page to retry.';
