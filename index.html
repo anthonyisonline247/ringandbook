@@ -80,7 +80,7 @@
       {
         "@type": "Offer",
         "name": "Growth",
-        "price": "1.10",
+        "price": "1.50",
         "priceCurrency": "USD",
         "url": "https://ringandbooked.com/#pricing"
       }
@@ -869,10 +869,10 @@
         <div class="featured-badge">Most Popular</div>
         <div class="plan-name">Growth</div>
         <div class="plan-price">
-          <span class="price-monthly">$1.10<span>/mo</span></span>
-          <span class="price-annually">$1.10<span>/year</span></span>
+          <span class="price-monthly">$1.50<span>/mo</span></span>
+          <span class="price-annually">$1.50<span>/year</span></span>
         </div>
-        <div class="plan-price-note price-annually">Billed $1.10/year for testing</div>
+        <div class="plan-price-note price-annually">Billed $1.50/year for testing</div>
         <div class="plan-desc">For established businesses that can't afford to miss a call.</div>
         <ul class="plan-features">
           <li>700 minutes included/month</li>
@@ -1084,6 +1084,7 @@
       <div id="auth-status" style="margin-top:12px;font-size:.9rem;display:none"></div>
     </form>
     <p class="auth-switch" id="auth-switch">Already a client? <button class="text-button" id="show-login" type="button">Log in</button></p>
+    <p class="auth-switch" id="auth-forgot" hidden><button class="text-button" id="forgot-password" type="button">Forgot password?</button></p>
   </div>
 </div>
 
@@ -1091,8 +1092,8 @@
   <div class="modal" role="dialog" aria-modal="true" aria-labelledby="checkout-title">
     <button class="modal-close" type="button" aria-label="Close" data-close-modal>&times;</button>
     <h3 id="checkout-title">Complete your subscription</h3>
-    <p class="modal-intro">Continue to Stripe to complete a live checkout verification. Your $1 test subscription is charged today and can be canceled from your account.</p>
-    <div class="checkout-plan"><div><strong id="checkout-plan-name">Growth</strong><span id="checkout-plan-detail">$1.10 / month</span></div><strong id="checkout-plan-price">$1.10/mo</strong></div>
+    <p class="modal-intro">Continue to Stripe to complete a live checkout verification. Your selected test subscription is charged today and can be canceled from your account.</p>
+    <div class="checkout-plan"><div><strong id="checkout-plan-name">Growth</strong><span id="checkout-plan-detail">$1.50 / month</span></div><strong id="checkout-plan-price">$1.50/mo</strong></div>
     <p id="billing-terms" class="modal-intro" style="margin:12px 0"></p>
     <label style="display:flex;gap:10px;align-items:flex-start;margin:16px 0;font-size:.9rem"><input type="checkbox" id="billing-consent" style="margin-top:4px"> <span>I agree to the recurring charges above and understand how to cancel.</span></label>
     <button class="form-submit" id="checkout-button" type="button">Subscribe →</button>
@@ -1285,6 +1286,7 @@ function setAuthMode(mode) {
   document.getElementById('auth-password').autocomplete = signup ? 'new-password' : 'current-password';
   document.getElementById('auth-submit').textContent = signup ? 'Create account' : 'Log in';
   document.getElementById('auth-switch').innerHTML = signup ? 'Already a client? <button class="text-button" id="show-login" type="button">Log in</button>' : 'New to Ring &amp; Booked? <button class="text-button" id="show-signup" type="button">Create an account</button>';
+  document.getElementById('auth-forgot').hidden = signup;
   document.getElementById('auth-status').style.display = 'none';
 }
 function showCheckout(plan) {
@@ -1292,7 +1294,7 @@ function showCheckout(plan) {
   selectedBillingPeriod = document.getElementById('billing-toggle').getAttribute('aria-checked') === 'true' ? 'annually' : 'monthly';
   const prices = {
     starter: { monthly: ['Starter', '$1 / month', '$1/mo'], annually: ['Starter', '$1 billed annually', '$1/year'] },
-    growth: { monthly: ['Growth', '$1.10 / month', '$1.10/mo'], annually: ['Growth', '$1.10 billed annually', '$1.10/year'] }
+    growth: { monthly: ['Growth', '$1.50 / month', '$1.50/mo'], annually: ['Growth', '$1.50 billed annually', '$1.50/year'] }
   };
   const details = prices[plan]?.[selectedBillingPeriod];
   if (!details) return;
@@ -1341,6 +1343,20 @@ async function billingRequest(payload) {
 document.querySelectorAll('[data-plan]').forEach(button => button.addEventListener('click', e => { e.preventDefault(); beginPlan(button.dataset.plan); }));
 document.addEventListener('click', e => { if (e.target.matches('[data-close-modal]') || e.target.classList.contains('modal-backdrop')) closeModals(); if (e.target.id === 'show-login') setAuthMode('login'); if (e.target.id === 'show-signup') setAuthMode('signup'); });
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModals(); });
+document.getElementById('forgot-password').addEventListener('click', async () => {
+  const email = document.getElementById('auth-email').value.trim();
+  if (!email) { setStatus('auth-status', 'Enter your email address first, then select Forgot password.', '#92400e'); return; }
+  const button = document.getElementById('forgot-password');
+  button.disabled = true;
+  button.textContent = 'Sending reset link…';
+  const { error } = await client.auth.resetPasswordForEmail(email, {
+    redirectTo: `${window.location.origin}/reset-password.html`
+  });
+  if (error) setStatus('auth-status', error.message, '#b42332');
+  else setStatus('auth-status', 'If an account exists for that email, we sent a password reset link.', '#14734b');
+  button.disabled = false;
+  button.textContent = 'Forgot password?';
+});
 document.getElementById('google-login').addEventListener('click', async () => {
   sessionStorage.setItem('account-after-auth', 'yes');
   // Start OAuth from a fully signed-out session so a different Google account
