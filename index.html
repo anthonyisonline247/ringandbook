@@ -73,7 +73,7 @@
       {
         "@type": "Offer",
         "name": "Starter",
-        "price": "1",
+        "price": "1.10",
         "priceCurrency": "USD",
         "url": "https://ringandbooked.com/#pricing"
       },
@@ -847,10 +847,10 @@
       <div class="pricing-card">
         <div class="plan-name">Starter</div>
         <div class="plan-price">
-          <span class="price-monthly">$1<span>/mo</span></span>
-          <span class="price-annually">$1<span>/year</span></span>
+          <span class="price-monthly">$1.10<span>/mo</span></span>
+          <span class="price-annually">$1.10<span>/year</span></span>
         </div>
-        <div class="plan-price-note price-annually">Billed $1/year for testing</div>
+        <div class="plan-price-note price-annually">Billed $1.10/year for testing</div>
         <div class="plan-desc">For solo operators and small shops just getting started.</div>
         <ul class="plan-features">
           <li>250 minutes included/month</li>
@@ -1092,7 +1092,7 @@
     <button class="modal-close" type="button" aria-label="Close" data-close-modal>&times;</button>
     <h3 id="checkout-title">Complete your subscription</h3>
     <p class="modal-intro">Continue to Stripe to complete a live checkout verification. Your $1 test subscription is charged today and can be canceled from your account.</p>
-    <div class="checkout-plan"><div><strong id="checkout-plan-name">Growth</strong><span id="checkout-plan-detail">$1 / month</span></div><strong id="checkout-plan-price">$1/mo</strong></div>
+    <div class="checkout-plan"><div><strong id="checkout-plan-name">Growth</strong><span id="checkout-plan-detail">$1.10 / month</span></div><strong id="checkout-plan-price">$1.10/mo</strong></div>
     <p id="billing-terms" class="modal-intro" style="margin:12px 0"></p>
     <label style="display:flex;gap:10px;align-items:flex-start;margin:16px 0;font-size:.9rem"><input type="checkbox" id="billing-consent" style="margin-top:4px"> <span>I agree to the recurring charges above and understand how to cancel.</span></label>
     <button class="form-submit" id="checkout-button" type="button">Subscribe →</button>
@@ -1288,7 +1288,7 @@ function showCheckout(plan) {
   selectedBillingPeriod = document.getElementById('billing-toggle').getAttribute('aria-checked') === 'true' ? 'annually' : 'monthly';
   const prices = {
     starter: { monthly: ['Starter', '$1 / month', '$1/mo'], annually: ['Starter', '$1 billed annually', '$1/year'] },
-    growth: { monthly: ['Growth', '$1 / month', '$1/mo'], annually: ['Growth', '$1 billed annually', '$1/year'] }
+    growth: { monthly: ['Growth', '$1.10 / month', '$1.10/mo'], annually: ['Growth', '$1.10 billed annually', '$1.10/year'] }
   };
   const details = prices[plan]?.[selectedBillingPeriod];
   if (!details) return;

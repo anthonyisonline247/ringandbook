@@ -98,7 +98,7 @@ export async function handleBilling(req: Request) {
       let session;
       try {
         if (e2eTestMode) {
-          const testPrice = required(`STRIPE_E2E_TEST_PRICE_${body.period.toUpperCase()}`);
+          const testPrice = required(`STRIPE_E2E_TEST_PRICE_${body.plan.toUpperCase()}_${body.period.toUpperCase()}`);
           session = await stripe.checkout.sessions.create({
             mode: 'subscription', payment_method_types: ['card'], customer: row.stripe_customer_id,
             managed_payments: { enabled: false }, client_reference_id: user.id,
