@@ -1343,13 +1343,16 @@ document.addEventListener('click', e => { if (e.target.matches('[data-close-moda
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModals(); });
 document.getElementById('google-login').addEventListener('click', async () => {
   sessionStorage.setItem('account-after-auth', 'yes');
-  // Start OAuth from a clean local session so a different Google account cannot
-  // inherit the previous browser user's UI state or access token.
-  const { error: signoutError } = await client.auth.signOut({ scope: 'local' });
+  // Start OAuth from a fully signed-out session so a different Google account
+  // cannot inherit the previous browser user's UI state or access token.
+  const { error: signoutError } = await client.auth.signOut({ scope: 'global' });
   if (signoutError) { setStatus('auth-status', 'Please reload and try Google sign-in again.', '#b42332'); return; }
   pricingBillingState = null;
   renderAccount(null);
-  const { error } = await client.auth.signInWithOAuth({ provider: 'google', options: { redirectTo: window.location.origin } });
+  const { error } = await client.auth.signInWithOAuth({ provider: 'google', options: {
+    redirectTo: window.location.origin,
+    queryParams: { prompt: 'select_account' }
+  } });
   if (error) setStatus('auth-status', error.message, '#b42332');
 });
 document.getElementById('auth-form').addEventListener('submit', async e => {
