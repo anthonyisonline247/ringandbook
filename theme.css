@@ -49,8 +49,8 @@ input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-
 .sidebar-caption, .eyebrow { color: #526379; }
 .workspace-tabs button[aria-pressed="true"] { color: #fff; background: var(--accent); border-color: var(--accent); }
 .workspace-tabs button:not([aria-pressed="true"]):hover { background: #edf3ff; }
-.settings-form { background: #fff; padding: 28px; border: 1px solid var(--border); border-radius: 16px; }
-.settings-form input, #merchant-profile-fields input, #merchant-profile-fields textarea { background: #fff; border-color: #bccbdd; }
+.settings-form { max-width: 420px; padding: 22px; background: #fff; border: 1px solid var(--border); border-radius: 16px; }
+.settings-form input, #merchant-profile-fields input, #merchant-profile-fields textarea { min-height: 38px; padding: 8px 10px; line-height: 1.2; background: #fff; border-color: #bccbdd; }
 .settings-form input[readonly] { background: #f0f4f8; color: var(--muted); }
 .settings-form .form-submit { color: #fff; }
 #workspace-profile { background: #fff; border: 1px solid var(--border); padding: 28px; border-radius: 16px; }

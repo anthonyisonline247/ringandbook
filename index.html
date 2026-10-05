@@ -73,14 +73,14 @@
       {
         "@type": "Offer",
         "name": "Starter",
-        "price": "1.10",
+        "price": "1",
         "priceCurrency": "USD",
         "url": "https://ringandbooked.com/#pricing"
       },
       {
         "@type": "Offer",
         "name": "Growth",
-        "price": "1",
+        "price": "1.10",
         "priceCurrency": "USD",
         "url": "https://ringandbooked.com/#pricing"
       }
@@ -847,10 +847,10 @@
       <div class="pricing-card">
         <div class="plan-name">Starter</div>
         <div class="plan-price">
-          <span class="price-monthly">$1.10<span>/mo</span></span>
-          <span class="price-annually">$1.10<span>/year</span></span>
+          <span class="price-monthly">$1<span>/mo</span></span>
+          <span class="price-annually">$1<span>/year</span></span>
         </div>
-        <div class="plan-price-note price-annually">Billed $1.10/year for testing</div>
+        <div class="plan-price-note price-annually">Billed $1/year for testing</div>
         <div class="plan-desc">For solo operators and small shops just getting started.</div>
         <ul class="plan-features">
           <li>250 minutes included/month</li>
@@ -869,10 +869,10 @@
         <div class="featured-badge">Most Popular</div>
         <div class="plan-name">Growth</div>
         <div class="plan-price">
-          <span class="price-monthly">$1<span>/mo</span></span>
-          <span class="price-annually">$1<span>/year</span></span>
+          <span class="price-monthly">$1.10<span>/mo</span></span>
+          <span class="price-annually">$1.10<span>/year</span></span>
         </div>
-        <div class="plan-price-note price-annually">Billed $1/year for testing</div>
+        <div class="plan-price-note price-annually">Billed $1.10/year for testing</div>
         <div class="plan-desc">For established businesses that can't afford to miss a call.</div>
         <ul class="plan-features">
           <li>700 minutes included/month</li>
@@ -1295,7 +1295,7 @@ function showCheckout(plan) {
   document.getElementById('checkout-status').style.display = 'none';
   document.getElementById('billing-consent').checked = false;
   const included = plan === 'starter' ? 250 : 700;
-  document.getElementById('billing-terms').textContent = `A $1 test subscription is charged today, then renews at ${details[2]} until canceled. Includes ${included} minutes per month; extra minutes cost $0.35 each, billed monthly. Cancel anytime from your account.`;
+  document.getElementById('billing-terms').textContent = `Your selected test subscription is charged today, then renews at ${details[2]} until canceled. Includes ${included} minutes per month; extra minutes cost $0.35 each, billed monthly. Cancel anytime from your account.`;
   document.getElementById('checkout-plan-name').textContent = details[0];
   document.getElementById('checkout-plan-detail').textContent = details[1];
   document.getElementById('checkout-plan-price').textContent = details[2];
