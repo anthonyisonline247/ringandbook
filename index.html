@@ -1350,7 +1350,7 @@ document.getElementById('forgot-password').addEventListener('click', async () =>
   button.disabled = true;
   button.textContent = 'Sending reset link…';
   const { error } = await client.auth.resetPasswordForEmail(email, {
-    redirectTo: `${window.location.origin}/reset-password.html`
+    redirectTo: `${window.location.origin}/reset-password`
   });
   if (error) setStatus('auth-status', error.message, '#b42332');
   else setStatus('auth-status', 'If an account exists for that email, we sent a password reset link.', '#14734b');
