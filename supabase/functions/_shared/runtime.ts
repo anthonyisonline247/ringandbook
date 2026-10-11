@@ -65,8 +65,24 @@ export async function syncSubscription(subscriptionId: string) {
   const row = checked(await db.from('billing_accounts').select('*').eq('stripe_customer_id', customerId).maybeSingle());
   if (!row || sub.metadata.app !== 'ringandbooked' || sub.metadata.user_id !== row.user_id) return;
   if (row.stripe_subscription_id && row.stripe_subscription_id !== sub.id) throw new Error('Unexpected second subscription');
+  // Customer Portal changes the subscription's price item, but intentionally
+  // leaves custom metadata untouched. Always derive the stored plan from the
+  // actual Stripe price, so a completed Starter → Growth upgrade cannot keep
+  // rendering as Starter because of the original checkout metadata.
+  const pricePrefix = Deno.env.get('BILLING_E2E_TEST_MODE') === 'true' ? 'STRIPE_E2E_TEST_PRICE' : 'STRIPE_PRICE';
+  const planFromPrice = ['starter', 'growth'].flatMap(plan => ['monthly', 'annually'].map(period => ({
+    plan,
+    period,
+    priceId: Deno.env.get(`${pricePrefix}_${plan.toUpperCase()}_${period.toUpperCase()}`),
+  }))).find(candidate => candidate.priceId && sub.items.data.some(item => item.price.id === candidate.priceId));
+  if (!planFromPrice) {
+    // Preserve the last known plan rather than trusting mutable metadata or
+    // silently assigning an arbitrary plan when an unknown price is present.
+    console.error('Subscription has no recognized Ring & Booked base price');
+  }
   await updateAccount(row.user_id, {
     stripe_subscription_id: sub.id, status: sub.status,
+    ...(planFromPrice ? { plan: planFromPrice.plan, period: planFromPrice.period } : {}),
     trial_end: sub.trial_end ? new Date(sub.trial_end * 1000).toISOString() : null,
     cancel_at_period_end: sub.cancel_at_period_end,
   });
