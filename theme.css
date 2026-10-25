@@ -53,6 +53,8 @@ input:focus-visible, textarea:focus-visible, select:focus-visible, button:focus-
 .settings-form input, #merchant-profile-fields input, #merchant-profile-fields textarea { min-height: 38px; padding: 8px 10px; line-height: 1.2; background: #fff; border-color: #bccbdd; }
 .settings-form input[readonly] { background: #f0f4f8; color: var(--muted); }
 .settings-form .form-submit { color: #fff; }
+.data-rights{max-width:620px;margin-top:22px;padding:20px 22px;background:#f8fbff;border:1px solid var(--border);border-radius:14px}.data-rights h3{margin:0 0 6px}.data-rights p{color:var(--muted);font-size:.9rem;max-width:560px}
 #workspace-profile { background: #fff; border: 1px solid var(--border); padding: 28px; border-radius: 16px; }
+.privacy-banner{position:fixed;z-index:1000;left:20px;right:20px;bottom:20px;max-width:760px;margin:auto;padding:16px 18px;background:#fff;border:1px solid var(--border);border-radius:14px;box-shadow:0 14px 38px rgba(25,45,69,.2);display:flex;align-items:center;gap:20px}.privacy-banner strong{display:block}.privacy-banner p{margin:3px 0 0;color:var(--muted);font-size:.83rem;line-height:1.4}.privacy-actions{display:flex;gap:8px;align-items:center;flex:0 0 auto}.privacy-actions button{white-space:nowrap}.privacy-banner[hidden]{display:none}@media(max-width:640px){.privacy-banner{left:12px;right:12px;bottom:12px;display:block}.privacy-actions{margin-top:12px;justify-content:flex-end}.privacy-actions button{font-size:.82rem;padding:9px 11px}}
 @media (max-width: 600px) { .settings-form, #workspace-profile { padding: 20px; } }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }

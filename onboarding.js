@@ -36,7 +36,12 @@ document.getElementById('next-button').addEventListener('click', () => { if (val
 document.getElementById('back-button').addEventListener('click', () => showStep(step - 1));
 form.addEventListener('submit', async event => {
   event.preventDefault();
-  if (!validateCurrent() || !document.getElementById('setup-acknowledgement').checked || !user) { if (!document.getElementById('setup-acknowledgement').checked) setStatus('Please confirm that our team will configure your receptionist before it goes live.', true); return; }
+  const setupAcknowledged = document.getElementById('setup-acknowledgement').checked;
+  const callFlowAcknowledged = document.getElementById('call-flow-acknowledgement').checked;
+  if (!validateCurrent() || !setupAcknowledged || !callFlowAcknowledged || !user) {
+    if (!setupAcknowledged || !callFlowAcknowledged) setStatus('Please review and confirm both setup acknowledgements before sending your request.', true);
+    return;
+  }
   const button = document.getElementById('submit-button'); button.disabled = true; setStatus('Sending your setup request…');
   try {
     const profile = { ...values(), user_id:user.id, onboarding_submitted_at:new Date().toISOString(), updated_at:new Date().toISOString() };

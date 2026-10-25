@@ -1,6 +1,9 @@
 import { account, checked, cors, db, errorResponse, HttpError, required, siteUrl, stripe, syncSubscription, updateAccount, userFor, withLock } from '../_shared/runtime.ts';
 import { publicAccount, selectPlan } from '../_shared/plans.mjs';
 
+const BILLING_CONSENT_VERSION = '2026-10-25-v1';
+const LEGACY_BILLING_CONSENT_VERSION = '2026-09-20-v1';
+
 export async function handleBilling(req: Request) {
   let headers: Record<string, string> = {};
   try {
@@ -68,13 +71,24 @@ export async function handleBilling(req: Request) {
     if (body.action !== 'checkout') throw new HttpError(400, 'Unknown action');
     if (Deno.env.get('BILLING_ENABLED') !== 'true') throw new HttpError(503, 'Enrollment is being prepared. Please contact us to arrange your setup.');
     try { selectPlan(body.plan, body.period); } catch { throw new HttpError(400, 'Invalid plan or billing period'); }
-    if (body.consent !== true) throw new HttpError(400, 'Please accept the billing terms');
+    if (body.consent !== true) throw new HttpError(400, 'Please review and accept the billing terms');
+    // Deploy this function before the static site. Older deployed clients do
+    // not send consentVersion, so accepting the prior recorded version avoids
+    // turning a policy rollout into a checkout outage.
+    const consentVersion = body.consentVersion === BILLING_CONSENT_VERSION
+      ? BILLING_CONSENT_VERSION
+      : LEGACY_BILLING_CONSENT_VERSION;
     const e2eTestMode = Deno.env.get('BILLING_E2E_TEST_MODE') === 'true';
     checked(await db.from('billing_accounts').upsert({ user_id: user.id, plan: body.plan, period: body.period }, { onConflict: 'user_id', ignoreDuplicates: true }));
     const result = await withLock(user.id, async () => {
       let row = await account(user.id);
       if (row.stripe_subscription_id || (!e2eTestMode && row.status !== 'awaiting_payment_method')) throw new HttpError(409, 'You already have a setup request or subscription. Open your account to manage it.');
       if (row.plan !== body.plan || row.period !== body.period) throw new HttpError(409, 'A different plan is already being set up. Contact us to change it.');
+      // Record the version and server-side time of the paid-plan acknowledgement.
+      // This is intentionally stored only after an authenticated customer submits
+      // the checkout request, rather than trusting a browser-provided timestamp.
+      await updateAccount(user.id, { consent_version: consentVersion, consent_at: new Date().toISOString() });
+      row = await account(user.id);
       if (!row.stripe_customer_id) {
         const customer = await stripe.customers.create({ email: user.email, metadata: { app: 'ringandbooked', user_id: user.id } }, { idempotencyKey: `rab-customer-${user.id}` });
         await updateAccount(user.id, { stripe_customer_id: customer.id });

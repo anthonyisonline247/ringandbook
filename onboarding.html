@@ -7,6 +7,7 @@
   <title>Start your setup | Ring &amp; Booked</title>
   <link rel="icon" href="/favicon.svg">
   <link rel="stylesheet" href="/onboarding.css">
+  <style>.legal-note{margin:14px 0 0;color:var(--muted);font-size:13px;line-height:1.5}.legal-note a{color:var(--accent)}</style>
   <script defer src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script defer src="/onboarding.js"></script>
 </head>
@@ -58,7 +59,9 @@
           <h2>Review your setup request</h2>
           <p>We’ll save the details below for our setup team. You can still edit business information later from your workspace.</p>
           <div id="review-details" class="review-details"></div>
-          <label class="acknowledgement"><input id="setup-acknowledgement" type="checkbox" required> <span>I understand that Ring &amp; Booked will review and configure my receptionist before it goes live.</span></label>
+          <label class="acknowledgement"><input id="setup-acknowledgement" type="checkbox" required> <span>I am authorized to provide these business details and understand that Ring &amp; Booked will review and configure my receptionist before it goes live.</span></label>
+          <label class="acknowledgement"><input id="call-flow-acknowledgement" type="checkbox" required> <span>I understand that call recording, transcription, AI notices, urgent-call routing, and language settings are reviewed and configured with Ring &amp; Booked before go-live. I will provide accurate routing contacts and business instructions.</span></label>
+          <p class="legal-note">By sending this setup request, you agree to the <a href="/terms.html" target="_blank" rel="noopener">Terms of Service</a> and acknowledge the <a href="/privacy.html" target="_blank" rel="noopener">Privacy Policy</a>.</p>
         </section>
 
         <p id="onboarding-status" class="status" role="status" aria-live="polite"></p>
