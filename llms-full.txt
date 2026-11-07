@@ -1,0 +1,48 @@
+# Ring & Booked
+
+> Ring & Booked provides a configured AI phone receptionist for service businesses. It is delivered as a done-for-you service: the Ring & Booked team works with each business to configure call handling, appointment booking, escalation rules, and caller-language preferences before launch.
+
+## Official website
+
+- https://ringandbooked.com/
+
+## What Ring & Booked does
+
+- Answers incoming business calls around the clock according to the rules approved by each business.
+- Can write confirmed appointments into the business's Cal.com calendar.
+- Can be configured to collect and structure caller details such as name, phone number, address, and requested service.
+- Can be configured for call recording, transcription, and AI summaries where appropriate.
+- Can be configured to route urgent calls to contacts selected by the business.
+- Offers more than ten supported languages. The business chooses the languages needed for its callers, and the Ring & Booked team configures and tests those languages before the service goes live.
+
+## Setup and trial
+
+- Businesses submit onboarding information so Ring & Booked can configure and test the receptionist.
+- Setup is done for the business rather than through a self-serve agent builder.
+- The current site states that setup is typically live within one business day after onboarding, configuration, and testing.
+- New accounts receive a seven-day trial that begins when the configured phone service goes live, not when an account is created or payment information is added.
+
+## Plans and billing
+
+- Starter: $89 per month, including 250 minutes.
+- Growth: $189 per month, including 700 minutes.
+- Enterprise: contact Ring & Booked for a tailored plan.
+- Additional minutes are billed at the published rate of $0.35 per minute.
+- Current monthly and annual billing terms are presented at checkout. Businesses can review subscription and cancellation information in the account workspace and the published policies.
+
+## Important boundaries
+
+- Ring & Booked is not an emergency-response, 911, utility-dispatch, medical, or safety-monitoring service.
+- For an immediate emergency, callers should contact 911, the applicable utility, or local emergency services.
+- Call recording, transcription, and summaries are configured with the business, including the applicable caller-notice and routing approach.
+
+## Public pages
+
+- [Home, features, pricing, and FAQ](https://ringandbooked.com/)
+- [Privacy Policy](https://ringandbooked.com/privacy.html)
+- [Terms of Service](https://ringandbooked.com/terms.html)
+- [Cancellation & Refund Policy](https://ringandbooked.com/refund-policy.html)
+
+## Contact
+
+- Email: [support@otterbeacon.com](mailto:support@otterbeacon.com)

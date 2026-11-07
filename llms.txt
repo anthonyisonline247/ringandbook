@@ -1,0 +1,28 @@
+# Ring & Booked
+
+> Ring & Booked is a done-for-you AI phone receptionist service for service businesses. The team configures call handling, appointment booking, escalation rules, and supported caller languages around each business.
+
+## Primary page
+
+- [Ring & Booked](https://ringandbooked.com/): Product overview, features, pricing, setup process, and frequently asked questions.
+
+## Product facts
+
+- The service is configured and tested with each business before launch; it is not a self-serve AI agent builder.
+- Ring & Booked can handle calls around the clock and can be configured to book appointments into Cal.com.
+- Supported caller languages are selected, configured, and tested with the business before launch.
+- The service is not an emergency-response or 911 service.
+
+## Plans
+
+- Starter: $89 per month, including 250 minutes.
+- Growth: $189 per month, including 700 minutes.
+- Additional minutes: $0.35 per minute.
+- A seven-day trial begins when the configured phone service goes live. Current billing terms are shown at checkout.
+
+## Support and policies
+
+- Support: [support@otterbeacon.com](mailto:support@otterbeacon.com)
+- [Privacy Policy](https://ringandbooked.com/privacy.html)
+- [Terms of Service](https://ringandbooked.com/terms.html)
+- [Cancellation & Refund Policy](https://ringandbooked.com/refund-policy.html)
