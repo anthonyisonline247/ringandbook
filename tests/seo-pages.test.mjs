@@ -8,6 +8,7 @@ const publicPages = [
   ['after-hours-call-answering.html', 'https://ringandbooked.com/after-hours-call-answering'],
   ['ai-appointment-booking.html', 'https://ringandbooked.com/ai-appointment-booking'],
   ['ai-receptionist-for-service-businesses.html', 'https://ringandbooked.com/ai-receptionist-for-service-businesses'],
+  ['watch-ai-receptionist-demo.html', 'https://ringandbooked.com/watch-ai-receptionist-demo'],
   ['how-ring-and-booked-works.html', 'https://ringandbooked.com/how-ring-and-booked-works'],
   ['after-hours-call-handling-checklist.html', 'https://ringandbooked.com/after-hours-call-handling-checklist'],
   ['service-business-call-forwarding-guide.html', 'https://ringandbooked.com/service-business-call-forwarding-guide'],
@@ -53,6 +54,7 @@ test('homepage video structured data is valid and based on the embedded video', 
   assert.equal(video.uploadDate, '2026-09-27');
   assert.equal(video.duration, 'PT2M3S');
   assert.match(html, /href="\/ai-answering-service"/);
+  assert.match(html, /href="\/watch-ai-receptionist-demo"/);
 });
 
 test('homepage, llms files, and resource hub link to the content system', () => {
@@ -62,11 +64,31 @@ test('homepage, llms files, and resource hub link to the content system', () => 
   assert.match(homepage, /id="resources"/);
   assert.match(homepage, /href="\/resources"/);
   assert.match(homepage, /href="\/how-ring-and-booked-works"/);
+  assert.match(homepage, /href="\/watch-ai-receptionist-demo"/);
   for (const path of ['/after-hours-call-handling-checklist', '/service-business-call-forwarding-guide', '/ai-receptionist-onboarding-checklist']) {
     assert.match(homepage, new RegExp(`href="${path}"`));
     assert.match(hub, new RegExp(`href="${path}"`));
     assert.match(llms, new RegExp(path));
   }
+});
+
+test('business pages link to their practical resources and public pages use consent-safe analytics', () => {
+  const businessResources = {
+    'ai-answering-service.html': ['/ai-receptionist-onboarding-checklist', '/after-hours-call-handling-checklist'],
+    'after-hours-call-answering.html': ['/after-hours-call-handling-checklist', '/watch-ai-receptionist-demo'],
+    'ai-appointment-booking.html': ['/ai-receptionist-onboarding-checklist', '/watch-ai-receptionist-demo'],
+    'ai-receptionist-for-service-businesses.html': ['/ai-receptionist-onboarding-checklist', '/resources']
+  };
+  for (const [file, links] of Object.entries(businessResources)) {
+    const html = read(file);
+    for (const link of links) assert.match(html, new RegExp(`href="${link}"`), `${file} should link to ${link}`);
+    assert.match(html, /src="\/analytics-events\.js"/);
+    assert.match(html, /src="\/privacy-consent\.js"/);
+  }
+  const tracking = read('analytics-events.js');
+  for (const event of ['start_setup_click', 'watch_demo_click', 'select_plan']) assert.match(tracking, new RegExp(event));
+  const homepage = read('index.html');
+  for (const event of ['video_start', 'begin_checkout', 'generate_lead', 'sign_up']) assert.match(homepage, new RegExp(event));
 });
 
 test('Supabase loads after page content but before account initialization', () => {

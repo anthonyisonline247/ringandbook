@@ -39,6 +39,7 @@
 ## Public pages
 
 - [Home, features, pricing, and FAQ](https://ringandbooked.com/)
+- [AI Receptionist Video Demo](https://ringandbooked.com/watch-ai-receptionist-demo)
 - [AI Answering Service](https://ringandbooked.com/ai-answering-service)
 - [After-hours Call Answering](https://ringandbooked.com/after-hours-call-answering)
 - [AI Appointment Booking](https://ringandbooked.com/ai-appointment-booking)

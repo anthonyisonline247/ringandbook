@@ -5,6 +5,7 @@
 ## Primary page
 
 - [Ring & Booked](https://ringandbooked.com/): Product overview, features, pricing, setup process, and frequently asked questions.
+- [AI Receptionist Video Demo](https://ringandbooked.com/watch-ai-receptionist-demo): An illustrative after-hours call flow showing approved detail collection and an eligible appointment booking path.
 
 ## Useful pages
 

@@ -28,6 +28,7 @@
   <meta name="twitter:image" content="https://ringandbooked.com/og-image.png">
 
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" defer></script>
+  <script src="/analytics-events.js" defer></script>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       emailjs.init('8Me5zJ1pZR4aqhRVa');
@@ -294,6 +295,8 @@
     .demo-video-kicker span { display: grid; place-items: center; width: 25px; height: 25px; border-radius: 50%; background: #fff; color: var(--accent); font-size: 0.72rem; letter-spacing: 0; }
     .demo-video-title { max-width: 720px; margin: 0 auto 8px; font-size: clamp(1.8rem, 3.4vw, 2.55rem); line-height: 1.15; letter-spacing: -0.03em; }
     .demo-video-caption { color: var(--muted); font-size: 1rem; margin: 0 auto 22px; max-width: 540px; }
+    .demo-video-page-link { display: inline-block; margin: 0 auto 24px; color: var(--accent); font-size: .92rem; font-weight: 750; text-decoration: none; }
+    .demo-video-page-link:hover { text-decoration: underline; }
     .demo-video {
       position: relative; width: 100%; max-width: 380px; margin: 0 auto;
       aspect-ratio: 9 / 16; border-radius: 20px; overflow: hidden;
@@ -619,6 +622,7 @@
       <p class="demo-video-kicker"><span aria-hidden="true">▶</span> WATCH THE VIDEO</p>
       <h2 class="demo-video-title">Watch a configured AI receptionist handle an after-hours booking.</h2>
       <p class="demo-video-caption">Tap play to see an illustrative call flow: collecting approved details and arranging a booking.</p>
+      <a class="demo-video-page-link" href="/watch-ai-receptionist-demo">Open the full video demo and setup guide →</a>
       <div class="demo-video">
         <iframe
           id="demo-video-player"
@@ -1140,20 +1144,6 @@ function toggleFaq(btn) {
 }
 
 const PRIVACY_CONSENT_KEY = 'rab-optional-services-consent';
-function loadAnalytics() {
-  if (window.rabAnalyticsLoaded) return;
-  window.rabAnalyticsLoaded = true;
-  const script = document.createElement('script');
-  script.async = true;
-  script.src = 'https://www.googletagmanager.com/gtag/js?id=G-N3M64HSJKR';
-  script.onload = () => {
-    window.dataLayer = window.dataLayer || [];
-    window.gtag = function(){ window.dataLayer.push(arguments); };
-    window.gtag('js', new Date());
-    window.gtag('config', 'G-N3M64HSJKR');
-  };
-  document.head.append(script);
-}
 function loadSupportChat() {
   if (window.rabSupportChatLoaded) return;
   window.rabSupportChatLoaded = true;
@@ -1164,15 +1154,15 @@ function loadSupportChat() {
   script.charset = 'UTF-8'; script.setAttribute('crossorigin', '*');
   document.head.append(script);
 }
-function trackEvent(name, values) { if (typeof window.gtag === 'function') window.gtag('event', name, values); }
+function trackEvent(name, values) { window.rabTrackEvent?.(name, values); }
 function applyPrivacyChoice(choice) {
   localStorage.setItem(PRIVACY_CONSENT_KEY, choice);
   document.getElementById('privacy-banner').hidden = true;
-  if (choice === 'accepted') { loadAnalytics(); loadSupportChat(); }
+  if (choice === 'accepted') { window.rabEnableOptionalAnalytics?.(); loadSupportChat(); }
 }
 function showPrivacyChoices() { document.getElementById('privacy-banner').hidden = false; }
 const savedPrivacyChoice = localStorage.getItem(PRIVACY_CONSENT_KEY);
-if (savedPrivacyChoice === 'accepted') { loadAnalytics(); loadSupportChat(); }
+if (savedPrivacyChoice === 'accepted') { window.rabEnableOptionalAnalytics?.(); loadSupportChat(); }
 else if (!savedPrivacyChoice) { showPrivacyChoices(); }
 
 // The privacy-enhanced YouTube player reports state through its official IFrame
@@ -1181,10 +1171,17 @@ function initialiseDemoVideoPlayer() {
   const iframe = document.getElementById('demo-video-player');
   const hint = document.querySelector('.demo-video-play-hint');
   if (!iframe || !hint || !window.YT?.Player) return;
+  let trackedStart = false;
   new window.YT.Player(iframe.id, {
     events: {
       onStateChange(event) {
-        if (event.data === window.YT.PlayerState.PLAYING) hint.classList.add('is-hidden');
+        if (event.data === window.YT.PlayerState.PLAYING) {
+          hint.classList.add('is-hidden');
+          if (!trackedStart) {
+            trackedStart = true;
+            trackEvent('video_start', { video_title: 'after_hours_ai_receptionist_demo', video_location: 'homepage' });
+          }
+        }
       }
     }
   });
@@ -1371,6 +1368,7 @@ async function beginPlan(plan) {
   if (!hasActiveSubscription()) { showCheckout(plan); return; }
   if (pricingBillingState.plan === plan) { location.assign('/account.html'); return; }
   if (pricingBillingState.plan !== 'starter' || plan !== 'growth') { location.assign('/account.html'); return; }
+  trackEvent('upgrade_plan_click', { from_plan: pricingBillingState.plan, to_plan: 'growth' });
   const button = document.querySelector(`[data-plan="${plan}"]`);
   const label = button?.textContent;
   if (button) { button.textContent = 'Opening secure upgrade…'; button.setAttribute('aria-busy', 'true'); }
@@ -1445,6 +1443,7 @@ document.getElementById('auth-form').addEventListener('submit', async e => {
   if (result.error) setStatus('auth-status', result.error.message, '#b42332');
   else if (authMode === 'signup' && !result.data.session) setStatus('auth-status', 'Check your email to confirm your account, then return to log in.', '#14734b');
   else {
+    if (authMode === 'signup') trackEvent('sign_up', { method: 'email' });
     closeModals(); await refreshAccount();
     if (sessionStorage.getItem('account-after-auth') === 'onboarding') { sessionStorage.removeItem('account-after-auth'); location.assign('/onboarding.html'); }
     else if (selectedPlan) showCheckout(selectedPlan);
@@ -1458,6 +1457,7 @@ document.getElementById('checkout-button').addEventListener('click', async () =>
   try {
     const data = await billingRequest({ action: 'checkout', plan: selectedPlan, period: selectedBillingPeriod, consent: true, consentVersion: '2026-10-25-v1' });
     if (!data?.url || new URL(data.url).hostname !== 'checkout.stripe.com') throw new Error('Unable to open secure checkout.');
+    trackEvent('begin_checkout', { plan: selectedPlan, billing_period: selectedBillingPeriod });
     window.location.assign(data.url);
   } catch (error) { setStatus('checkout-status', error.message, '#92400e'); }
   finally { button.disabled = false; button.textContent = 'Subscribe →'; }

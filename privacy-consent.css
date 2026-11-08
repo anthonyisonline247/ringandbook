@@ -1,0 +1,10 @@
+.rab-privacy-banner { position: fixed; z-index: 30; right: 18px; bottom: 18px; left: 18px; max-width: 760px; margin: auto; padding: 18px 20px; border: 1px solid #d8e1ec; border-radius: 14px; background: #fff; color: #192d45; box-shadow: 0 14px 38px rgba(25,45,69,.2); display: flex; align-items: center; justify-content: space-between; gap: 18px; font: 14px/1.45 "Segoe UI", system-ui, sans-serif; }
+.rab-privacy-banner[hidden] { display: none; }
+.rab-privacy-banner strong { font-size: .95rem; }
+.rab-privacy-banner p { margin: 4px 0 0; color: #526379; }
+.rab-privacy-banner a { color: #2563eb; }
+.rab-privacy-actions { display: flex; flex-wrap: wrap; gap: 9px; justify-content: flex-end; }
+.rab-privacy-actions button, .rab-privacy-fab { appearance: none; border: 1px solid #c5d2e4; border-radius: 8px; padding: 9px 12px; background: #fff; color: #192d45; font: inherit; font-weight: 700; cursor: pointer; }
+.rab-privacy-actions .rab-privacy-accept { border-color: #2563eb; background: #2563eb; color: #fff; }
+.rab-privacy-fab { position: fixed; z-index: 20; right: 16px; bottom: 16px; padding: 7px 10px; background: rgba(255,255,255,.94); color: #526379; font-size: .75rem; box-shadow: 0 3px 12px rgba(25,45,69,.12); }
+@media (max-width: 620px) { .rab-privacy-banner { align-items: flex-start; flex-direction: column; } .rab-privacy-actions { width: 100%; justify-content: stretch; } .rab-privacy-actions button { flex: 1; } }
