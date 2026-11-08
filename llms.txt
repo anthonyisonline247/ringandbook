@@ -12,6 +12,11 @@
 - [After-hours Call Answering](https://ringandbooked.com/after-hours-call-answering): Configured call handling for calls that arrive when a team is unavailable.
 - [AI Appointment Booking](https://ringandbooked.com/ai-appointment-booking): How the receptionist can book eligible callers into Cal.com.
 - [AI Receptionist for Service Businesses](https://ringandbooked.com/ai-receptionist-for-service-businesses): Configuration topics for service-business call handling.
+- [How Ring & Booked Works](https://ringandbooked.com/how-ring-and-booked-works): A transparent explanation of the done-for-you setup, testing, launch, and operating boundaries.
+- [Resources](https://ringandbooked.com/resources): Practical call-handling checklists for service businesses.
+- [After-hours Call-Handling Checklist](https://ringandbooked.com/after-hours-call-handling-checklist): A planning checklist for booking, transfer, message, and emergency boundaries.
+- [Service Business Call-Forwarding Guide](https://ringandbooked.com/service-business-call-forwarding-guide): A guide to preparing phone routing, contacts, test cases, and a fallback plan.
+- [AI Receptionist Onboarding Checklist](https://ringandbooked.com/ai-receptionist-onboarding-checklist): A checklist for business information, booking rules, contacts, and language preferences.
 
 ## Product facts
 

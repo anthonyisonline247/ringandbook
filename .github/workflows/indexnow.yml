@@ -1,0 +1,53 @@
+name: Notify IndexNow
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '**.html'
+      - 'sitemap.xml'
+      - 'llms.txt'
+      - 'llms-full.txt'
+      - '66cafd22cf1640fea1a641f7e0274fd0e685e23b2e773a5c2825f133874e9ca0.txt'
+
+permissions:
+  contents: read
+
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Wait for the deployed IndexNow ownership key
+        shell: bash
+        run: |
+          key='66cafd22cf1640fea1a641f7e0274fd0e685e23b2e773a5c2825f133874e9ca0'
+          key_url="https://ringandbooked.com/${key}.txt"
+          for attempt in {1..45}; do
+            body="$(curl --fail --silent --show-error --location "$key_url" || true)"
+            if [ "$body" = "$key" ]; then
+              exit 0
+            fi
+            sleep 20
+          done
+          echo "The deployed IndexNow ownership key was not reachable in time."
+          exit 1
+      - name: Notify IndexNow of every URL in the sitemap
+        run: |
+          node --input-type=module <<'NODE'
+          import { readFileSync } from 'node:fs';
+
+          const sitemap = readFileSync('sitemap.xml', 'utf8');
+          const urlList = [...sitemap.matchAll(/<loc>(https:\/\/ringandbooked\.com\/[^<]*)<\/loc>/g)].map(match => match[1]);
+          const response = await fetch('https://api.indexnow.org/indexnow', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json; charset=utf-8' },
+            body: JSON.stringify({
+              host: 'ringandbooked.com',
+              key: '66cafd22cf1640fea1a641f7e0274fd0e685e23b2e773a5c2825f133874e9ca0',
+              keyLocation: 'https://ringandbooked.com/66cafd22cf1640fea1a641f7e0274fd0e685e23b2e773a5c2825f133874e9ca0.txt',
+              urlList
+            })
+          });
+          if (!response.ok) throw new Error(`IndexNow returned ${response.status}: ${await response.text()}`);
+          console.log(`Notified IndexNow about ${urlList.length} sitemap URLs.`);
+          NODE
