@@ -9,6 +9,7 @@ on:
       - 'llms.txt'
       - 'llms-full.txt'
       - '66cafd22cf1640fea1a641f7e0274fd0e685e23b2e773a5c2825f133874e9ca0.txt'
+      - '.github/workflows/indexnow.yml'
 
 permissions:
   contents: read
