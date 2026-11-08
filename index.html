@@ -441,6 +441,16 @@
     .faq-a { display: none; padding: 0 24px 20px; color: var(--muted); font-size: 0.9rem; line-height: 1.7; }
     .faq-a.open { display: block; }
 
+    /* RESOURCES */
+    .resources-section { background: var(--bg); }
+    .resource-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+    .resource-card { display: flex; flex-direction: column; min-height: 178px; padding: 24px; border: 1px solid var(--border); border-radius: 14px; background: var(--bg3); color: var(--text); text-align: left; text-decoration: none; transition: transform .2s, border-color .2s, box-shadow .2s; }
+    .resource-card:hover { transform: translateY(-3px); border-color: var(--accent); box-shadow: 0 12px 26px rgba(37,99,235,.10); }
+    .resource-card .resource-type { margin-bottom: 10px; color: var(--accent); font-size: .72rem; font-weight: 800; letter-spacing: 1.2px; text-transform: uppercase; }
+    .resource-card h3 { margin: 0 0 10px; font-size: 1.08rem; line-height: 1.28; }
+    .resource-card p { margin: 0; color: var(--muted); font-size: .88rem; line-height: 1.55; }
+    .resource-card .resource-link { margin-top: auto; padding-top: 16px; color: var(--accent); font-size: .86rem; font-weight: 750; }
+
     /* CONTACT */
     .contact { background: var(--bg2); }
     .contact-wrap { display: grid; grid-template-columns: 1.2fr 1fr; gap: 60px; align-items: start; }
@@ -522,7 +532,7 @@
       .nav-links { display: none; }
       section { padding: 60px 20px; }
       .stats-bar { gap: 30px; padding: 28px 20px; }
-      .problem-solution, .demo-wrap, .steps, .features-grid, .pricing-grid, .testi-grid, .contact-wrap { grid-template-columns: 1fr; }
+      .problem-solution, .demo-wrap, .steps, .features-grid, .pricing-grid, .testi-grid, .resource-grid, .contact-wrap { grid-template-columns: 1fr; }
       .form-row { grid-template-columns: 1fr; }
       .hero { padding: 70px 20px 60px; }
     }
@@ -537,6 +547,7 @@
   <ul class="nav-links">
     <li><a href="#how-it-works">How It Works</a></li>
     <li><a href="#features">Features</a></li>
+    <li><a href="#resources">Resources</a></li>
     <li><a href="#pricing">Pricing</a></li>
     <li><a href="#faq">FAQ</a></li>
   </ul>
@@ -914,6 +925,32 @@
         <div class="plan-overage">Custom overage rate in your contract</div>
         <a href="#contact" class="plan-btn outline">Contact Sales</a>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESOURCES -->
+<section class="resources-section" id="resources">
+  <div class="container" style="text-align:center">
+    <div class="section-label">Resources &amp; setup</div>
+    <h2>Plan your call flow before it goes live.</h2>
+    <p class="section-sub" style="margin:0 auto 42px">Start with the practical guides, then see exactly how our team configures and tests the receptionist with you.</p>
+    <div class="resource-grid">
+      <a class="resource-card" href="/how-ring-and-booked-works">
+        <span class="resource-type">How it works</span><h3>How Ring &amp; Booked works</h3><p>A transparent guide to the done-for-you setup, testing, launch, and operating boundaries.</p><span class="resource-link">See the setup process →</span>
+      </a>
+      <a class="resource-card" href="/resources">
+        <span class="resource-type">Resource hub</span><h3>Call-handling resources</h3><p>Browse practical planning checklists for service-business calls, booking, and handoffs.</p><span class="resource-link">Explore all resources →</span>
+      </a>
+      <a class="resource-card" href="/after-hours-call-handling-checklist">
+        <span class="resource-type">Checklist</span><h3>After-hours call handling</h3><p>Define booking, message, transfer, and emergency boundaries before changing your phone flow.</p><span class="resource-link">Open checklist →</span>
+      </a>
+      <a class="resource-card" href="/service-business-call-forwarding-guide">
+        <span class="resource-type">Setup guide</span><h3>Call forwarding for service businesses</h3><p>Prepare your existing number, contacts, routing rules, test cases, and fallback path.</p><span class="resource-link">Read the guide →</span>
+      </a>
+      <a class="resource-card" href="/ai-receptionist-onboarding-checklist">
+        <span class="resource-type">Checklist</span><h3>AI receptionist onboarding</h3><p>Prepare business details, appointment rules, escalation contacts, and language preferences.</p><span class="resource-link">Open checklist →</span>
+      </a>
     </div>
   </div>
 </section>

@@ -59,9 +59,11 @@ test('homepage, llms files, and resource hub link to the content system', () => 
   const homepage = read('index.html');
   const hub = read('resources.html');
   const llms = read('llms.txt');
+  assert.match(homepage, /id="resources"/);
   assert.match(homepage, /href="\/resources"/);
   assert.match(homepage, /href="\/how-ring-and-booked-works"/);
   for (const path of ['/after-hours-call-handling-checklist', '/service-business-call-forwarding-guide', '/ai-receptionist-onboarding-checklist']) {
+    assert.match(homepage, new RegExp(`href="${path}"`));
     assert.match(hub, new RegExp(`href="${path}"`));
     assert.match(llms, new RegExp(path));
   }
