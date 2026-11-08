@@ -39,9 +39,13 @@
 ## Public pages
 
 - [Home, features, pricing, and FAQ](https://ringandbooked.com/)
-- [Privacy Policy](https://ringandbooked.com/privacy.html)
-- [Terms of Service](https://ringandbooked.com/terms.html)
-- [Cancellation & Refund Policy](https://ringandbooked.com/refund-policy.html)
+- [AI Answering Service](https://ringandbooked.com/ai-answering-service)
+- [After-hours Call Answering](https://ringandbooked.com/after-hours-call-answering)
+- [AI Appointment Booking](https://ringandbooked.com/ai-appointment-booking)
+- [AI Receptionist for Service Businesses](https://ringandbooked.com/ai-receptionist-for-service-businesses)
+- [Privacy Policy](https://ringandbooked.com/privacy)
+- [Terms of Service](https://ringandbooked.com/terms)
+- [Cancellation & Refund Policy](https://ringandbooked.com/refund-policy)
 
 ## Contact
 

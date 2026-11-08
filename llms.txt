@@ -6,6 +6,13 @@
 
 - [Ring & Booked](https://ringandbooked.com/): Product overview, features, pricing, setup process, and frequently asked questions.
 
+## Useful pages
+
+- [AI Answering Service](https://ringandbooked.com/ai-answering-service): Done-for-you AI call answering for service businesses.
+- [After-hours Call Answering](https://ringandbooked.com/after-hours-call-answering): Configured call handling for calls that arrive when a team is unavailable.
+- [AI Appointment Booking](https://ringandbooked.com/ai-appointment-booking): How the receptionist can book eligible callers into Cal.com.
+- [AI Receptionist for Service Businesses](https://ringandbooked.com/ai-receptionist-for-service-businesses): Configuration topics for service-business call handling.
+
 ## Product facts
 
 - The service is configured and tested with each business before launch; it is not a self-serve AI agent builder.
@@ -23,6 +30,6 @@
 ## Support and policies
 
 - Support: [support@otterbeacon.com](mailto:support@otterbeacon.com)
-- [Privacy Policy](https://ringandbooked.com/privacy.html)
-- [Terms of Service](https://ringandbooked.com/terms.html)
-- [Cancellation & Refund Policy](https://ringandbooked.com/refund-policy.html)
+- [Privacy Policy](https://ringandbooked.com/privacy)
+- [Terms of Service](https://ringandbooked.com/terms)
+- [Cancellation & Refund Policy](https://ringandbooked.com/refund-policy)
