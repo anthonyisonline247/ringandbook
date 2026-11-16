@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AI Answering Service &amp; Receptionist | Ring &amp; Booked</title>
-  <meta name="description" content="Done-for-you AI phone receptionist for service businesses. Configure call handling and appointment booking around your business, 24/7.">
+  <meta name="description" content="Done-for-you phone receptionist for service businesses. We configure call handling, appointment booking, and handoffs around your business, 24/7.">
   <link rel="canonical" href="https://ringandbooked.com/">
   <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
@@ -15,7 +15,7 @@
   <meta property="og:site_name" content="Ring &amp; Booked">
   <meta property="og:locale" content="en_US">
   <meta property="og:title" content="AI Answering Service &amp; Receptionist | Ring &amp; Booked">
-  <meta property="og:description" content="Done-for-you AI phone receptionist for service businesses. Configure call handling and appointment booking around your business, 24/7.">
+  <meta property="og:description" content="Done-for-you phone receptionist for service businesses. We configure call handling, appointment booking, and handoffs around your business, 24/7.">
   <meta property="og:image" content="https://ringandbooked.com/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
@@ -24,7 +24,7 @@
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="AI Answering Service &amp; Receptionist | Ring &amp; Booked">
-  <meta name="twitter:description" content="Done-for-you AI phone receptionist for service businesses. Configure call handling and appointment booking around your business, 24/7.">
+  <meta name="twitter:description" content="Done-for-you phone receptionist for service businesses. We configure call handling, appointment booking, and handoffs around your business, 24/7.">
   <meta name="twitter:image" content="https://ringandbooked.com/og-image.png">
 
   <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" defer></script>
@@ -260,6 +260,20 @@
     .box-list li { display: flex; align-items: flex-start; gap: 10px; font-size: 0.95rem; color: var(--muted); }
     .box-list li::before { content: ''; flex-shrink: 0; width: 5px; height: 5px; border-radius: 50%; background: var(--muted); margin-top: 10px; }
     .solution-box .box-list li::before { background: var(--green); }
+
+    /* SERVICE SCENARIOS */
+    .scenarios { background: var(--bg2); }
+    .scenarios-heading { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: 48px; align-items: end; margin-bottom: 40px; }
+    .scenarios-heading .section-sub { margin: 0; max-width: 620px; }
+    .scenario-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
+    .scenario-card { overflow: hidden; border: 1px solid var(--border); border-radius: 18px; background: var(--card); box-shadow: 0 10px 30px rgba(25,45,69,.06); }
+    .scenario-card img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; object-position: center; }
+    .scenario-content { padding: 24px; }
+    .scenario-eyebrow { display: block; margin-bottom: 9px; color: var(--accent); font-size: .72rem; font-weight: 800; letter-spacing: 1.3px; text-transform: uppercase; }
+    .scenario-card h3 { margin: 0 0 10px; font-size: 1.15rem; line-height: 1.3; }
+    .scenario-card p { margin: 0; color: var(--muted); font-size: .91rem; line-height: 1.6; }
+    .scenario-note { margin: 26px 0 0; padding: 18px 22px; border-left: 3px solid var(--accent); border-radius: 0 12px 12px 0; background: var(--card); color: var(--muted); font-size: .94rem; }
+    .scenario-note strong { color: var(--text); }
 
     /* DEMO CONVO */
     .demo-section { background: var(--bg2); }
@@ -535,7 +549,7 @@
       .nav-links { display: none; }
       section { padding: 60px 20px; }
       .stats-bar { gap: 30px; padding: 28px 20px; }
-      .problem-solution, .demo-wrap, .steps, .features-grid, .pricing-grid, .testi-grid, .resource-grid, .contact-wrap { grid-template-columns: 1fr; }
+      .problem-solution, .scenarios-heading, .scenario-grid, .demo-wrap, .steps, .features-grid, .pricing-grid, .testi-grid, .resource-grid, .contact-wrap { grid-template-columns: 1fr; }
       .form-row { grid-template-columns: 1fr; }
       .hero { padding: 70px 20px 60px; }
     }
@@ -549,6 +563,7 @@
   <div class="logo">Ring &amp; <span>Booked</span></div>
   <ul class="nav-links">
     <li><a href="#how-it-works">How It Works</a></li>
+    <li><a href="#service-scenarios">For Your Calls</a></li>
     <li><a href="#features">Features</a></li>
     <li><a href="#resources">Resources</a></li>
     <li><a href="#pricing">Pricing</a></li>
@@ -567,7 +582,7 @@
 <section class="hero">
   <div class="badge"><span class="dot"></span> Now live — accepting new merchants</div>
   <h1>Every Call Answered.<br><em>Every Appointment Booked.</em></h1>
-  <p class="hero-sub">Ring & Booked is the done-for-you AI phone receptionist configured around your business — and your appointment-booking workflow — 24/7.</p>
+  <p class="hero-sub">A done-for-you phone receptionist for service businesses — configured around the calls, booking rules, and handoffs you approve.</p>
   <div class="hero-btns">
     <a href="/onboarding.html" class="btn-primary">Start 7-Day Free Trial</a>
   </div>
@@ -575,43 +590,83 @@
 
 <!-- STATS -->
 <div class="stats-bar">
-  <div class="stat"><div class="stat-num">24/7</div><div class="stat-label">Always on, never sleeps</div></div>
-  <div class="stat"><div class="stat-num">&lt;2s</div><div class="stat-label">AI response time</div></div>
+  <div class="stat"><div class="stat-num">24/7</div><div class="stat-label">Configured call coverage</div></div>
+  <div class="stat"><div class="stat-num">Your rules</div><div class="stat-label">Booking and handoff boundaries</div></div>
   <div class="stat"><div class="stat-num">10+</div><div class="stat-label">Languages supported</div></div>
   <div class="stat"><div class="stat-num">1 day</div><div class="stat-label">Setup time, done-for-you</div></div>
-  <div class="stat"><div class="stat-num">$0</div><div class="stat-label">Missed booking cost</div></div>
+  <div class="stat"><div class="stat-num">7 days</div><div class="stat-label">Trial starts at go-live</div></div>
 </div>
 
 <!-- PROBLEM / SOLUTION -->
 <section>
   <div class="container">
     <div class="section-label">The Problem</div>
-    <h2>Missed calls = missed money.</h2>
-    <p class="section-sub">Most small businesses lose 30–40% of bookings to unanswered calls — evenings, weekends, lunch hours.</p>
+    <h2>When you are on the job, callers still need a clear next step.</h2>
+    <p class="section-sub">Calls come in during jobs, after hours, and while your team is already helping someone else. Your customers should know what happens next without guessing.</p>
     <div class="problem-solution">
       <div class="problem-box">
         <div class="box-icon">📵</div>
         <div class="box-title">Without Ring & Booked</div>
         <ul class="box-list">
-          <li>Phone rings while you're on a job — caller hangs up and calls your competitor</li>
-          <li>Voicemail piles up; callbacks happen too late, customer already booked elsewhere</li>
-          <li>After-hours emergencies go unanswered, or you take calls at midnight</li>
-          <li>Non-English speaking customers get frustrated, leave, and never come back</li>
-          <li>You're paying staff to sit by the phone doing nothing during slow periods</li>
+          <li>Phone rings while you're on a job, and the caller does not know when they will hear back</li>
+          <li>Voicemails pile up, leaving your team to reconstruct the right details later</li>
+          <li>After-hours callers cannot tell which requests can wait and which should reach your team</li>
+          <li>Callers who prefer another language do not get a clear path to help</li>
+          <li>Your office team gets pulled away from customers and work already in progress</li>
         </ul>
       </div>
       <div class="solution-box">
         <div class="box-icon">✅</div>
         <div class="box-title">With Ring & Booked</div>
         <ul class="box-list">
-          <li>Configured to handle calls around the clock</li>
+          <li>Configured to handle calls around the clock, using the introduction and tone you approve</li>
           <li>Collects approved details, checks availability, and can book into your calendar</li>
           <li>Routes urgent-call scenarios using the escalation plan you approve</li>
-          <li>Multilingual AI — handles English, Spanish, Chinese, Korean, Vietnamese, and more</li>
+          <li>Supports the caller languages you choose, with setup and testing from our team</li>
           <li>Published per-minute overage rate — you always know what extra usage costs</li>
         </ul>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- SERVICE SCENARIOS -->
+<section class="scenarios" id="service-scenarios">
+  <div class="container">
+    <div class="scenarios-heading">
+      <div>
+        <div class="section-label">Built around your calls</div>
+        <h2>Your call flow should sound like your business.</h2>
+      </div>
+      <p class="section-sub">A plumbing call, an HVAC request, and an electrical booking do not need the same script. We configure the details to collect, the appointments that can be offered, and the moments your team should take over.</p>
+    </div>
+    <div class="scenario-grid">
+      <article class="scenario-card">
+        <img src="/assets/scenarios/plumbing-call-flow.webp" width="1200" height="900" loading="lazy" alt="A plumber working under a kitchen sink while a homeowner calls for service">
+        <div class="scenario-content">
+          <span class="scenario-eyebrow">Plumbing calls</span>
+          <h3>Get the details before the callback.</h3>
+          <p>Collect the approved issue, address, and callback details, then offer only the booking options and routing steps you set.</p>
+        </div>
+      </article>
+      <article class="scenario-card">
+        <img src="/assets/scenarios/hvac-call-flow.webp" width="1200" height="900" loading="lazy" alt="An HVAC technician servicing an outdoor unit while a homeowner calls a service business">
+        <div class="scenario-content">
+          <span class="scenario-eyebrow">HVAC requests</span>
+          <h3>Capture the context your team needs.</h3>
+          <p>Make it clear what the caller needs, what time works, and whether the request belongs in the appointment flow or with your on-call contact.</p>
+        </div>
+      </article>
+      <article class="scenario-card">
+        <img src="/assets/scenarios/electrical-call-flow.webp" width="1200" height="900" loading="lazy" alt="An electrician working at an electrical panel while a homeowner calls for help">
+        <div class="scenario-content">
+          <span class="scenario-eyebrow">Electrical bookings</span>
+          <h3>Keep the handoff inside your boundaries.</h3>
+          <p>Use your approved services, service area, and escalation rules so callers receive a useful next step without the system making promises you did not authorize.</p>
+        </div>
+      </article>
+    </div>
+    <p class="scenario-note"><strong>Not a one-size-fits-all script.</strong> We review your business information with you before launch, and you decide what the receptionist may book, what it should collect, and when a person needs to step in.</p>
   </div>
 </section>
 
@@ -620,14 +675,14 @@
   <div class="container">
     <div class="demo-video-block">
       <p class="demo-video-kicker"><span aria-hidden="true">▶</span> WATCH THE VIDEO</p>
-      <h2 class="demo-video-title">Watch a configured AI receptionist handle an after-hours booking.</h2>
+      <h2 class="demo-video-title">Watch a configured receptionist handle an after-hours booking.</h2>
       <p class="demo-video-caption">Tap play to see an illustrative call flow: collecting approved details and arranging a booking.</p>
       <a class="demo-video-page-link" href="/watch-ai-receptionist-demo">Open the full video demo and setup guide →</a>
       <div class="demo-video">
         <iframe
           id="demo-video-player"
           src="https://www.youtube-nocookie.com/embed/4eVvqsl6CsI?enablejsapi=1&amp;playsinline=1"
-          title="Ring & Booked AI receptionist — configured call demo"
+          title="Ring & Booked configured receptionist — call demo"
           loading="lazy"
           allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
           referrerpolicy="strict-origin-when-cross-origin"
@@ -641,7 +696,7 @@
         <div class="demo-phone-header">
           <div class="demo-phone-avatar">A</div>
           <div class="demo-phone-info">
-            <div class="demo-phone-name">Amy · Ring & Booked AI</div>
+            <div class="demo-phone-name">Amy · Ring & Booked</div>
             <div class="demo-phone-status">● Live call in progress</div>
           </div>
           <div class="demo-recording">● REC</div>
@@ -693,8 +748,8 @@
       <div class="step">
         <div class="step-num">2</div>
         <div class="step-icon">🤖</div>
-        <h3>We train your AI receptionist</h3>
-        <p>We build a custom AI that knows your business inside out. It learns what to say, what to refuse, and when to escalate to a real person.</p>
+        <h3>We configure and test your receptionist</h3>
+        <p>We build the call flow around your approved information: what it may say, what it must not promise, and when your team should take over.</p>
       </div>
       <div class="step">
         <div class="step-num">3</div>
@@ -711,13 +766,13 @@
   <div class="container">
     <div class="section-label">Features</div>
     <h2>Built for service businesses</h2>
-    <p class="section-sub">Not a generic bot. A receptionist that knows your trade — configured, trained, and tested by our team before it ever takes a call.</p>
+    <p class="section-sub">Not a generic script. A configured receptionist with clear boundaries, tested by our team before it takes a call for your business.</p>
     <div class="features-grid">
       <div class="feature-card">
         <div class="feature-icon">🧠</div>
-        <h3>Business-Trained AI</h3>
+        <h3>Configured for your business</h3>
         <p>Your configuration can include approved services, prices, service area, and hours, along with instructions for questions the receptionist should escalate.</p>
-        <span class="feature-tag">Custom-trained</span>
+        <span class="feature-tag">Your approved details</span>
       </div>
       <div class="feature-card">
         <div class="feature-icon">📅</div>
@@ -727,8 +782,8 @@
       </div>
       <div class="feature-card">
         <div class="feature-icon">🌐</div>
-        <h3>10+ Languages, Configured For You</h3>
-        <p>Tell us which languages your customers speak, and our team configures and tests your AI in each one before launch — including automatic detection and mid-call switching for whichever ones you enable.</p>
+        <h3>10+ languages, configured for you</h3>
+        <p>Tell us which languages your customers speak, and our team configures and tests the call flow in each one before launch — including the languages you choose to enable.</p>
         <span class="feature-tag green">Multilingual</span>
       </div>
       <div class="feature-card">
@@ -745,14 +800,14 @@
       </div>
       <div class="feature-card">
         <div class="feature-icon">💬</div>
-        <h3>Natural Conversation</h3>
-        <p>Doesn't sound like a menu tree. Talks like a real receptionist — concise, warm, handles interruptions, follows up with the right question.</p>
-        <span class="feature-tag">Human-like</span>
+        <h3>Clear, guided conversations</h3>
+        <p>Callers get direct questions and a clear next step instead of a phone tree. The receptionist follows your approved flow and can route questions outside it for follow-up.</p>
+        <span class="feature-tag">Caller-friendly</span>
       </div>
       <div class="feature-card">
         <div class="feature-icon">🎙️</div>
         <h3>Recordings, Transcripts &amp; Summaries</h3>
-        <p>Recording, transcription, and AI summaries can be enabled for your configured service with an appropriate caller notice and workflow.</p>
+        <p>Recording, transcription, and call summaries can be enabled for your configured service with an appropriate caller notice and workflow.</p>
         <span class="feature-tag green">Full call log</span>
       </div>
       <div class="feature-card">
@@ -763,9 +818,9 @@
       </div>
       <div class="feature-card">
         <div class="feature-icon">🎚️</div>
-        <h3>100+ Premium AI Voices</h3>
-        <p>Choose from a library of 100+ natural-sounding voices. We help you pick the one that fits your brand and confirm it sounds right before your line ever goes live.</p>
-        <span class="feature-tag">Custom-trained</span>
+        <h3>A voice selected for your business</h3>
+        <p>Choose from a library of 100+ voice options. We help you select one that fits your brand and confirm the call flow sounds right before your line goes live.</p>
+        <span class="feature-tag">Configured with you</span>
       </div>
     </div>
 
@@ -785,7 +840,7 @@
         <div class="roadmap-card">
           <span class="roadmap-badge">Coming Soon</span>
           <h4>Outbound Calling</h4>
-          <p>AI-driven outbound calls for reminders and follow-ups — currently in development.</p>
+          <p>Automated outbound calls for reminders and follow-ups — currently in development.</p>
         </div>
       </div>
     </div>
@@ -884,7 +939,7 @@
           <li>1 phone number forwarded</li>
           <li>Multi-language support, configured for your callers</li>
           <li>Cal.com appointment booking</li>
-          <li>AI-written daily call summary</li>
+          <li>Daily call summary</li>
           <li>Call recording &amp; transcript</li>
           <li class="dim">Language preferences configured during setup</li>
           <li class="dim">No urgent escalation</li>
@@ -908,7 +963,7 @@
           <li>Cal.com appointment booking</li>
           <li>Urgent escalation transfer</li>
           <li>Read-back confirmation</li>
-          <li>Call recording, transcript &amp; AI summary</li>
+          <li>Call recording, transcript &amp; summary</li>
           <li>Slack / SMS notification per booking</li>
         </ul>
         <div class="plan-overage">$0.35/min after included minutes</div>
@@ -979,6 +1034,13 @@
           <span class="arrow">▼</span>
         </button>
         <div class="faq-a">We configure the AI around your approved business information and escalation rules. Questions outside that configuration can be routed for human follow-up rather than answered automatically.</div>
+      </div>
+      <div class="faq-item">
+        <button class="faq-q" onclick="toggleFaq(this)">
+          Will callers know they are speaking with an automated receptionist?
+          <span class="arrow">▼</span>
+        </button>
+        <div class="faq-a">We work with you to define the caller greeting, the business information it can share, and any notices that fit your call flow. You retain control over how the receptionist represents your business and when it should hand a call to your team.</div>
       </div>
       <div class="faq-item">
         <button class="faq-q" onclick="toggleFaq(this)">
@@ -1076,7 +1138,7 @@
 <!-- FOOTER -->
 <footer>
   <div class="footer-logo">Ring &amp; <span>Booked</span></div>
-  <p style="margin-top:8px">AI receptionist that books, not just answers.</p>
+  <p style="margin-top:8px">A configured receptionist that books, not just answers.</p>
   <p style="margin-top:12px">Questions? <a href="mailto:support@otterbeacon.com" class="email-link">support@otterbeacon.com</a></p>
   <p style="margin-top:8px"><a href="https://www.facebook.com/profile.php?id=61595981696741" class="email-link" target="_blank" rel="noopener noreferrer">Facebook</a> · <a href="https://www.instagram.com/otterbeacon/" class="email-link" target="_blank" rel="noopener noreferrer">Instagram</a></p>
   <p class="footer-legal"><a href="/ai-answering-service">AI Answering Service</a><a href="/after-hours-call-answering">After-hours Call Answering</a><a href="/ai-appointment-booking">AI Appointment Booking</a><a href="/ai-receptionist-for-service-businesses">Service Business AI Receptionist</a><a href="/how-ring-and-booked-works">How Ring &amp; Booked Works</a><a href="/resources">Resources</a></p>

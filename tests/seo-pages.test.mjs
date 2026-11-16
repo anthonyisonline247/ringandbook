@@ -72,6 +72,18 @@ test('homepage, llms files, and resource hub link to the content system', () => 
   }
 });
 
+test('homepage presents original service-call scenarios and outcome-focused copy', () => {
+  const homepage = read('index.html');
+  assert.match(homepage, /id="service-scenarios"/);
+  assert.match(homepage, /href="#service-scenarios"/);
+  for (const image of ['/assets/scenarios/plumbing-call-flow.webp', '/assets/scenarios/hvac-call-flow.webp', '/assets/scenarios/electrical-call-flow.webp']) {
+    assert.match(homepage, new RegExp(`src="${image}"`));
+    assert.ok(fs.existsSync(new URL(`../${image.slice(1)}`, import.meta.url)), `${image} should exist`);
+  }
+  assert.doesNotMatch(homepage, /Most small businesses lose 30–40% of bookings/);
+  assert.doesNotMatch(homepage, /AI response time/);
+});
+
 test('business pages link to their practical resources and public pages use consent-safe analytics', () => {
   const businessResources = {
     'ai-answering-service.html': ['/ai-receptionist-onboarding-checklist', '/after-hours-call-handling-checklist'],
