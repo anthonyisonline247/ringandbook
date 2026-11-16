@@ -76,8 +76,9 @@ test('homepage presents original service-call scenarios and outcome-focused copy
   const homepage = read('index.html');
   assert.match(homepage, /id="service-scenarios"/);
   assert.match(homepage, /href="#service-scenarios"/);
+  const sources = [...homepage.matchAll(/<img\s+src="([^"?]+)(?:\?[^"]*)?"/g)].map(match => match[1]);
   for (const image of ['/assets/scenarios/plumbing-call-flow.webp', '/assets/scenarios/dental-reception.webp', '/assets/scenarios/office-consultation.webp']) {
-    assert.match(homepage, new RegExp(`src="${image}"`));
+    assert.ok(sources.includes(image));
     assert.ok(fs.existsSync(new URL(`../${image.slice(1)}`, import.meta.url)), `${image} should exist`);
   }
   assert.doesNotMatch(homepage, /Most small businesses lose 30–40% of bookings/);
