@@ -82,8 +82,10 @@ test('homepage presents original service-call scenarios and outcome-focused copy
   }
   assert.doesNotMatch(homepage, /Most small businesses lose 30–40% of bookings/);
   assert.doesNotMatch(homepage, /AI response time/);
-  assert.ok(homepage.indexOf('id="how-it-works"') < homepage.indexOf('class="flow-section"'));
-  assert.ok(homepage.indexOf('class="flow-section"') < homepage.indexOf('id="demo"'));
+  assert.match(homepage, /We answer the business calls you cannot\./);
+  assert.match(homepage, /What Ring &amp; Booked does/);
+  assert.ok(homepage.indexOf('id="call-flow"') < homepage.indexOf('id="how-it-works"'));
+  assert.ok(homepage.indexOf('id="how-it-works"') < homepage.indexOf('id="demo"'));
 });
 
 test('business pages link to their practical resources and public pages use consent-safe analytics', () => {

@@ -243,23 +243,22 @@
     .section-sub { font-size: 1.05rem; color: var(--muted); max-width: 560px; margin-bottom: 60px; }
     .container { max-width: 1100px; margin: 0 auto; }
 
-    /* CALL FLOW */
-    .flow-section { overflow: hidden; background: #192d45; color: #fff; }
-    .flow-section .section-label { color: #9ec2ff; }
-    .flow-section h2 { max-width: 690px; }
-    .flow-section .section-sub { color: #d7e2f1; margin-bottom: 38px; }
-    .workflow-stage { position: relative; isolation: isolate; padding: 34px 24px; border: 1px solid rgba(185,211,247,.25); border-radius: 24px; background: radial-gradient(circle at 50% 0%, rgba(77,144,255,.24), transparent 55%), rgba(255,255,255,.05); }
-    .workflow-stage::before { content: ''; position: absolute; z-index: -1; top: 50%; left: 12%; right: 12%; height: 2px; background: linear-gradient(90deg, transparent, #82b0ff 18%, #82b0ff 82%, transparent); opacity: .7; }
-    .workflow-stage::after { content: ''; position: absolute; z-index: -1; top: calc(50% - 5px); left: 15%; width: 18px; height: 12px; border-radius: 999px; background: #fff; box-shadow: 0 0 0 5px rgba(134,180,255,.16), 240px 0 0 #fff, 240px 0 0 5px rgba(134,180,255,.16), 480px 0 0 #fff, 480px 0 0 5px rgba(134,180,255,.16); animation: workflow-signal 5s ease-in-out infinite; }
-    @keyframes workflow-signal { 0%,100% { transform: translateX(0); opacity: .55; } 50% { transform: translateX(28px); opacity: 1; } }
-    .flow-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; position: relative; }
-    .flow-step { min-height: 162px; padding: 24px; border-radius: 18px; background: rgba(255,255,255,.08); backdrop-filter: blur(10px); }
-    .flow-step:nth-child(2) { transform: translateY(20px); animation: flow-float 4s ease-in-out infinite; }
-    .flow-step:nth-child(3) { animation: flow-float 4s ease-in-out -1.2s infinite; }
-    @keyframes flow-float { 50% { transform: translateY(10px); } }
-    .flow-step-number { display: block; margin-bottom: 22px; color: #9ec2ff; font-size: .75rem; font-weight: 800; letter-spacing: .12em; }
-    .flow-step h3 { margin: 0 0 8px; font-size: 1.2rem; }
-    .flow-step p { margin: 0; color: #d7e2f1; font-size: .91rem; line-height: 1.6; }
+    /* WHAT THE SERVICE DOES */
+    .service-explainer { background: var(--bg2); }
+    .service-explainer-heading { max-width: 760px; }
+    .service-explainer-heading .section-sub { max-width: 690px; margin-bottom: 38px; }
+    .service-explainer-grid { display: grid; grid-template-columns: 1.05fr .95fr; align-items: stretch; border: 1px solid var(--border); border-radius: 24px; overflow: hidden; background: var(--card); }
+    .service-statement { padding: 42px; background: #192d45; color: #fff; }
+    .service-kicker { display: inline-flex; align-items: center; gap: 8px; margin-bottom: 28px; color: #b9d2ff; font-size: .78rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+    .service-kicker::before { content: ''; width: 9px; height: 9px; border-radius: 50%; background: #63a2ff; box-shadow: 0 0 0 5px rgba(99,162,255,.16); }
+    .service-statement h3 { margin: 0 0 16px; max-width: 440px; font-size: clamp(1.65rem, 3vw, 2.35rem); line-height: 1.15; letter-spacing: -.035em; }
+    .service-statement p { max-width: 480px; margin: 0; color: #d7e2f1; font-size: 1rem; line-height: 1.7; }
+    .service-outcomes { display: flex; flex-direction: column; padding: 16px 38px; }
+    .service-outcome { padding: 26px 0; border-bottom: 1px solid var(--border); }
+    .service-outcome:last-child { border-bottom: 0; }
+    .service-outcome-label { display: block; margin-bottom: 8px; color: var(--accent); font-size: .72rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+    .service-outcome h3 { margin: 0 0 7px; font-size: 1.14rem; }
+    .service-outcome p { margin: 0; color: var(--muted); font-size: .92rem; line-height: 1.6; }
 
     /* INDUSTRY GALLERY */
     .scenarios { overflow: hidden; background: var(--bg); }
@@ -558,12 +557,11 @@
       .nav-links { display: none; }
       section { padding: 60px 20px; }
       .stats-bar { gap: 30px; padding: 28px 20px; }
-      .scenarios-heading, .scenario-grid, .flow-steps, .demo-wrap, .steps, .features-grid, .pricing-grid, .testi-grid, .resource-feature, .contact-wrap { grid-template-columns: 1fr; }
+      .service-explainer-grid, .scenarios-heading, .scenario-grid, .demo-wrap, .steps, .features-grid, .pricing-grid, .testi-grid, .resource-feature, .contact-wrap { grid-template-columns: 1fr; }
       .steps { gap: 26px; }
       .step, .step + .step { padding: 0; border-left: 0; }
-      .workflow-stage { padding: 18px; }
-      .workflow-stage::before, .workflow-stage::after { display: none; }
-      .flow-step:nth-child(2), .flow-step:nth-child(3) { transform: none; animation: none; }
+      .service-statement { padding: 32px 26px; }
+      .service-outcomes { padding: 8px 26px; }
       .scenario-card { min-height: 440px; }
       .scenarios-heading { display: flex; flex-direction: column; align-items: flex-start; gap: 20px; }
       .scenarios-heading .section-sub { max-width: none; }
@@ -615,17 +613,47 @@
   <div class="stat"><div class="stat-num">7 days</div><div class="stat-label">Trial starts at go-live</div></div>
 </div>
 
+<!-- WHAT THE SERVICE DOES -->
+<section class="service-explainer" id="call-flow">
+  <div class="container">
+    <div class="service-explainer-heading">
+      <div class="section-label">What Ring &amp; Booked does</div>
+      <h2>We answer the business calls you cannot.</h2>
+      <p class="section-sub">When your team is with a customer, in an appointment, or out doing the work, Ring &amp; Booked answers your business line and moves the right calls forward.</p>
+    </div>
+    <div class="service-explainer-grid">
+      <div class="service-statement">
+        <span class="service-kicker">Incoming business call</span>
+        <h3>A receptionist configured around your business answers 24/7.</h3>
+        <p>It can greet callers, collect the details you approve, offer appointments that fit your calendar, and send calls to your team when the situation requires a person.</p>
+      </div>
+      <div class="service-outcomes">
+        <div class="service-outcome">
+          <span class="service-outcome-label">For callers</span>
+          <h3>A useful answer instead of a voicemail.</h3>
+          <p>Callers get clear questions, an approved appointment option, or an appropriate next step.</p>
+        </div>
+        <div class="service-outcome">
+          <span class="service-outcome-label">For your team</span>
+          <h3>The right information, not a pile of callbacks.</h3>
+          <p>Your team receives bookings and handoffs according to the services, hours, languages, and escalation rules you set.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- HOW IT WORKS -->
 <section id="how-it-works">
   <div class="container" style="text-align:center">
-    <div class="section-label">How it works</div>
-    <h2>Live in three straightforward steps.</h2>
-    <p class="section-sub" style="margin:0 auto">You share how your business works. We configure, test, and launch the call flow with you.</p>
+    <div class="section-label">Getting you live</div>
+    <h2>We set it up with you, then you decide when to turn it on.</h2>
+    <p class="section-sub" style="margin:0 auto">There is no generic script for you to manage. Our team configures and tests the service before your phone line goes live.</p>
     <div class="steps">
       <div class="step">
         <div class="step-num">01</div>
         <div class="step-icon">📋</div>
-        <h3>Share the essentials</h3>
+        <h3>Share how you handle calls</h3>
         <p>Tell us your services, availability, booking rules, and the calls your team needs to receive.</p>
       </div>
       <div class="step">
@@ -639,34 +667,6 @@
         <div class="step-icon">↗</div>
         <h3>Forward calls when ready</h3>
         <p>Once you approve the setup, forward your number and start your seven-day trial when the service goes live.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- CALL FLOW -->
-<section class="flow-section" id="call-flow">
-  <div class="container">
-    <div class="section-label">Your rules, in motion</div>
-    <h2>A caller should never have to wonder what happens next.</h2>
-    <p class="section-sub">When you cannot answer—because you are with a client, in a procedure, or on a job—Ring &amp; Booked follows the information, booking boundaries, and handoff plan you approve.</p>
-    <div class="workflow-stage" aria-label="A caller is answered, guided through approved questions, then booked or handed to the team">
-      <div class="flow-steps">
-        <article class="flow-step">
-          <span class="flow-step-number">01 · ANSWER</span>
-          <h3>Pick up with context</h3>
-          <p>Your caller hears a clear greeting and gets help without waiting for a callback.</p>
-        </article>
-        <article class="flow-step">
-          <span class="flow-step-number">02 · GUIDE</span>
-          <h3>Collect only what matters</h3>
-          <p>The conversation follows the services, questions, languages, and limits you set.</p>
-        </article>
-        <article class="flow-step">
-          <span class="flow-step-number">03 · MOVE FORWARD</span>
-          <h3>Book or bring in your team</h3>
-          <p>Offer approved appointments or transfer the call when a person needs to step in.</p>
-        </article>
       </div>
     </div>
   </div>
