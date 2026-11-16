@@ -76,12 +76,14 @@ test('homepage presents original service-call scenarios and outcome-focused copy
   const homepage = read('index.html');
   assert.match(homepage, /id="service-scenarios"/);
   assert.match(homepage, /href="#service-scenarios"/);
-  for (const image of ['/assets/scenarios/plumbing-call-flow.webp', '/assets/scenarios/hvac-call-flow.webp', '/assets/scenarios/electrical-call-flow.webp']) {
+  for (const image of ['/assets/scenarios/plumbing-call-flow.webp', '/assets/scenarios/dental-practice-call.webp', '/assets/scenarios/law-office-call.webp']) {
     assert.match(homepage, new RegExp(`src="${image}"`));
     assert.ok(fs.existsSync(new URL(`../${image.slice(1)}`, import.meta.url)), `${image} should exist`);
   }
   assert.doesNotMatch(homepage, /Most small businesses lose 30–40% of bookings/);
   assert.doesNotMatch(homepage, /AI response time/);
+  assert.ok(homepage.indexOf('id="how-it-works"') < homepage.indexOf('class="flow-section"'));
+  assert.ok(homepage.indexOf('class="flow-section"') < homepage.indexOf('id="demo"'));
 });
 
 test('business pages link to their practical resources and public pages use consent-safe analytics', () => {

@@ -23,6 +23,7 @@ body > nav { background: rgba(250,251,248,.96); box-shadow: 0 2px 16px rgba(25,4
 .feature-card, .pricing-card, .testi-card, .demo-phone, .contact-form, .dashboard-card {
   box-shadow: 0 8px 28px rgba(25,45,69,.045);
 }
+.features .feature-card { background: transparent; box-shadow: none; }
 .pricing-card.featured { background: #fff; border: 2px solid var(--accent); box-shadow: 0 12px 36px rgba(37,99,235,.10); }
 .plan-price > .price-monthly, .plan-price > .price-annually { font-size: inherit; font-weight: inherit; color: var(--text); }
 .problem-box { background: #fffaf7; border-color: #efdbd0; }

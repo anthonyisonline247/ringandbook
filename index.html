@@ -243,36 +243,41 @@
     .section-sub { font-size: 1.05rem; color: var(--muted); max-width: 560px; margin-bottom: 60px; }
     .container { max-width: 1100px; margin: 0 auto; }
 
-    /* PROBLEM / SOLUTION */
-    .problem-solution {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start;
-    }
-    .problem-box, .solution-box {
-      background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 36px;
-    }
-    .problem-box { border-color: #7f1d1d; }
-    .solution-box { border-color: rgba(16,185,129,0.3); }
-    .box-icon { font-size: 2rem; margin-bottom: 16px; }
-    .box-title { font-size: 1.2rem; font-weight: 700; margin-bottom: 16px; }
-    .problem-box .box-title { color: #fca5a5; }
-    .solution-box .box-title { color: #6ee7b7; }
-    .box-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
-    .box-list li { display: flex; align-items: flex-start; gap: 10px; font-size: 0.95rem; color: var(--muted); }
-    .box-list li::before { content: ''; flex-shrink: 0; width: 5px; height: 5px; border-radius: 50%; background: var(--muted); margin-top: 10px; }
-    .solution-box .box-list li::before { background: var(--green); }
+    /* CALL FLOW */
+    .flow-section { overflow: hidden; background: #192d45; color: #fff; }
+    .flow-section .section-label { color: #9ec2ff; }
+    .flow-section h2 { max-width: 690px; }
+    .flow-section .section-sub { color: #d7e2f1; margin-bottom: 38px; }
+    .workflow-stage { position: relative; isolation: isolate; padding: 34px 24px; border: 1px solid rgba(185,211,247,.25); border-radius: 24px; background: radial-gradient(circle at 50% 0%, rgba(77,144,255,.24), transparent 55%), rgba(255,255,255,.05); }
+    .workflow-stage::before { content: ''; position: absolute; z-index: -1; top: 50%; left: 12%; right: 12%; height: 2px; background: linear-gradient(90deg, transparent, #82b0ff 18%, #82b0ff 82%, transparent); opacity: .7; }
+    .workflow-stage::after { content: ''; position: absolute; z-index: -1; top: calc(50% - 5px); left: 15%; width: 18px; height: 12px; border-radius: 999px; background: #fff; box-shadow: 0 0 0 5px rgba(134,180,255,.16), 240px 0 0 #fff, 240px 0 0 5px rgba(134,180,255,.16), 480px 0 0 #fff, 480px 0 0 5px rgba(134,180,255,.16); animation: workflow-signal 5s ease-in-out infinite; }
+    @keyframes workflow-signal { 0%,100% { transform: translateX(0); opacity: .55; } 50% { transform: translateX(28px); opacity: 1; } }
+    .flow-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; position: relative; }
+    .flow-step { min-height: 162px; padding: 24px; border-radius: 18px; background: rgba(255,255,255,.08); backdrop-filter: blur(10px); }
+    .flow-step:nth-child(2) { transform: translateY(20px); animation: flow-float 4s ease-in-out infinite; }
+    .flow-step:nth-child(3) { animation: flow-float 4s ease-in-out -1.2s infinite; }
+    @keyframes flow-float { 50% { transform: translateY(10px); } }
+    .flow-step-number { display: block; margin-bottom: 22px; color: #9ec2ff; font-size: .75rem; font-weight: 800; letter-spacing: .12em; }
+    .flow-step h3 { margin: 0 0 8px; font-size: 1.2rem; }
+    .flow-step p { margin: 0; color: #d7e2f1; font-size: .91rem; line-height: 1.6; }
 
-    /* SERVICE SCENARIOS */
-    .scenarios { background: var(--bg2); }
-    .scenarios-heading { display: grid; grid-template-columns: minmax(0, .8fr) minmax(0, 1.2fr); gap: 48px; align-items: end; margin-bottom: 40px; }
-    .scenarios-heading .section-sub { margin: 0; max-width: 620px; }
-    .scenario-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; }
-    .scenario-card { overflow: hidden; border: 1px solid var(--border); border-radius: 18px; background: var(--card); box-shadow: 0 10px 30px rgba(25,45,69,.06); }
-    .scenario-card img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; object-position: center; }
-    .scenario-content { padding: 24px; }
-    .scenario-eyebrow { display: block; margin-bottom: 9px; color: var(--accent); font-size: .72rem; font-weight: 800; letter-spacing: 1.3px; text-transform: uppercase; }
-    .scenario-card h3 { margin: 0 0 10px; font-size: 1.15rem; line-height: 1.3; }
-    .scenario-card p { margin: 0; color: var(--muted); font-size: .91rem; line-height: 1.6; }
-    .scenario-note { margin: 26px 0 0; padding: 18px 22px; border-left: 3px solid var(--accent); border-radius: 0 12px 12px 0; background: var(--card); color: var(--muted); font-size: .94rem; }
+    /* INDUSTRY GALLERY */
+    .scenarios { overflow: hidden; background: var(--bg); }
+    .scenarios-heading { display: flex; justify-content: space-between; gap: 48px; align-items: end; margin-bottom: 36px; }
+    .scenarios-heading > div { max-width: 560px; }
+    .scenarios-heading .section-sub { margin: 0; max-width: 470px; }
+    .scenario-grid { display: grid; grid-template-columns: 1.08fr .92fr .92fr; gap: 18px; }
+    .scenario-card { position: relative; min-height: 520px; overflow: hidden; border-radius: 22px; background: #192d45; color: #fff; }
+    .scenario-card::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 34%, rgba(10,24,43,.86) 100%); }
+    .scenario-card img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform .6s ease; }
+    .scenario-card:hover img { transform: scale(1.035); }
+    .scenario-card:nth-child(2) img, .scenario-card:nth-child(3) img { transform: scale(1.34); transform-origin: center 62%; }
+    .scenario-card:nth-child(2):hover img, .scenario-card:nth-child(3):hover img { transform: scale(1.39); }
+    .scenario-content { position: absolute; z-index: 1; right: 0; bottom: 0; left: 0; padding: 28px; }
+    .scenario-eyebrow { display: block; margin-bottom: 9px; color: #a8c8ff; font-size: .72rem; font-weight: 800; letter-spacing: 1.3px; text-transform: uppercase; }
+    .scenario-card h3 { margin: 0 0 8px; font-size: 1.35rem; line-height: 1.25; }
+    .scenario-card p { margin: 0; color: #e8f0fb; font-size: .91rem; line-height: 1.55; }
+    .scenario-note { max-width: 740px; margin: 24px 0 0; color: var(--muted); font-size: .95rem; }
     .scenario-note strong { color: var(--text); }
 
     /* DEMO CONVO */
@@ -322,31 +327,29 @@
     .demo-video-play-hint.is-hidden { opacity: 0; visibility: hidden; }
 
     /* HOW IT WORKS */
-    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 32px; margin-top: 60px; }
-    .step {
-      background: var(--card); border: 1px solid var(--border); border-radius: 16px; padding: 32px;
-      position: relative;
-    }
+    .steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; margin-top: 48px; text-align: left; }
+    .step { position: relative; padding: 8px 34px 8px 0; }
+    .step + .step { padding-left: 34px; border-left: 1px solid var(--border); }
     .step-num {
-      width: 36px; height: 36px; border-radius: 50%;
-      background: rgba(59,130,246,0.15); border: 1px solid rgba(59,130,246,0.3);
+      width: 42px; height: 42px; border-radius: 50%;
+      background: var(--bg2); border: 1px solid rgba(59,130,246,0.3);
       display: flex; align-items: center; justify-content: center;
       font-weight: 700; font-size: 0.9rem; color: var(--accent);
       margin-bottom: 20px;
     }
-    .step-icon { font-size: 2rem; margin-bottom: 12px; }
+    .step-icon { font-size: 1.7rem; margin-bottom: 12px; }
     .step h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 10px; }
     .step p { color: var(--muted); font-size: 0.9rem; }
 
     /* FEATURES */
     .features { background: var(--bg2); }
-    .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); column-gap: 40px; row-gap: 0; }
     .feature-card {
-      background: var(--bg3); border: 1px solid var(--border); border-radius: 14px; padding: 28px;
-      transition: border-color .2s, transform .2s;
+      padding: 26px 0; border: 0; border-top: 1px solid var(--border); border-radius: 0;
+      transition: border-color .2s;
     }
-    .feature-card:hover { border-color: var(--accent); transform: translateY(-3px); }
-    .feature-icon { font-size: 1.8rem; margin-bottom: 14px; }
+    .feature-card:hover { border-color: var(--accent); }
+    .feature-icon { font-size: 1.55rem; margin-bottom: 12px; }
     .feature-card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 8px; }
     .feature-card p { color: var(--muted); font-size: 0.88rem; line-height: 1.6; }
     .feature-tag {
@@ -359,10 +362,9 @@
     /* ROADMAP */
     .roadmap-block { margin-top: 56px; padding-top: 48px; border-top: 1px dashed var(--border); }
     .roadmap-label { font-size: 0.8rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 20px; }
-    .roadmap-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .roadmap-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; }
     .roadmap-card {
-      background: transparent; border: 1px dashed var(--border); border-radius: 14px; padding: 24px;
-      position: relative; opacity: 0.85;
+      border-left: 2px solid var(--border); padding: 2px 0 2px 16px; opacity: 0.85;
     }
     .roadmap-badge {
       display: inline-block; background: rgba(245,158,11,0.12); border: 1px solid rgba(245,158,11,0.3);
@@ -460,13 +462,20 @@
 
     /* RESOURCES */
     .resources-section { background: var(--bg); }
-    .resource-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
-    .resource-card { display: flex; flex-direction: column; min-height: 178px; padding: 24px; border: 1px solid var(--border); border-radius: 14px; background: var(--bg3); color: var(--text); text-align: left; text-decoration: none; transition: transform .2s, border-color .2s, box-shadow .2s; }
-    .resource-card:hover { transform: translateY(-3px); border-color: var(--accent); box-shadow: 0 12px 26px rgba(37,99,235,.10); }
-    .resource-card .resource-type { margin-bottom: 10px; color: var(--accent); font-size: .72rem; font-weight: 800; letter-spacing: 1.2px; text-transform: uppercase; }
-    .resource-card h3 { margin: 0 0 10px; font-size: 1.08rem; line-height: 1.28; }
-    .resource-card p { margin: 0; color: var(--muted); font-size: .88rem; line-height: 1.55; }
-    .resource-card .resource-link { margin-top: auto; padding-top: 16px; color: var(--accent); font-size: .86rem; font-weight: 750; }
+    .resource-feature { display: grid; grid-template-columns: .95fr 1.05fr; border-radius: 22px; overflow: hidden; background: #192d45; }
+    .resource-intro { padding: 40px; color: #fff; }
+    .resource-intro .section-label { color: #9ec2ff; }
+    .resource-intro h2 { margin-bottom: 16px; }
+    .resource-intro p { margin: 0 0 24px; color: #d7e2f1; }
+    .resource-primary-link { display: inline-flex; align-items: center; gap: 8px; padding-bottom: 4px; color: #fff; font-weight: 750; text-decoration: none; border-bottom: 1px solid #9ec2ff; }
+    .resource-primary-link:hover { color: #b9d2ff; }
+    .resource-index { display: block; padding: 16px 32px; background: #f0f5fb; }
+    .resource-index a { display: grid; grid-template-columns: 42px 1fr auto; gap: 14px; align-items: center; min-height: 66px; border-bottom: 1px solid #d7e1ee; color: var(--text); text-decoration: none; }
+    .resource-index a:last-child { border-bottom: 0; }
+    .resource-index a:hover { color: var(--accent); }
+    .resource-index strong { color: var(--accent); font-size: .74rem; letter-spacing: .08em; }
+    .resource-index span { font-size: .92rem; font-weight: 700; }
+    .resource-index em { color: var(--accent); font-size: 1.05rem; font-style: normal; }
 
     /* CONTACT */
     .contact { background: var(--bg2); }
@@ -549,7 +558,16 @@
       .nav-links { display: none; }
       section { padding: 60px 20px; }
       .stats-bar { gap: 30px; padding: 28px 20px; }
-      .problem-solution, .scenarios-heading, .scenario-grid, .demo-wrap, .steps, .features-grid, .pricing-grid, .testi-grid, .resource-grid, .contact-wrap { grid-template-columns: 1fr; }
+      .scenarios-heading, .scenario-grid, .flow-steps, .demo-wrap, .steps, .features-grid, .pricing-grid, .testi-grid, .resource-feature, .contact-wrap { grid-template-columns: 1fr; }
+      .steps { gap: 26px; }
+      .step, .step + .step { padding: 0; border-left: 0; }
+      .workflow-stage { padding: 18px; }
+      .workflow-stage::before, .workflow-stage::after { display: none; }
+      .flow-step:nth-child(2), .flow-step:nth-child(3) { transform: none; animation: none; }
+      .scenario-card { min-height: 440px; }
+      .scenarios-heading { display: flex; flex-direction: column; align-items: flex-start; gap: 20px; }
+      .scenarios-heading .section-sub { max-width: none; }
+      .resource-index { padding: 12px 20px; }
       .form-row { grid-template-columns: 1fr; }
       .hero { padding: 70px 20px 60px; }
     }
@@ -597,76 +615,60 @@
   <div class="stat"><div class="stat-num">7 days</div><div class="stat-label">Trial starts at go-live</div></div>
 </div>
 
-<!-- PROBLEM / SOLUTION -->
-<section>
-  <div class="container">
-    <div class="section-label">The Problem</div>
-    <h2>When you are on the job, callers still need a clear next step.</h2>
-    <p class="section-sub">Calls come in during jobs, after hours, and while your team is already helping someone else. Your customers should know what happens next without guessing.</p>
-    <div class="problem-solution">
-      <div class="problem-box">
-        <div class="box-icon">📵</div>
-        <div class="box-title">Without Ring & Booked</div>
-        <ul class="box-list">
-          <li>Phone rings while you're on a job, and the caller does not know when they will hear back</li>
-          <li>Voicemails pile up, leaving your team to reconstruct the right details later</li>
-          <li>After-hours callers cannot tell which requests can wait and which should reach your team</li>
-          <li>Callers who prefer another language do not get a clear path to help</li>
-          <li>Your office team gets pulled away from customers and work already in progress</li>
-        </ul>
+<!-- HOW IT WORKS -->
+<section id="how-it-works">
+  <div class="container" style="text-align:center">
+    <div class="section-label">How it works</div>
+    <h2>Live in three straightforward steps.</h2>
+    <p class="section-sub" style="margin:0 auto">You share how your business works. We configure, test, and launch the call flow with you.</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <div class="step-icon">📋</div>
+        <h3>Share the essentials</h3>
+        <p>Tell us your services, availability, booking rules, and the calls your team needs to receive.</p>
       </div>
-      <div class="solution-box">
-        <div class="box-icon">✅</div>
-        <div class="box-title">With Ring & Booked</div>
-        <ul class="box-list">
-          <li>Configured to handle calls around the clock, using the introduction and tone you approve</li>
-          <li>Collects approved details, checks availability, and can book into your calendar</li>
-          <li>Routes urgent-call scenarios using the escalation plan you approve</li>
-          <li>Supports the caller languages you choose, with setup and testing from our team</li>
-          <li>Published per-minute overage rate — you always know what extra usage costs</li>
-        </ul>
+      <div class="step">
+        <div class="step-num">02</div>
+        <div class="step-icon">✦</div>
+        <h3>We configure and test</h3>
+        <p>We build the call flow around your approved information, then review it with you before launch.</p>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <div class="step-icon">↗</div>
+        <h3>Forward calls when ready</h3>
+        <p>Once you approve the setup, forward your number and start your seven-day trial when the service goes live.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- SERVICE SCENARIOS -->
-<section class="scenarios" id="service-scenarios">
+<!-- CALL FLOW -->
+<section class="flow-section" id="call-flow">
   <div class="container">
-    <div class="scenarios-heading">
-      <div>
-        <div class="section-label">Built around your calls</div>
-        <h2>Your call flow should sound like your business.</h2>
+    <div class="section-label">Your rules, in motion</div>
+    <h2>A caller should never have to wonder what happens next.</h2>
+    <p class="section-sub">When you cannot answer—because you are with a client, in a procedure, or on a job—Ring &amp; Booked follows the information, booking boundaries, and handoff plan you approve.</p>
+    <div class="workflow-stage" aria-label="A caller is answered, guided through approved questions, then booked or handed to the team">
+      <div class="flow-steps">
+        <article class="flow-step">
+          <span class="flow-step-number">01 · ANSWER</span>
+          <h3>Pick up with context</h3>
+          <p>Your caller hears a clear greeting and gets help without waiting for a callback.</p>
+        </article>
+        <article class="flow-step">
+          <span class="flow-step-number">02 · GUIDE</span>
+          <h3>Collect only what matters</h3>
+          <p>The conversation follows the services, questions, languages, and limits you set.</p>
+        </article>
+        <article class="flow-step">
+          <span class="flow-step-number">03 · MOVE FORWARD</span>
+          <h3>Book or bring in your team</h3>
+          <p>Offer approved appointments or transfer the call when a person needs to step in.</p>
+        </article>
       </div>
-      <p class="section-sub">A plumbing call, an HVAC request, and an electrical booking do not need the same script. We configure the details to collect, the appointments that can be offered, and the moments your team should take over.</p>
     </div>
-    <div class="scenario-grid">
-      <article class="scenario-card">
-        <img src="/assets/scenarios/plumbing-call-flow.webp" width="1200" height="900" loading="lazy" alt="A plumber working under a kitchen sink while a homeowner calls for service">
-        <div class="scenario-content">
-          <span class="scenario-eyebrow">Plumbing calls</span>
-          <h3>Get the details before the callback.</h3>
-          <p>Collect the approved issue, address, and callback details, then offer only the booking options and routing steps you set.</p>
-        </div>
-      </article>
-      <article class="scenario-card">
-        <img src="/assets/scenarios/hvac-call-flow.webp" width="1200" height="900" loading="lazy" alt="An HVAC technician servicing an outdoor unit while a homeowner calls a service business">
-        <div class="scenario-content">
-          <span class="scenario-eyebrow">HVAC requests</span>
-          <h3>Capture the context your team needs.</h3>
-          <p>Make it clear what the caller needs, what time works, and whether the request belongs in the appointment flow or with your on-call contact.</p>
-        </div>
-      </article>
-      <article class="scenario-card">
-        <img src="/assets/scenarios/electrical-call-flow.webp" width="1200" height="900" loading="lazy" alt="An electrician working at an electrical panel while a homeowner calls for help">
-        <div class="scenario-content">
-          <span class="scenario-eyebrow">Electrical bookings</span>
-          <h3>Keep the handoff inside your boundaries.</h3>
-          <p>Use your approved services, service area, and escalation rules so callers receive a useful next step without the system making promises you did not authorize.</p>
-        </div>
-      </article>
-    </div>
-    <p class="scenario-note"><strong>Not a one-size-fits-all script.</strong> We review your business information with you before launch, and you decide what the receptionist may book, what it should collect, and when a person needs to step in.</p>
   </div>
 </section>
 
@@ -732,32 +734,43 @@
   </div>
 </section>
 
-<!-- HOW IT WORKS -->
-<section id="how-it-works">
-  <div class="container" style="text-align:center">
-    <div class="section-label">How It Works</div>
-    <h2>Live in 3 steps</h2>
-    <p class="section-sub" style="margin:0 auto 0">We do the setup. You just answer fewer calls.</p>
-    <div class="steps">
-      <div class="step">
-        <div class="step-num">1</div>
-        <div class="step-icon">📋</div>
-        <h3>Tell us about your business</h3>
-        <p>Fill out a short onboarding form — your services, prices, scheduling rules, and any policies you have. Takes about 20 minutes.</p>
+<!-- INDUSTRY GALLERY -->
+<section class="scenarios" id="service-scenarios">
+  <div class="container">
+    <div class="scenarios-heading">
+      <div>
+        <div class="section-label">Configured for the work you do</div>
+        <h2>One reception standard. A different call flow for every business.</h2>
       </div>
-      <div class="step">
-        <div class="step-num">2</div>
-        <div class="step-icon">🤖</div>
-        <h3>We configure and test your receptionist</h3>
-        <p>We build the call flow around your approved information: what it may say, what it must not promise, and when your team should take over.</p>
-      </div>
-      <div class="step">
-        <div class="step-num">3</div>
-        <div class="step-icon">📅</div>
-        <h3>Forward your calls — you're live</h3>
-        <p>Forward your business number to Ring & Booked. Calls are answered, appointments booked into your calendar. Go live in 1 business day.</p>
-      </div>
+      <p class="section-sub">Whether you schedule a home visit, a consultation, or a patient appointment, we adapt the call flow to the information and next steps that make sense for your business.</p>
     </div>
+    <div class="scenario-grid">
+      <article class="scenario-card">
+        <img src="/assets/scenarios/plumbing-call-flow.webp" width="1200" height="900" loading="lazy" alt="A plumber working under a kitchen sink while a homeowner calls for service">
+        <div class="scenario-content">
+          <span class="scenario-eyebrow">Home services</span>
+          <h3>Keep the job moving while calls keep coming.</h3>
+          <p>Capture the details your team needs and offer only the bookings you approve.</p>
+        </div>
+      </article>
+      <article class="scenario-card">
+        <img src="/assets/scenarios/dental-practice-call.webp" width="900" height="1124" loading="lazy" alt="A patient calling a modern dental practice to arrange an appointment">
+        <div class="scenario-content">
+          <span class="scenario-eyebrow">Dental practices</span>
+          <h3>Give every appointment request a clear path.</h3>
+          <p>Guide callers through your approved scheduling and follow-up process.</p>
+        </div>
+      </article>
+      <article class="scenario-card">
+        <img src="/assets/scenarios/law-office-call.webp" width="900" height="1124" loading="lazy" alt="A client calling a contemporary law office to arrange a consultation">
+        <div class="scenario-content">
+          <span class="scenario-eyebrow">Professional services</span>
+          <h3>Start the conversation without overstepping.</h3>
+          <p>Collect the intake details you allow, then schedule or route the conversation to your team.</p>
+        </div>
+      </article>
+    </div>
+    <p class="scenario-note"><strong>The process is configured with you.</strong> We do not use one generic script across industries; you set the information, booking boundaries, and handoff points before the line goes live.</p>
   </div>
 </section>
 
@@ -990,26 +1003,20 @@
 
 <!-- RESOURCES -->
 <section class="resources-section" id="resources">
-  <div class="container" style="text-align:center">
-    <div class="section-label">Resources &amp; setup</div>
-    <h2>Plan your call flow before it goes live.</h2>
-    <p class="section-sub" style="margin:0 auto 42px">Start with the practical guides, then see exactly how our team configures and tests the receptionist with you.</p>
-    <div class="resource-grid">
-      <a class="resource-card" href="/how-ring-and-booked-works">
-        <span class="resource-type">How it works</span><h3>How Ring &amp; Booked works</h3><p>A transparent guide to the done-for-you setup, testing, launch, and operating boundaries.</p><span class="resource-link">See the setup process →</span>
-      </a>
-      <a class="resource-card" href="/resources">
-        <span class="resource-type">Resource hub</span><h3>Call-handling resources</h3><p>Browse practical planning checklists for service-business calls, booking, and handoffs.</p><span class="resource-link">Explore all resources →</span>
-      </a>
-      <a class="resource-card" href="/after-hours-call-handling-checklist">
-        <span class="resource-type">Checklist</span><h3>After-hours call handling</h3><p>Define booking, message, transfer, and emergency boundaries before changing your phone flow.</p><span class="resource-link">Open checklist →</span>
-      </a>
-      <a class="resource-card" href="/service-business-call-forwarding-guide">
-        <span class="resource-type">Setup guide</span><h3>Call forwarding for service businesses</h3><p>Prepare your existing number, contacts, routing rules, test cases, and fallback path.</p><span class="resource-link">Read the guide →</span>
-      </a>
-      <a class="resource-card" href="/ai-receptionist-onboarding-checklist">
-        <span class="resource-type">Checklist</span><h3>AI receptionist onboarding</h3><p>Prepare business details, appointment rules, escalation contacts, and language preferences.</p><span class="resource-link">Open checklist →</span>
-      </a>
+  <div class="container">
+    <div class="resource-feature">
+      <div class="resource-intro">
+        <div class="section-label">Resources &amp; setup</div>
+        <h2>Plan the call flow before it goes live.</h2>
+        <p>Start with the practical checklist, then use the guides to decide what should be booked, transferred, or followed up by your team.</p>
+        <a class="resource-primary-link" href="/ai-receptionist-onboarding-checklist">Open the onboarding checklist <span aria-hidden="true">→</span></a>
+      </div>
+      <nav class="resource-index" aria-label="Ring and Booked resources">
+        <a href="/how-ring-and-booked-works"><strong>01</strong><span>How Ring &amp; Booked works</span><em aria-hidden="true">→</em></a>
+        <a href="/after-hours-call-handling-checklist"><strong>02</strong><span>After-hours call handling</span><em aria-hidden="true">→</em></a>
+        <a href="/service-business-call-forwarding-guide"><strong>03</strong><span>Call forwarding guide</span><em aria-hidden="true">→</em></a>
+        <a href="/resources"><strong>04</strong><span>Browse every resource</span><em aria-hidden="true">→</em></a>
+      </nav>
     </div>
   </div>
 </section>
