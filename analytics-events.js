@@ -43,7 +43,7 @@
 
     if (target.dataset.plan) {
       window.rabTrackEvent('select_plan', { plan: target.dataset.plan, cta_location: location });
-    } else if (href?.pathname === '/onboarding') {
+    } else if ((href?.pathname === '/onboarding' || href?.pathname === '/onboarding.html')) {
       window.rabTrackEvent('start_setup_click', { cta_location: location });
     } else if (href?.pathname === '/watch-ai-receptionist-demo') {
       window.rabTrackEvent('watch_demo_click', { cta_location: location });

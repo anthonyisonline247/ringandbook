@@ -76,16 +76,20 @@ test('homepage presents original service-call scenarios and outcome-focused copy
   const homepage = read('index.html');
   assert.match(homepage, /id="service-scenarios"/);
   assert.match(homepage, /href="#service-scenarios"/);
-  for (const image of ['/assets/scenarios/plumbing-call-flow.webp', '/assets/scenarios/dental-practice-call.webp', '/assets/scenarios/law-office-call.webp']) {
+  for (const image of ['/assets/scenarios/plumbing-call-flow.webp', '/assets/scenarios/dental-reception.webp', '/assets/scenarios/office-consultation.webp']) {
     assert.match(homepage, new RegExp(`src="${image}"`));
     assert.ok(fs.existsSync(new URL(`../${image.slice(1)}`, import.meta.url)), `${image} should exist`);
   }
   assert.doesNotMatch(homepage, /Most small businesses lose 30–40% of bookings/);
   assert.doesNotMatch(homepage, /AI response time/);
-  assert.match(homepage, /We answer the business calls you cannot\./);
-  assert.match(homepage, /What Ring &amp; Booked does/);
-  assert.ok(homepage.indexOf('id="call-flow"') < homepage.indexOf('id="how-it-works"'));
-  assert.ok(homepage.indexOf('id="how-it-works"') < homepage.indexOf('id="demo"'));
+  assert.match(homepage, /AI phone receptionist for your business/);
+  assert.match(homepage, /class="demo-cover" href="\/watch-ai-receptionist-demo"/);
+  const sections = ['call-flow', 'demo', 'how-it-works', 'service-scenarios', 'pricing'];
+  for (const [index, id] of sections.entries()) {
+    const position = homepage.indexOf(`id="${id}"`);
+    assert.ok(position >= 0, `missing ${id}`);
+    if (index) assert.ok(position > homepage.indexOf(`id="${sections[index - 1]}"`));
+  }
 });
 
 test('business pages link to their practical resources and public pages use consent-safe analytics', () => {
